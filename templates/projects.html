@@ -1,0 +1,435 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Projects | Rana Umar Developer
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- CUSTOM CURSOR -->
+
+<div class="cursor-glow"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
+
+
+
+<!-- ================= PAGE HEADER START ================= -->
+
+<!--==============================
+        PROJECTS HEADER
+===============================-->
+
+<section class="projects-page-header">
+
+<div class="container text-center">
+
+
+<span class="header-badge">
+
+<i class="fas fa-code"></i>
+
+MY WORK
+
+</span>
+
+
+
+<h1>
+
+My Featured <span>Projects</span>
+
+</h1>
+
+
+
+<p>
+
+A showcase of my creative work including
+modern websites, Python applications and
+Django based solutions built with clean code,
+responsive design and professional UI.
+
+</p>
+
+
+<div class="header-line"></div>
+
+
+</div>
+
+</section>
+
+<!-- ================= PAGE HEADER END ================= -->
+
+
+
+
+<!--==============================
+        PROJECT INTRO
+===============================-->
+
+<section class="project-intro py-5">
+
+<div class="container">
+
+<div class="row align-items-center g-5">
+
+<!-- Left Content -->
+
+<div class="col-lg-6" data-aos="fade-right">
+
+<span class="section-badge">
+
+<i class="fas fa-code"></i>
+
+My Development Journey
+
+</span>
+
+<h2 class="mt-4">
+
+Building <span class="text-warning">Modern Digital Solutions</span>
+
+</h2>
+
+<p class="mt-4">
+
+I specialize in developing modern web applications,
+responsive frontend websites, and Python-based systems
+that combine clean design with practical functionality.
+Every project reflects my commitment to quality,
+performance, and user experience.
+
+</p>
+
+<p>
+
+From business websites to management systems,
+I enjoy transforming ideas into elegant,
+professional, and scalable digital products using
+the latest web technologies.
+
+</p>
+
+<div class="mt-4">
+
+<a href="#projects" class="btn btn-gold me-3">
+
+<i class="fas fa-rocket"></i>
+
+View Projects
+
+</a>
+
+<a href="{% static 'resume/Rana-Umar-CV.pdf' %}"
+
+class="btn btn-outline-gold" download>
+
+<i class="fas fa-download"></i>
+
+Download CV
+
+</a>
+
+</div>
+
+</div>
+
+<!-- Right Image -->
+
+<div class="col-lg-6 text-center" data-aos="fade-left">
+
+<img src="{% static 'images/projects.jpg' %}"
+
+class="img-fluid project-image"
+
+alt="Projects">
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!--------filter buttons--------------->
+
+<!-- ================= FILTER BUTTONS ================= -->
+
+<section class="pb-4">
+
+    <div class="container">
+
+        <div class="text-center">
+
+            <button class="filter-btn active" data-filter="all">
+                All
+            </button>
+
+            <button class="filter-btn" data-filter="python">
+                Python
+            </button>
+
+            <button class="filter-btn" data-filter="django">
+                Django
+            </button>
+
+            <button class="filter-btn" data-filter="frontend">
+                Frontend
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+<!--============ PROJECT CARDS ============-->
+
+<section class="py-5" id="projects">
+
+<div class="container">
+
+
+<div class="text-center mb-5">
+
+<h5 class="text-warning">
+FEATURED PROJECTS
+</h5>
+
+
+<h2 class="fw-bold">
+My Recent Work
+</h2>
+
+
+</div>
+
+
+
+<div class="row g-4">
+
+
+
+{% for project in projects %}
+
+
+<div class="col-lg-4 col-md-6 project-item {{project.category}}">
+
+
+<div class="card project-card h-100">
+
+
+
+<img src="{{project.image.url}}"
+
+class="card-img-top"
+
+alt="{{project.title}}"
+
+loading="lazy">
+
+
+
+
+
+<div class="card-body d-flex flex-column">
+
+
+
+<h4 class="text-warning">
+
+{{project.title}}
+
+</h4>
+
+
+
+
+<p>
+
+{{project.description|truncatewords:20}}
+
+</p>
+
+
+
+
+
+<div class="mb-3">
+
+
+<span class="badge bg-warning text-dark me-2">
+
+{{project.category|title}}
+
+</span>
+
+
+
+
+<span class="badge bg-dark border border-warning">
+
+{{project.technologies}}
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+<div class="mt-auto">
+
+
+<div class="d-grid gap-2">
+
+
+
+
+
+<a href="{% url 'project_detail' project.slug %}"
+
+class="btn btn-warning">
+
+
+<i class="fas fa-folder-open me-2"></i>
+
+View Details
+
+
+</a>
+
+
+
+
+
+{% if project.live_demo %}
+
+
+<a href="{{project.live_demo}}"
+
+target="_blank"
+
+class="btn btn-outline-warning">
+
+
+<i class="fas fa-eye me-2"></i>
+
+Live Demo
+
+
+</a>
+
+
+{% endif %}
+
+
+
+
+
+
+
+{% if project.github_link %}
+
+
+<a href="{{project.github_link}}"
+
+target="_blank"
+
+class="btn btn-outline-light">
+
+
+<i class="fab fa-github me-2"></i>
+
+GitHub
+
+
+</a>
+
+
+{% endif %}
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+{% empty %}
+
+
+
+<div class="col-12 text-center">
+
+
+<h3 class="text-warning">
+
+No Projects Added Yet
+
+</h3>
+
+
+<p>
+
+Add projects from Django Admin Panel.
+
+</p>
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+<!-- Back To Top Button -->
+
+
+<div id="backToTop">
+
+<i class="fas fa-arrow-up"></i>
+
+</div>
+
+
+
+{% endblock %}

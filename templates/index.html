@@ -1,0 +1,351 @@
+
+
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+Home | Rana Umar Developer
+{% endblock %}
+
+
+{% block content %}
+
+
+
+<!-- CUSTOM CURSOR -->
+
+<div class="cursor-glow"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
+
+
+
+
+<!--=================================
+        PREMIUM HERO SECTION
+==================================-->
+
+<section class="hero-section" id="home">
+
+<div class="container">
+
+<div class="row align-items-center min-vh-100">
+
+
+<!-- LEFT -->
+
+<div class="col-lg-7" data-aos="fade-right">
+
+
+<span class="hero-badge">
+
+<i class="fas fa-crown"></i>
+
+Available For Freelance
+
+</span>
+
+
+<h5 class="hero-subtitle">
+
+Hello, I'm
+
+</h5>
+
+
+<h1 class="hero-title">
+
+Rana <span>Umar</span>
+
+</h1>
+
+
+<h2 class="typing-text">
+
+Full Stack Developer
+
+</h2>
+
+
+<p class="hero-text">
+
+I design and develop premium websites,
+modern web applications and powerful
+digital experiences using
+
+<strong>HTML, CSS, Bootstrap,
+JavaScript, Python & Django.</strong>
+
+My goal is to build fast, responsive and
+professional solutions that help businesses
+grow online.
+
+</p>
+
+
+
+<div class="tech-stack">
+
+<span>HTML5</span>
+
+<span>CSS3</span>
+
+<span>Bootstrap</span>
+
+<span>JavaScript</span>
+
+<span>Python</span>
+
+<span>Django</span>
+
+<span>SQL</span>
+
+</div>
+
+
+
+<div class="hero-buttons">
+
+
+<a href="{% url 'contact' %}"
+
+class="btn btn-gold btn-lg">
+
+<i class="fas fa-paper-plane"></i>
+
+Hire Me
+
+</a>
+
+
+
+<a href="{% static 'cv/Rana_Umar_CV.pdf' %}"
+
+download
+
+class="btn btn-outline-gold btn-lg">
+
+<i class="fas fa-download"></i>
+
+Download CV
+
+</a>
+
+
+</div>
+
+
+
+
+<div class="hero-social">
+
+
+<a href="https://github.com/uiux6006-star" target="_blank">
+
+<i class="fab fa-github"></i>
+
+</a>
+
+
+
+<a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank">
+
+<i class="fab fa-linkedin"></i>
+
+</a>
+
+
+
+<a href="https://wa.me/923238144826" target="_blank">
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+
+
+<a href="mailto:uiux6006@gmail.com">
+
+<i class="fas fa-envelope"></i>
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- RIGHT -->
+
+
+<div class="col-lg-5 text-center"
+
+data-aos="fade-left">
+
+
+<div class="hero-image">
+
+
+<img src="{% static 'images/portfolio.jpg' %}"
+
+alt="Rana Umar"
+
+class="img-fluid">
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="scroll-down">
+
+<a href="#about">
+
+<i class="fas fa-angle-double-down"></i>
+
+</a>
+
+</div>
+
+
+
+</div>
+
+</section>
+
+
+<section class="py-5">
+
+<div class="container">
+
+
+<div class="text-center mb-5">
+
+<h5 class="text-warning">
+FEATURED PROJECTS
+</h5>
+
+
+<h2 class="fw-bold">
+My Latest Work
+</h2>
+
+
+</div>
+
+
+
+<div class="row g-4">
+
+
+{% for project in featured_projects %}
+
+
+
+<div class="col-lg-4">
+
+
+<div class="card project-card h-100">
+
+
+
+<img src="{{project.image.url}}"
+class="card-img-top">
+
+
+
+<div class="card-body">
+
+
+
+<h4 class="text-warning">
+
+{{project.title}}
+
+</h4>
+
+
+
+<p>
+
+{{project.description|truncatewords:15}}
+
+</p>
+
+
+
+<a href="{% url 'project_detail' project.slug %}"
+
+class="btn btn-warning">
+
+View Details
+
+</a>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+{% empty %}
+
+
+<h3 class="text-warning text-center">
+
+No Featured Projects
+
+</h3>
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+
+<!-- Back To Top Button -->
+
+
+<div id="backToTop">
+
+
+<i class="fas fa-arrow-up"></i>
+
+
+</div>
+
+
+
+
+{% endblock %}

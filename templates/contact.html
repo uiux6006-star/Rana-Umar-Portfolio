@@ -1,0 +1,688 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Contact | Rana Umar Developer
+{% endblock %}
+
+{% block content %}
+
+
+<!-- CUSTOM CURSOR -->
+
+<div class="cursor-glow"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
+
+
+
+<!-- ================= PREMIUM CONTACT HEADER START ================= -->
+
+
+<section class="contact-page-header">
+
+
+<div class="container text-center">
+
+
+
+<span class="header-badge">
+
+<i class="fas fa-envelope"></i>
+
+CONTACT ME
+
+</span>
+
+
+
+
+
+<h1>
+
+Let's Build Something <span>Amazing</span>
+
+</h1>
+
+
+
+
+<p>
+
+Have a project idea or need a professional website?
+Let's discuss your vision and create a modern,
+powerful digital solution together.
+
+</p>
+
+
+
+
+<div class="header-line"></div>
+
+
+
+</div>
+
+
+</section>
+
+<!-- ================= PREMIUM CONTACT INTRO START ================= -->
+
+
+<section class="contact-intro">
+
+
+<div class="container">
+
+
+<div class="row align-items-center g-5">
+
+
+
+<!-- CONTENT -->
+
+<div class="col-lg-6">
+
+
+<span class="section-badge">
+
+<i class="fas fa-comments"></i>
+
+GET IN TOUCH
+
+</span>
+
+
+
+
+<h2>
+
+Let's Create Something <span>Amazing</span>
+
+</h2>
+
+
+
+
+<p>
+
+I am available for freelance projects,
+internships and collaboration opportunities.
+Let's discuss your ideas and turn them into
+professional digital solutions.
+
+</p>
+
+
+
+
+<p>
+
+Whether you need a modern website, web application
+or creative UI/UX design, I am ready to help you
+build your online presence.
+
+</p>
+
+
+
+
+
+<a href="mailto:uiux6006@gmail.com"
+
+class="btn btn-gold mt-3">
+
+
+<i class="fas fa-envelope"></i>
+
+Email Me
+
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- IMAGE -->
+
+<div class="col-lg-6 text-center">
+
+
+<div class="contact-image-box">
+
+
+<img src="{% static 'images/portfolio.jpg' %}"
+
+alt="Rana Umar Profile"
+
+class="img-fluid contact-profile-image">
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+<!-- ================= PREMIUM CONTACT FORM START ================= -->
+
+
+<section class="contact-form-section">
+
+
+<div class="container">
+
+
+<div class="row g-5">
+
+
+
+<!-- CONTACT INFORMATION -->
+
+<div class="col-lg-5">
+
+
+<span class="section-badge">
+
+<i class="fas fa-address-book"></i>
+
+CONTACT INFO
+
+</span>
+
+
+
+
+<h2 class="contact-title">
+
+Let's Stay <span>Connected</span>
+
+</h2>
+
+
+
+
+<p class="contact-text">
+
+Feel free to reach out for freelance projects,
+collaboration and professional web development
+opportunities.
+
+</p>
+
+
+
+
+
+<div class="contact-card">
+
+
+<div class="contact-icon">
+
+<i class="fas fa-envelope"></i>
+
+</div>
+
+
+<div>
+
+<h5>Email</h5>
+
+<p>
+uiux6006@gmail.com
+
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="contact-card">
+
+
+<div class="contact-icon">
+
+<i class="fas fa-phone"></i>
+
+</div>
+
+
+<div>
+
+<h5>Phone</h5>
+
+<p>
++92 323 8144826
+
+</p>
+
+</div>
+
+
+</div>
+
+<div class="contact-card">
+
+
+<div class="contact-icon">
+
+<i class="fas fa-location-dot"></i>
+
+</div>
+
+
+<div>
+
+<h5>Location</h5>
+
+<p>
+Pakistan
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="contact-card">
+
+
+<div class="contact-icon">
+
+<i class="fas fa-briefcase"></i>
+
+</div>
+
+
+<div>
+
+<h5>Availability</h5>
+
+<p>
+Available For Freelance Projects
+</p>
+
+</div>
+
+
+</div>
+</div>
+
+<!-- CONTACT FORM -->
+
+<div class="col-lg-7">
+
+<div class="contact-form-box">
+
+<h2>
+
+Send Me A <span>Message</span>
+
+</h2>
+
+{% if messages %}
+
+{% for message in messages %}
+
+<div class="alert premium-alert alert-dismissible fade show">
+
+    <i class="fas fa-circle-check me-2"></i>
+
+    {{ message }}
+
+    <button type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="alert">
+    </button>
+
+</div>
+
+
+{% endfor %}
+
+{% endif %}
+
+
+
+
+
+<form method="POST" action="{% url 'contact' %}">
+
+
+{% csrf_token %}
+
+
+
+<div class="row">
+
+
+<div class="col-md-6 mb-4">
+
+
+<input
+
+type="text"
+
+class="form-control"
+
+name="name"
+
+placeholder="Your Name"
+
+required>
+
+
+</div>
+
+
+
+
+<div class="col-md-6 mb-4">
+
+
+<input
+
+type="email"
+
+class="form-control"
+
+name="email"
+
+placeholder="Your Email"
+
+required>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="mb-4">
+
+
+<input
+
+type="text"
+
+class="form-control"
+
+name="subject"
+
+placeholder="Subject"
+
+required>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="mb-4">
+
+
+<textarea
+
+class="form-control"
+
+name="message"
+
+rows="6"
+
+placeholder="Your Message"
+
+required></textarea>
+
+
+</div>
+
+
+
+
+
+
+
+<button type="submit"
+
+class="btn btn-gold btn-lg">
+
+
+<i class="fas fa-paper-plane"></i>
+
+Send Message
+
+
+</button>
+
+
+
+
+</form>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+<!-- ================= PREMIUM CONTACT FORM END ================= -->
+
+<!-- ================= PREMIUM SOCIAL MEDIA START ================= -->
+
+
+<section class="social-section">
+
+
+<div class="container text-center">
+
+
+<span class="section-badge">
+
+<i class="fas fa-share-nodes"></i>
+
+CONNECT WITH ME
+
+</span>
+
+
+
+<h2 class="social-title">
+
+Follow My <span>Journey</span>
+
+</h2>
+
+
+
+<p class="social-text">
+
+Let's connect on social platforms and stay updated
+with my latest projects, designs and development work.
+
+</p>
+
+
+
+
+<div class="social-icons">
+
+
+
+<!-- Github -->
+
+<a href="https://github.com/uiux6006-star"
+
+target="_blank">
+
+<i class="fab fa-github"></i>
+
+</a>
+
+
+
+
+<!-- LinkedIn -->
+
+<a href="https://www.linkedin.com/in/rana-umar-476b19409"
+
+target="_blank">
+
+<i class="fab fa-linkedin"></i>
+
+</a>
+
+
+
+
+<!-- WhatsApp -->
+
+<a href="https://wa.me/923238144826?text=Hello%20Rana%20Umar"
+
+target="_blank">
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+
+
+
+<!-- Email -->
+
+<a href="mailto:uiux6006@gmail.com?subject=Portfolio Inquiry">
+
+<i class="fas fa-envelope"></i>
+
+</a>
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+<!--====================================
+      FINAL PREMIUM CTA
+=====================================-->
+
+<section class="ultimate-cta">
+
+<div class="container">
+
+<div class="ultimate-box text-center">
+
+<span class="ultimate-badge">
+
+<i class="fas fa-crown"></i>
+
+LET'S BUILD SOMETHING EXTRAORDINARY
+
+</span>
+
+<h2>
+
+Ready To Turn Your <span>Ideas</span>
+Into Reality?
+
+</h2>
+
+<p>
+
+Whether you need a modern portfolio, business website,
+Python application or a powerful Django project,
+I'm here to transform your vision into a premium digital experience.
+
+</p>
+
+<div class="ultimate-buttons">
+
+<a href="{% url 'contact' %}" class="btn btn-gold btn-lg">
+
+<i class="fas fa-paper-plane"></i>
+
+Start Your Project
+
+</a>
+
+<a href="{% url 'projects' %}" class="btn btn-outline-gold btn-lg">
+
+<i class="fas fa-laptop-code"></i>
+
+View My Work
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- Back To Top Button -->
+
+
+<div id="backToTop">
+
+<i class="fas fa-arrow-up"></i>
+
+</div>
+
+
+
+{% endblock %}
