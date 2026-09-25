@@ -2,357 +2,256 @@
         RANA UMAR PORTFOLIO
 ========================================== */
 
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
     /* ==========================================
-            PRELOADER
-========================================== */
+            SCROLL ANIMATIONS (AOS)
+    ========================================== */
 
-const preloader = document.getElementById("preloader");
+    // Sections without their own animation fade up as a whole.
+    document.querySelectorAll("section:not(.hero-section)").forEach(section => {
 
-window.addEventListener("load", () => {
+        if (!section.querySelector("[data-aos]")) {
+            section.setAttribute("data-aos", "fade-up");
+        }
 
-    setTimeout(() => {
+    });
 
-        preloader.style.opacity = "0";
+    if (window.AOS) {
 
-        preloader.style.visibility = "none";
+        AOS.init({
+            duration: 800,
+            easing: "ease-out-cubic",
+            once: true,
+            offset: 60,
+            disable: prefersReducedMotion
+        });
 
-    }, 2200);
+    }
 
-});
+
 
     /* ==========================================
-            NAVBAR SCROLL EFFECT
+            NAVBAR + BACK TO TOP (on scroll)
     ========================================== */
 
     const navbar = document.querySelector(".navbar");
+    const backToTop = document.getElementById("backToTop");
 
-    window.addEventListener("scroll", () => {
+    function onScroll() {
 
-        if (window.scrollY > 50) {
+        navbar.classList.toggle("scrolled", window.scrollY > 50);
 
-            navbar.style.background = "rgba(0,0,0,.95)";
-            navbar.style.padding = "12px 0";
-
-        } else {
-
-            navbar.style.background = "rgba(0,0,0,.85)";
-            navbar.style.padding = "18px 0";
-
+        if (backToTop) {
+            backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
         }
 
-    });
+    }
 
+    window.addEventListener("scroll", onScroll, { passive: true });
 
+    onScroll();
 
-    /* ==========================================
-            SMOOTH SCROLL
-    ========================================== */
+    if (backToTop) {
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-
-        anchor.addEventListener("click", function (e) {
-
-            const target = document.querySelector(this.getAttribute("href"));
-
-            if (target) {
-
-                e.preventDefault();
-
-                target.scrollIntoView({
-
-                    behavior: "smooth"
-
-                });
-
-            }
-
-        });
-
-    });
-
-
-
-    /* ==========================================
-            ACTIVE NAVBAR LINK
-    ========================================== */
-
-   
-
-    /* ==========================================
-            SCROLL REVEAL
-    ========================================== */
-
-    const revealElements = document.querySelectorAll("section");
-
-    function revealOnScroll() {
-
-        revealElements.forEach(section => {
-
-            const windowHeight = window.innerHeight;
-
-            const revealTop = section.getBoundingClientRect().top;
-
-            const revealPoint = 100;
-
-            if (revealTop < windowHeight - revealPoint) {
-
-                section.style.opacity = "1";
-                section.style.transform = "translateY(0)";
-
-            }
-
+        backToTop.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
         });
 
     }
 
-    revealElements.forEach(section => {
 
-        section.style.opacity = "0";
-        section.style.transform = "translateY(50px)";
-        section.style.transition = "all .8s ease";
 
-    });
-
-    window.addEventListener("scroll", revealOnScroll);
-
-    revealOnScroll();
     /* ==========================================
-        TYPING ANIMATION
-========================================== */
+            TYPING ANIMATION
+    ========================================== */
 
-const typingText = document.querySelector(".typing-text");
+    const typingText = document.querySelector(".typing-text");
 
-const words = [
+    const words = [
+        "Full Stack Developer",
+        "Website Designer",
+        "Django Developer",
+        "Python Developer"
+    ];
 
-    "Full Stack Developer",
-    "Python Developer",
-    "Django Developer",
-    "Frontend Developer",
-    "UI Designer"
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
 
-];
+    function typeEffect() {
 
-let wordIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
+        const currentWord = words[wordIndex];
 
-function typeEffect() {
+        typingText.textContent = currentWord.substring(0, isDeleting ? charIndex-- : charIndex++);
 
-    if (!typingText) return;
+        let speed = isDeleting ? 60 : 120;
 
-    const currentWord = words[wordIndex];
-
-    if (isDeleting) {
-
-        typingText.textContent = currentWord.substring(0, charIndex--);
-
-    } else {
-
-        typingText.textContent = currentWord.substring(0, charIndex++);
-
-    }
-
-    let speed = isDeleting ? 60 : 120;
-
-    if (!isDeleting && charIndex === currentWord.length + 1) {
-
-        speed = 1500;
-        isDeleting = true;
-
-    }
-
-    if (isDeleting && charIndex === 0) {
-
-        isDeleting = false;
-        wordIndex = (wordIndex + 1) % words.length;
-
-    }
-
-    setTimeout(typeEffect, speed);
-
-}
-
-typeEffect();
-
-
-
-/* ==========================================
-        BACK TO TOP BUTTON
-========================================== */
-
-const backToTop = document.getElementById("backToTop");
-
-window.addEventListener("scroll", () => {
-
-    if (!backToTop) return;
-
-    if (window.scrollY > 300) {
-
-        backToTop.style.display = "flex";
-
-    } else {
-
-        backToTop.style.display = "none";
-
-    }
-
-});
-
-if (backToTop) {
-
-    backToTop.addEventListener("click", () => {
-
-        window.scrollTo({
-
-            top: 0,
-            behavior: "smooth"
-
-        });
-
-    });
-
-}
-
-
-
-/* ==========================================
-        COUNTER ANIMATION
-========================================== */
-
-const counters = document.querySelectorAll(".counter");
-
-counters.forEach(counter => {
-
-    counter.innerText = "0";
-
-    const updateCounter = () => {
-
-        const target = +counter.getAttribute("data-target");
-
-        const current = +counter.innerText;
-
-        const increment = target / 100;
-
-        if (current < target) {
-
-            counter.innerText = `${Math.ceil(current + increment)}`;
-
-            setTimeout(updateCounter, 20);
-
-        } else {
-
-            counter.innerText = target;
-
+        if (!isDeleting && charIndex === currentWord.length + 1) {
+            speed = 1500;
+            isDeleting = true;
         }
 
-    };
+        if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+        }
 
-    updateCounter();
+        setTimeout(typeEffect, speed);
 
-});
+    }
 
-
-
-/* ==========================================
-        SKILL BAR ANIMATION
-========================================== */
-
-const progressBars = document.querySelectorAll(".progress-bar");
-
-progressBars.forEach(bar => {
-
-    const width = bar.getAttribute("aria-valuenow");
-
-    bar.style.width = "0%";
-
-    setTimeout(() => {
-
-        bar.style.width = width + "%";
-
-    }, 500);
-
-});
-
-});
+    if (typingText && !prefersReducedMotion) {
+        typeEffect();
+    }
 
 
-/* ==========================================
+
+    /* ==========================================
+            COUNTER ANIMATION (starts when visible)
+    ========================================== */
+
+    const counters = document.querySelectorAll(".counter");
+
+    function animateCounter(counter) {
+
+        const target = +counter.dataset.target;
+        const duration = 1600;
+        const start = performance.now();
+
+        const step = (now) => {
+
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+
+            counter.innerText = Math.round(target * eased);
+
+            if (progress < 1) requestAnimationFrame(step);
+
+        };
+
+        requestAnimationFrame(step);
+
+    }
+
+    if (counters.length && "IntersectionObserver" in window && !prefersReducedMotion) {
+
+        const counterObserver = new IntersectionObserver((entries) => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    counterObserver.unobserve(entry.target);
+                }
+
+            });
+
+        }, { threshold: 0.6 });
+
+        counters.forEach(counter => {
+            counter.innerText = "0";
+            counterObserver.observe(counter);
+        });
+
+    }
+
+
+
+    /* ==========================================
+            HERO MOUSE PARALLAX
+    ========================================== */
+
+    const hero = document.querySelector(".hero-v2");
+
+    if (hero && !prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
+
+        const layers = hero.querySelectorAll("[data-depth]");
+
+        hero.addEventListener("mousemove", (e) => {
+
+            const rect = hero.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+            layers.forEach(layer => {
+                const depth = +layer.dataset.depth;
+                layer.style.translate = `${x * depth}px ${y * depth}px`;
+            });
+
+        });
+
+        hero.addEventListener("mouseleave", () => {
+            layers.forEach(layer => layer.style.translate = "0 0");
+        });
+
+    }
+
+
+
+    /* ==========================================
             CUSTOM CURSOR
-========================================== */
+    ========================================== */
 
-const cursorDot = document.querySelector(".cursor-dot");
-const cursorOutline = document.querySelector(".cursor-outline");
+    const cursorParts = document.querySelectorAll(".cursor-dot, .cursor-outline, .cursor-glow");
 
-document.addEventListener("mousemove", (e) => {
+    document.addEventListener("mousemove", (e) => {
 
-    if (!cursorDot || !cursorOutline) return;
+        document.body.classList.add("cursor-ready");
 
-    cursorDot.style.left = e.clientX + "px";
-    cursorDot.style.top = e.clientY + "px";
+        cursorParts.forEach(part => {
+            part.style.left = e.clientX + "px";
+            part.style.top = e.clientY + "px";
+        });
 
-    cursorOutline.style.left = e.clientX + "px";
-    cursorOutline.style.top = e.clientY + "px";
+    });
 
-});
 
-/* ==========================================
-            MOUSE GLOW
-========================================== */
 
-const cursorGlow = document.querySelector(".cursor-glow");
+    /* ==========================================
+            PROJECT FILTER
+    ========================================== */
 
-document.addEventListener("mousemove", (e) => {
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const projectItems = document.querySelectorAll(".project-item");
 
-    if (!cursorGlow) return;
+    filterButtons.forEach(button => {
 
-    cursorGlow.style.left = e.clientX + "px";
-    cursorGlow.style.top = e.clientY + "px";
+        button.addEventListener("click", () => {
 
-});
+            filterButtons.forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
 
-/* ==========================================
-        PROJECT FILTER
-========================================== */
+            const filter = button.dataset.filter;
 
-const filterButtons = document.querySelectorAll(".filter-btn");
-const projects = document.querySelectorAll(".project-item");
-
-filterButtons.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        filterButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        const filter = button.dataset.filter;
-
-        projects.forEach(project => {
-
-            if (filter === "all") {
-
-                project.style.display = "block";
-
-            } else if (project.classList.contains(filter)) {
-
-                project.style.display = "block";
-
-            } else {
-
-                project.style.display = "none";
-
-            }
+            projectItems.forEach(project => {
+                const show = filter === "all" || project.classList.contains(filter);
+                project.style.display = show ? "block" : "none";
+            });
 
         });
 
     });
 
 });
-window.onload=function(){
-
-document.getElementById("loader").style.display="none";
-
-}
 
 
+
+/* ==========================================
+        PAGE LOADER
+========================================== */
+
+window.addEventListener("load", () => {
+
+    const loader = document.getElementById("loader");
+
+    if (!loader) return;
+
+    loader.classList.add("loaded");
+
+    setTimeout(() => loader.remove(), 600);
+
+});

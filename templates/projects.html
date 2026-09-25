@@ -9,14 +9,6 @@ Projects | Rana Umar Developer
 {% block content %}
 
 
-<!-- CUSTOM CURSOR -->
-
-<div class="cursor-glow"></div>
-<div class="cursor-dot"></div>
-<div class="cursor-outline"></div>
-
-
-
 <!-- ================= PAGE HEADER START ================= -->
 
 <!--==============================
@@ -125,7 +117,7 @@ View Projects
 
 </a>
 
-<a href="{% static 'resume/Rana-Umar-CV.pdf' %}"
+<a href="{% static 'cv/Rana_Umar_CV.pdf' %}"
 
 class="btn btn-outline-gold" download>
 
@@ -278,11 +270,11 @@ loading="lazy">
 
 
 
-<span class="badge bg-dark border border-warning">
-
-{{project.technologies}}
-
+{% for tech in project.tech_list %}
+<span class="badge bg-dark border border-warning me-1 mb-1">
+{{ tech }}
 </span>
+{% endfor %}
 
 
 
@@ -419,17 +411,6 @@ Add projects from Django Admin Panel.
 
 
 </section>
-
-
-<!-- Back To Top Button -->
-
-
-<div id="backToTop">
-
-<i class="fas fa-arrow-up"></i>
-
-</div>
-
 
 
 {% endblock %}

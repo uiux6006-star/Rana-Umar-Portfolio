@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
-from .models import ContactMessage, Project
+from .forms import ContactForm
+from .models import Project, Testimonial
 
 
 
@@ -15,7 +16,9 @@ def home(request):
 
 
     context = {
-        "featured_projects": featured_projects
+        "featured_projects": featured_projects,
+        "project_count": Project.objects.count(),
+        "testimonials": Testimonial.objects.filter(is_published=True)[:6],
     }
 
 
@@ -98,33 +101,25 @@ def services(request):
 
 def contact(request):
 
-    if request.method == "POST":
+    form = ContactForm(request.POST or None)
 
+    if request.method == "POST" and form.is_valid():
 
-        ContactMessage.objects.create(
-
-            name=request.POST.get("name"),
-
-            email=request.POST.get("email"),
-
-            subject=request.POST.get("subject"),
-
-            message=request.POST.get("message")
-
-        )
-
+        # Bots get the same success message, but nothing is saved.
+        if not form.is_spam():
+            form.save()
 
         messages.success(
             request,
-            "Your message has been sent successfully."
+            "Thanks! Your message has been sent. I'll get back to you as soon as possible."
         )
-
 
         return redirect("contact")
 
-
-
     return render(
         request,
-        "contact.html"
+        "contact.html",
+        {
+            "form": form
+        }
     )

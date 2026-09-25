@@ -9,14 +9,6 @@
 {% block content %}
 
 
-<!-- CUSTOM CURSOR -->
-
-<div class="cursor-glow"></div>
-<div class="cursor-dot"></div>
-<div class="cursor-outline"></div>
-
-
-
 <!-- ================= HERO ================= -->
 
 
@@ -240,41 +232,15 @@ Created
 
 
 <div class="col-lg-4">
-
-
 <div class="detail-card">
-
-
-<i class="fas fa-star"></i>
-
-
+<i class="fas fa-code"></i>
 <h4>
-
-Featured
-
+Built With
 </h4>
-
-
 <p>
-
-
-{% if project.featured %}
-
-Yes ⭐
-
-{% else %}
-
-No
-
-{% endif %}
-
-
+{{ project.tech_list|join:", " }}
 </p>
-
-
 </div>
-
-
 </div>
 
 
@@ -340,7 +306,7 @@ Technologies Used
 <div class="mt-3">
 
 
-{% for tech in project.technologies.split %}
+{% for tech in project.tech_list %}
 
 
 <span class="tech-badge">
@@ -422,7 +388,8 @@ Related Projects
 
 
 <img src="{{item.image.url}}"
-
+alt="{{ item.title }}"
+loading="lazy"
 class="card-img-top">
 
 
@@ -516,17 +483,10 @@ No Related Projects
 <h2 class="fw-bold">
 
 
-Have A Project Idea?
-
-
+Want A Website Like This?
 </h2>
-
-
-
 <p class="lead">
-
-
-Let's build something amazing together.
+Tell me about your project and get a free quote.
 
 
 </p>
@@ -540,32 +500,13 @@ class="btn btn-warning btn-lg">
 
 
 <i class="fas fa-paper-plane"></i>
-
-Contact Me
-
-
+Start Your Project
 </a>
 
-
-
 </div>
 
-
 </div>
-
 
 </section>
-
-
-
-
-
-<div id="backToTop">
-
-<i class="fas fa-arrow-up"></i>
-
-</div>
-
-
 
 {% endblock %}

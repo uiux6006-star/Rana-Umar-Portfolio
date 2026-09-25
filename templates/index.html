@@ -13,319 +13,253 @@ Home | Rana Umar Developer
 
 
 
-<!-- CUSTOM CURSOR -->
-
-<div class="cursor-glow"></div>
-<div class="cursor-dot"></div>
-<div class="cursor-outline"></div>
-
-
-
-
 <!--=================================
         PREMIUM HERO SECTION
 ==================================-->
 
-<section class="hero-section" id="home">
+<section class="hero-section hero-v2" id="home">
+
+<!-- Animated background -->
+<div class="hero-bg" aria-hidden="true">
+    <div class="hero-grid"></div>
+    <div class="hero-blob blob-1" data-depth="-40"></div>
+    <div class="hero-blob blob-2" data-depth="30"></div>
+    <div class="hero-blob blob-3" data-depth="-20"></div>
+</div>
 
 <div class="container">
 
-<div class="row align-items-center min-vh-100">
+<div class="row align-items-center gy-5">
 
 
 <!-- LEFT -->
 
-<div class="col-lg-7" data-aos="fade-right">
+<div class="col-lg-7">
 
-
-<span class="hero-badge">
-
-<i class="fas fa-crown"></i>
-
-Available For Freelance
-
+<span class="hero-badge" data-aos="fade-up">
+    <span class="status-dot"></span>
+    Available for freelance work
 </span>
 
-
-<h5 class="hero-subtitle">
-
-Hello, I'm
-
+<h5 class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+    Hello, I'm
 </h5>
 
-
-<h1 class="hero-title">
-
-Rana <span>Umar</span>
-
+<h1 class="hero-title" data-aos="fade-up" data-aos-delay="150">
+    Rana <span>Umar</span>
 </h1>
 
-
-<h2 class="typing-text">
-
-Full Stack Developer
-
+<h2 class="hero-role" data-aos="fade-up" data-aos-delay="200">
+    <span class="typing-text">Full Stack Developer</span><span class="typing-caret"></span>
 </h2>
 
-
-<p class="hero-text">
-
-I design and develop premium websites,
-modern web applications and powerful
-digital experiences using
-
-<strong>HTML, CSS, Bootstrap,
-JavaScript, Python & Django.</strong>
-
-My goal is to build fast, responsive and
-professional solutions that help businesses
-grow online.
-
+<p class="hero-text" data-aos="fade-up" data-aos-delay="250">
+    I build <strong>fast, modern websites that turn visitors into customers</strong>,
+    from business sites and online stores to custom web apps
+    built with Python &amp; Django.
 </p>
 
+<div class="hero-buttons" data-aos="fade-up" data-aos-delay="300">
 
+    <a href="{% url 'contact' %}" class="btn btn-gold btn-lg">
+        Start Your Project
+        <i class="fas fa-arrow-right"></i>
+    </a>
 
-<div class="tech-stack">
-
-<span>HTML5</span>
-
-<span>CSS3</span>
-
-<span>Bootstrap</span>
-
-<span>JavaScript</span>
-
-<span>Python</span>
-
-<span>Django</span>
-
-<span>SQL</span>
+    <a href="#featured" class="btn btn-outline-gold btn-lg">
+        <i class="fas fa-eye"></i>
+        View My Work
+    </a>
 
 </div>
 
+<div class="hero-stats" data-aos="fade-up" data-aos-delay="350">
 
+    <div class="hero-stat">
+        <h3><span class="counter" data-target="{{ project_count }}">{{ project_count }}</span>+</h3>
+        <p>Projects Built</p>
+    </div>
 
-<div class="hero-buttons">
+    <div class="hero-stat">
+        <h3><span class="counter" data-target="7">7</span>+</h3>
+        <p>Technologies</p>
+    </div>
 
-
-<a href="{% url 'contact' %}"
-
-class="btn btn-gold btn-lg">
-
-<i class="fas fa-paper-plane"></i>
-
-Hire Me
-
-</a>
-
-
-
-<a href="{% static 'cv/Rana_Umar_CV.pdf' %}"
-
-download
-
-class="btn btn-outline-gold btn-lg">
-
-<i class="fas fa-download"></i>
-
-Download CV
-
-</a>
-
+    <div class="hero-stat">
+        <h3><span class="counter" data-target="100">100</span>%</h3>
+        <p>Responsive Builds</p>
+    </div>
 
 </div>
 
+<div class="hero-social" data-aos="fade-up" data-aos-delay="400">
 
+    <a href="https://github.com/uiux6006-star" target="_blank" rel="noopener" aria-label="GitHub">
+        <i class="fab fa-github"></i>
+    </a>
 
+    <a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <i class="fab fa-linkedin-in"></i>
+    </a>
 
-<div class="hero-social">
+    <a href="https://wa.me/923238144826" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-
-<a href="https://github.com/uiux6006-star" target="_blank">
-
-<i class="fab fa-github"></i>
-
-</a>
-
-
-
-<a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank">
-
-<i class="fab fa-linkedin"></i>
-
-</a>
-
-
-
-<a href="https://wa.me/923238144826" target="_blank">
-
-<i class="fab fa-whatsapp"></i>
-
-</a>
-
-
-
-<a href="mailto:uiux6006@gmail.com">
-
-<i class="fas fa-envelope"></i>
-
-</a>
-
+    <a href="mailto:uiux6006@gmail.com" aria-label="Email">
+        <i class="fas fa-envelope"></i>
+    </a>
 
 </div>
 
-
 </div>
-
-
-
 
 
 <!-- RIGHT -->
 
+<div class="col-lg-5">
 
-<div class="col-lg-5 text-center"
+<div class="hero-visual" data-aos="zoom-in" data-aos-delay="200">
 
-data-aos="fade-left">
+    <div class="hero-ring"></div>
 
+    <div class="hero-photo">
+        <img src="{% static 'images/portfolio.jpg' %}" alt="Rana Umar">
+    </div>
 
-<div class="hero-image">
+    <div class="float-card card-1" data-depth="24">
+        <i class="fab fa-python"></i>
+        <div>
+            <strong>Python</strong>
+            <small>Backend logic</small>
+        </div>
+    </div>
 
+    <div class="float-card card-2" data-depth="-18">
+        <i class="fas fa-layer-group"></i>
+        <div>
+            <strong>Django</strong>
+            <small>Web apps</small>
+        </div>
+    </div>
 
-<img src="{% static 'images/portfolio.jpg' %}"
+    <div class="float-card card-3" data-depth="14">
+        <i class="fas fa-wand-magic-sparkles"></i>
+        <div>
+            <strong>UI / UX</strong>
+            <small>Pixel perfect</small>
+        </div>
+    </div>
 
-alt="Rana Umar"
+</div>
 
-class="img-fluid">
+</div>
 
+</div>
 
 </div>
 
 
+<!-- Tech marquee -->
+
+<div class="tech-marquee" aria-label="Technologies I use">
+    <div class="marquee-track">
+        {% for _ in "12" %}
+        <span><i class="fab fa-html5"></i> HTML5</span>
+        <span><i class="fab fa-css3-alt"></i> CSS3</span>
+        <span><i class="fab fa-bootstrap"></i> Bootstrap</span>
+        <span><i class="fab fa-js"></i> JavaScript</span>
+        <span><i class="fab fa-python"></i> Python</span>
+        <span><i class="fas fa-layer-group"></i> Django</span>
+        <span><i class="fas fa-database"></i> SQL</span>
+        <span><i class="fab fa-git-alt"></i> Git</span>
+        {% endfor %}
+    </div>
 </div>
 
 
-</div>
-
-
-
-
-
-
-<div class="scroll-down">
-
-<a href="#about">
-
-<i class="fas fa-angle-double-down"></i>
-
+<a href="#services" class="scroll-indicator" aria-label="Scroll to services">
+    <span class="mouse"><span class="wheel"></span></span>
 </a>
-
-</div>
-
-
-
-</div>
 
 </section>
 
 
-<section class="py-5">
+<!--=================================
+        SERVICES FOR CLIENTS
+==================================-->
+
+<section class="home-section" id="services">
 
 <div class="container">
 
-
-<div class="text-center mb-5">
-
-<h5 class="text-warning">
-FEATURED PROJECTS
-</h5>
-
-
-<h2 class="fw-bold">
-My Latest Work
-</h2>
-
-
+<div class="section-heading text-center" data-aos="fade-up">
+    <span class="section-badge">
+        <i class="fas fa-briefcase"></i>
+        WHAT I CAN BUILD FOR YOU
+    </span>
+    <h2>Websites That <span>Grow Your Business</span></h2>
+    <p>
+        Whether you're launching a brand, selling online or managing
+        your operations, I'll build the right solution for you.
+    </p>
 </div>
 
+<div class="row g-4 mt-4">
 
+    <div class="col-lg-3 col-md-6" data-aos="fade-up">
+        <div class="offer-card">
+            <div class="offer-icon"><i class="fas fa-store"></i></div>
+            <h4>Business Websites</h4>
+            <p>A professional online presence that builds trust and brings enquiries for your shop, brand or service.</p>
+            <ul>
+                <li>Mobile-friendly design</li>
+                <li>WhatsApp &amp; contact forms</li>
+                <li>Google-ready SEO basics</li>
+            </ul>
+        </div>
+    </div>
 
-<div class="row g-4">
+    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="offer-card">
+            <div class="offer-icon"><i class="fas fa-cart-shopping"></i></div>
+            <h4>Online Stores</h4>
+            <p>Show your products beautifully and let customers browse and order with ease.</p>
+            <ul>
+                <li>Product catalogue</li>
+                <li>Cart &amp; order flow</li>
+                <li>Easy admin panel</li>
+            </ul>
+        </div>
+    </div>
 
+    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="offer-card">
+            <div class="offer-icon"><i class="fas fa-gears"></i></div>
+            <h4>Custom Web Apps</h4>
+            <p>Management systems for schools, clinics, inventory or anything your business runs on.</p>
+            <ul>
+                <li>Built with Django</li>
+                <li>Secure logins &amp; roles</li>
+                <li>Reports &amp; dashboards</li>
+            </ul>
+        </div>
+    </div>
 
-{% for project in featured_projects %}
-
-
-
-<div class="col-lg-4">
-
-
-<div class="card project-card h-100">
-
-
-
-<img src="{{project.image.url}}"
-class="card-img-top">
-
-
-
-<div class="card-body">
-
-
-
-<h4 class="text-warning">
-
-{{project.title}}
-
-</h4>
-
-
-
-<p>
-
-{{project.description|truncatewords:15}}
-
-</p>
-
-
-
-<a href="{% url 'project_detail' project.slug %}"
-
-class="btn btn-warning">
-
-View Details
-
-</a>
-
-
-
-</div>
-
-
-</div>
-
+    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="offer-card">
+            <div class="offer-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+            <h4>Redesign &amp; Fixes</h4>
+            <p>Give an old or slow website a modern look, better speed and a smooth mobile experience.</p>
+            <ul>
+                <li>Modern UI refresh</li>
+                <li>Speed improvements</li>
+                <li>Bug fixes</li>
+            </ul>
+        </div>
+    </div>
 
 </div>
-
-
-
-{% empty %}
-
-
-<h3 class="text-warning text-center">
-
-No Featured Projects
-
-</h3>
-
-
-
-{% endfor %}
-
-
-
-</div>
-
 
 </div>
 
@@ -333,19 +267,356 @@ No Featured Projects
 
 
 
+<!--=================================
+        FEATURED WORK
+==================================-->
 
-<!-- Back To Top Button -->
+<section class="home-section home-section-alt" id="featured">
 
+<div class="container">
 
-<div id="backToTop">
+<div class="section-heading text-center" data-aos="fade-up">
+    <span class="section-badge">
+        <i class="fas fa-star"></i>
+        FEATURED WORK
+    </span>
+    <h2>Recent <span>Projects</span></h2>
+    <p>A few things I've designed and built. Open any project to see the details.</p>
+</div>
 
+<div class="row g-4 mt-4">
 
-<i class="fas fa-arrow-up"></i>
+{% for project in featured_projects %}
 
+<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{% widthratio forloop.counter0 1 100 %}">
+
+    <article class="work-card">
+
+        <a href="{% url 'project_detail' project.slug %}" class="work-thumb">
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
+            <span class="work-category">{{ project.get_category_display }}</span>
+        </a>
+
+        <div class="work-body">
+
+            <h4>
+                <a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a>
+            </h4>
+
+            <p>{{ project.description|truncatewords:16 }}</p>
+
+            <div class="project-tech">
+                {% for tech in project.tech_list %}
+                <span>{{ tech }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="work-links">
+                <a href="{% url 'project_detail' project.slug %}">
+                    View Details <i class="fas fa-arrow-right"></i>
+                </a>
+                {% if project.live_demo %}
+                <a href="{{ project.live_demo }}" target="_blank" rel="noopener">
+                    Live Demo <i class="fas fa-arrow-up-right-from-square"></i>
+                </a>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </article>
 
 </div>
 
+{% empty %}
 
+<p class="text-center text-muted">Projects are coming soon.</p>
+
+{% endfor %}
+
+</div>
+
+<div class="text-center mt-5" data-aos="fade-up">
+    <a href="{% url 'projects' %}" class="btn btn-outline-gold btn-lg">
+        See All Projects
+        <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!--=================================
+        PROCESS
+==================================-->
+
+<section class="home-section">
+
+<div class="container">
+
+<div class="section-heading text-center" data-aos="fade-up">
+    <span class="section-badge">
+        <i class="fas fa-route"></i>
+        HOW IT WORKS
+    </span>
+    <h2>From Idea To <span>Launch</span></h2>
+    <p>A simple, transparent process, so you always know what's happening with your project.</p>
+</div>
+
+<div class="row g-4 mt-4">
+
+    <div class="col-lg-3 col-md-6" data-aos="fade-up">
+        <div class="step-card">
+            <span class="step-number">01</span>
+            <h4>Free Discussion</h4>
+            <p>Tell me about your business and goals. We agree on features, timeline and budget.</p>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="step-card">
+            <span class="step-number">02</span>
+            <h4>Design</h4>
+            <p>I design the look and layout, and you give feedback before any code is written.</p>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="step-card">
+            <span class="step-number">03</span>
+            <h4>Development</h4>
+            <p>I build your website with regular progress updates so you can see it come to life.</p>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="step-card">
+            <span class="step-number">04</span>
+            <h4>Launch &amp; Support</h4>
+            <p>Your site goes live, and I help you with questions and small fixes after launch.</p>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!--=================================
+        WHY WORK WITH ME
+==================================-->
+
+<section class="home-section home-section-alt">
+
+<div class="container">
+
+<div class="row align-items-center g-5">
+
+    <div class="col-lg-5" data-aos="fade-right">
+        <span class="section-badge">
+            <i class="fas fa-handshake"></i>
+            WHY WORK WITH ME
+        </span>
+        <h2 class="why-title">A Developer Who Cares About <span>Your Results</span></h2>
+        <p class="why-text">
+            You get one person who designs, builds and supports your
+            website: clear communication, honest advice and work you
+            can be proud to show your customers.
+        </p>
+        <a href="{% url 'contact' %}" class="btn btn-gold btn-lg mt-3">
+            Get a Free Quote
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="row g-4">
+
+            <div class="col-sm-6" data-aos="fade-up">
+                <div class="benefit">
+                    <i class="fas fa-mobile-screen-button"></i>
+                    <h5>Mobile-First</h5>
+                    <p>Looks and works great on every phone, tablet and laptop.</p>
+                </div>
+            </div>
+
+            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="benefit">
+                    <i class="fas fa-bolt"></i>
+                    <h5>Fast Loading</h5>
+                    <p>Optimised pages so visitors don't leave before they see you.</p>
+                </div>
+            </div>
+
+            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="benefit">
+                    <i class="fas fa-comments"></i>
+                    <h5>Clear Communication</h5>
+                    <p>Updates on WhatsApp or email, in English or Urdu.</p>
+                </div>
+            </div>
+
+            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="benefit">
+                    <i class="fas fa-sliders"></i>
+                    <h5>Easy To Manage</h5>
+                    <p>An admin panel so you can update content without calling a developer.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+{% if testimonials %}
+
+<!--=================================
+        TESTIMONIALS
+==================================-->
+
+<section class="home-section">
+
+<div class="container">
+
+<div class="section-heading text-center" data-aos="fade-up">
+    <span class="section-badge">
+        <i class="fas fa-quote-left"></i>
+        CLIENT FEEDBACK
+    </span>
+    <h2>What Clients <span>Say</span></h2>
+</div>
+
+<div class="row g-4 mt-4 justify-content-center">
+
+    {% for testimonial in testimonials %}
+
+    <div class="col-lg-4 col-md-6" data-aos="fade-up">
+        <figure class="testimonial-card">
+            <div class="testimonial-stars" aria-label="{{ testimonial.rating }} out of 5 stars">
+                {% for i in "12345" %}
+                <i class="fa{% if forloop.counter <= testimonial.rating %}s{% else %}r{% endif %} fa-star"></i>
+                {% endfor %}
+            </div>
+            <blockquote>{{ testimonial.message }}</blockquote>
+            <figcaption>
+                <span class="testimonial-avatar">{{ testimonial.name|first|upper }}</span>
+                <span>
+                    <strong>{{ testimonial.name }}</strong>
+                    {% if testimonial.role %}<small>{{ testimonial.role }}</small>{% endif %}
+                </span>
+            </figcaption>
+        </figure>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+</div>
+
+</section>
+
+{% endif %}
+
+
+
+<!--=================================
+        FAQ
+==================================-->
+
+<section class="home-section home-section-alt">
+
+<div class="container">
+
+<div class="section-heading text-center" data-aos="fade-up">
+    <span class="section-badge">
+        <i class="fas fa-circle-question"></i>
+        FAQ
+    </span>
+    <h2>Questions <span>Clients Ask</span></h2>
+</div>
+
+<div class="faq-list mt-4" data-aos="fade-up">
+
+    <details class="faq-item" open>
+        <summary>How much does a website cost?</summary>
+        <p>It depends on what you need: pages, features and design. Share your idea and I'll send you a clear quote with no hidden charges.</p>
+    </details>
+
+    <details class="faq-item">
+        <summary>How long will my website take?</summary>
+        <p>A simple business website is much quicker than a custom web app. After our first discussion I'll give you a realistic timeline and keep you updated throughout.</p>
+    </details>
+
+    <details class="faq-item">
+        <summary>Will my website work on mobile phones?</summary>
+        <p>Yes. Every site I build is fully responsive and tested on phones, tablets and desktops.</p>
+    </details>
+
+    <details class="faq-item">
+        <summary>Can I update the website myself?</summary>
+        <p>Yes. For dynamic sites I include an easy admin panel, so you can change text, images and products yourself.</p>
+    </details>
+
+    <details class="faq-item">
+        <summary>Do you help after the website is launched?</summary>
+        <p>Yes. I help you get the site live and I'm available for questions, fixes and future updates.</p>
+    </details>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!--=================================
+        FINAL CTA
+==================================-->
+
+<section class="home-section">
+
+<div class="container">
+
+<div class="final-cta text-center" data-aos="zoom-in">
+
+    <h2>Ready To Get <span>More Customers Online?</span></h2>
+
+    <p>
+        Tell me about your project. The first consultation is free
+        and there's no obligation.
+    </p>
+
+    <div class="final-cta-buttons">
+        <a href="{% url 'contact' %}" class="btn btn-gold btn-lg">
+            Start Your Project
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project." target="_blank" rel="noopener" class="btn btn-outline-gold btn-lg">
+            <i class="fab fa-whatsapp"></i>
+            Chat on WhatsApp
+        </a>
+    </div>
+
+</div>
+
+</div>
+
+</section>
 
 
 {% endblock %}

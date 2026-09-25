@@ -8,14 +8,6 @@ Contact | Rana Umar Developer
 {% block content %}
 
 
-<!-- CUSTOM CURSOR -->
-
-<div class="cursor-glow"></div>
-<div class="cursor-dot"></div>
-<div class="cursor-outline"></div>
-
-
-
 <!-- ================= PREMIUM CONTACT HEADER START ================= -->
 
 
@@ -107,8 +99,7 @@ Let's Create Something <span>Amazing</span>
 
 <p>
 
-I am available for freelance projects,
-internships and collaboration opportunities.
+I am available for freelance projects and long-term collaborations.
 Let's discuss your ideas and turn them into
 professional digital solutions.
 
@@ -129,17 +120,19 @@ build your online presence.
 
 
 
-<a href="mailto:uiux6006@gmail.com"
-
-class="btn btn-gold mt-3">
-
-
-<i class="fas fa-envelope"></i>
-
-Email Me
-
-
+<div class="d-flex flex-wrap gap-3 mt-3">
+<a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project."
+target="_blank" rel="noopener"
+class="btn btn-gold">
+<i class="fab fa-whatsapp"></i>
+WhatsApp Me
 </a>
+<a href="mailto:uiux6006@gmail.com"
+class="btn btn-outline-gold">
+<i class="fas fa-envelope"></i>
+Email Me
+</a>
+</div>
 
 
 
@@ -374,125 +367,60 @@ Send Me A <span>Message</span>
 
 
 
-<form method="POST" action="{% url 'contact' %}">
-
+<form method="POST" action="{% url 'contact' %}" novalidate>
 
 {% csrf_token %}
 
+{% if form.errors %}
+<div class="form-error">
+    <i class="fas fa-circle-exclamation me-2"></i>
+    Please check the highlighted fields and try again.
+</div>
+{% endif %}
 
+<!-- Honeypot (hidden from people) -->
+<div class="hp-field" aria-hidden="true">
+    <label for="id_website">Website</label>
+    <input type="text" name="website" id="id_website" tabindex="-1" autocomplete="off">
+</div>
 
 <div class="row">
 
+<div class="col-md-6 mb-4">
+{{ form.name }}
+{% for error in form.name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+</div>
 
 <div class="col-md-6 mb-4">
-
-
-<input
-
-type="text"
-
-class="form-control"
-
-name="name"
-
-placeholder="Your Name"
-
-required>
-
-
+{{ form.email }}
+{% for error in form.email.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
 </div>
-
-
-
 
 <div class="col-md-6 mb-4">
-
-
-<input
-
-type="email"
-
-class="form-control"
-
-name="email"
-
-placeholder="Your Email"
-
-required>
-
-
+{{ form.project_type }}
 </div>
 
-
+<div class="col-md-6 mb-4">
+{{ form.budget }}
 </div>
 
-
-
-
-
+</div>
 
 <div class="mb-4">
-
-
-<input
-
-type="text"
-
-class="form-control"
-
-name="subject"
-
-placeholder="Subject"
-
-required>
-
-
+{{ form.subject }}
+{% for error in form.subject.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
 </div>
-
-
-
-
-
-
 
 <div class="mb-4">
-
-
-<textarea
-
-class="form-control"
-
-name="message"
-
-rows="6"
-
-placeholder="Your Message"
-
-required></textarea>
-
-
+{{ form.message }}
+{% for error in form.message.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
 </div>
-
-
-
-
-
-
 
 <button type="submit"
-
 class="btn btn-gold btn-lg">
-
-
 <i class="fas fa-paper-plane"></i>
-
 Send Message
-
-
 </button>
-
-
-
 
 </form>
 
@@ -672,17 +600,6 @@ View My Work
 </div>
 
 </section>
-
-
-<!-- Back To Top Button -->
-
-
-<div id="backToTop">
-
-<i class="fas fa-arrow-up"></i>
-
-</div>
-
 
 
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ContactMessage, Project
+from .models import ContactMessage, Project, Testimonial
 
 
 # ================= CONTACT ADMIN =================
@@ -10,6 +10,8 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "email",
+        "project_type",
+        "budget",
         "subject",
         "created_at",
     )
@@ -21,6 +23,8 @@ class ContactMessageAdmin(admin.ModelAdmin):
     )
 
     list_filter = (
+        "project_type",
+        "budget",
         "created_at",
     )
 
@@ -72,4 +76,22 @@ class ProjectAdmin(admin.ModelAdmin):
 
     ordering = (
         "-created_at",
+    )
+
+
+# ================= TESTIMONIAL ADMIN =================
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "name",
+        "role",
+        "rating",
+        "is_published",
+        "created_at",
+    )
+
+    list_editable = (
+        "is_published",
     )
