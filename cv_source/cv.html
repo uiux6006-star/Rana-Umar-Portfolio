@@ -17,13 +17,10 @@
   body { font-family: Inter, Segoe UI, Arial, sans-serif; color: var(--text); font-size: 8.1pt; line-height: 1.45;
          font-weight: 300; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   a { color: inherit; text-decoration: none; }
-  .foil { color: #e4c477; text-shadow: 0 0 6mm rgba(212,175,90,.25); }
+  .foil { color: #e4c477; }
 
   .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; padding: 11mm 11mm 9mm;
-          background:
-            radial-gradient(90mm 70mm at 100% 0%, rgba(212,175,90,.16), transparent 70%),
-            radial-gradient(80mm 80mm at 0% 100%, rgba(212,175,90,.09), transparent 70%),
-            var(--bg); }
+          background: var(--bg) url(bg.jpg) center / 100% 100% no-repeat; }
   /* Double gold frame */
   .page::before, .page::after { content: ""; position: absolute; pointer-events: none; }
   .page::before { inset: 4.5mm; border: .35mm solid var(--line); }
@@ -101,7 +98,7 @@
   .featured { display: grid; grid-template-columns: 50mm 1fr; border: .3mm solid var(--gold-dim); background: var(--panel);
               position: relative; overflow: hidden; }
   .featured::before { content: "CLIENT WORK"; position: absolute; top: 3.6mm; right: -10.5mm; transform: rotate(45deg);
-                      background: var(--foil); color: #1b1408; font-size: 5.2pt; font-weight: 600; letter-spacing: .15em;
+                      background: #e0bf6e; color: #1b1408; font-size: 5.2pt; font-weight: 600; letter-spacing: .15em;
                       padding: .6mm 11mm; }
   .featured img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block;
                   border-right: .3mm solid var(--gold-dim); }
@@ -129,7 +126,7 @@
                 font-weight: 500; margin-bottom: 1.4mm; }
   .chips { display: flex; flex-wrap: wrap; gap: 1.2mm; }
   .chips span { font-size: 7pt; padding: .5mm 2.2mm; background: var(--panel-2); border: .2mm solid var(--line); color: var(--text); }
-  .chips span.hi { background: var(--foil); color: #1b1408; border-color: transparent; font-weight: 600; }
+  .chips span.hi { background: #e0bf6e; color: #1b1408; border-color: transparent; font-weight: 600; }
   .edu .tl-item { margin-bottom: 3mm; }
   .edu .tl-head strong { font-size: 8.2pt; }
   .langs li { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 1.2mm 0;
