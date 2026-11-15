@@ -38,11 +38,11 @@ Home | Rana Umar Developer
 
 <span class="hero-badge" data-aos="fade-up">
     <span class="status-dot"></span>
-    Available for freelance work
+    AVAILABLE FOR FREELANCE WORK
 </span>
 
 <h5 class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
-    Hello, I'm
+    HELLO, I'M
 </h5>
 
 <h1 class="hero-title" data-aos="fade-up" data-aos-delay="150">
@@ -119,37 +119,44 @@ Home | Rana Umar Developer
 
 <div class="col-lg-5">
 
-<div class="hero-visual" data-aos="zoom-in" data-aos-delay="200">
+<div class="robot-stage" data-aos="zoom-in" data-aos-delay="200">
 
-    <div class="hero-ring"></div>
+    <div class="stage-ring ring-one"></div>
+    <div class="stage-ring ring-two"></div>
+    <div class="stage-orbit"></div>
 
-    <div class="hero-photo">
-        <img src="{% static 'images/portfolio.jpg' %}" alt="Rana Umar">
-    </div>
+    <div class="robot-label"><span class="label-line"></span> DIGITAL CREATOR</div>
 
-    <div class="float-card card-1" data-depth="24">
-        <i class="fab fa-python"></i>
-        <div>
-            <strong>Python</strong>
-            <small>Backend logic</small>
+    <!-- Built with HTML/CSS only, so it always shows (no 3D library needed). -->
+    <div class="robot-figure" id="robotFigure" role="img" aria-label="Animated robot mascot">
+        <div class="robot-aura"></div>
+        <div class="robot-shadow"></div>
+        <div class="robot-antenna"><i></i></div>
+        <div class="robot-head">
+            <div class="ear ear-left"></div>
+            <div class="ear ear-right"></div>
+            <div class="face-plate"><i class="eye eye-left"></i><i class="eye eye-right"></i><span class="mouth"></span></div>
+            <div class="head-highlight"></div>
         </div>
+        <div class="robot-neck"></div>
+        <div class="robot-body">
+            <div class="shoulder shoulder-left"></div>
+            <div class="shoulder shoulder-right"></div>
+            <div class="chest-glass"><span>RUD</span><i></i><i></i><i></i></div>
+            <div class="body-line"></div>
+        </div>
+        <div class="robot-arm arm-left"><div class="upper-arm"></div><div class="elbow"></div><div class="lower-arm"></div><div class="hand"><i></i><i></i><i></i><b></b></div></div>
+        <div class="robot-arm arm-right"><div class="upper-arm"></div><div class="elbow"></div><div class="lower-arm"></div><div class="hand"><i></i><i></i><i></i><b></b></div></div>
+        <div class="robot-waist"></div>
+        <div class="robot-leg leg-left"><div class="knee"></div><div class="boot"></div></div>
+        <div class="robot-leg leg-right"><div class="knee"></div><div class="boot"></div></div>
+        <div class="code-holo">&lt;/&gt;</div>
     </div>
 
-    <div class="float-card card-2" data-depth="-18">
-        <i class="fas fa-layer-group"></i>
-        <div>
-            <strong>Django</strong>
-            <small>Web apps</small>
-        </div>
-    </div>
+    <div class="robot-label label-bottom"><span class="caption-pulse"></span> YOUR IDEAS, BUILT FOR THE WEB</div>
 
-    <div class="float-card card-3" data-depth="14">
-        <i class="fas fa-wand-magic-sparkles"></i>
-        <div>
-            <strong>UI / UX</strong>
-            <small>Pixel perfect</small>
-        </div>
-    </div>
+    <div class="float-chip chip-one">PYTHON <b>✦</b></div>
+    <div class="float-chip chip-two">DJANGO <b>✦</b></div>
 
 </div>
 
@@ -525,6 +532,51 @@ Home | Rana Umar Developer
 
 </div>
 
+<p class="text-center mt-5 mb-0">
+    <a href="{% url 'leave_review' %}" class="btn btn-outline-gold">
+        <i class="fas fa-star"></i>
+        Worked with me? Leave a review
+    </a>
+</p>
+
+</div>
+
+</section>
+
+{% endif %}
+
+
+
+{% if latest_posts %}
+
+<!--=================================
+        LATEST ARTICLES
+==================================-->
+
+<section class="home-section home-section-alt">
+
+<div class="container">
+
+<div class="section-heading text-center" data-aos="fade-up">
+    <span class="section-badge">
+        <i class="fas fa-pen-nib"></i>
+        FROM THE BLOG
+    </span>
+    <h2>Latest <span>Articles</span></h2>
+</div>
+
+<div class="row g-4 mt-4">
+    {% for post in latest_posts %}
+    <div class="col-lg-4 col-md-6" data-aos="fade-up">
+        {% include "partials/post_card.html" %}
+    </div>
+    {% endfor %}
+</div>
+
+<p class="text-center mt-5 mb-0">
+    <a href="{% url 'blog' %}" class="btn btn-outline-gold">All Articles <i class="fas fa-arrow-right"></i></a>
+</p>
+
 </div>
 
 </section>
@@ -611,6 +663,11 @@ Home | Rana Umar Developer
             Chat on WhatsApp
         </a>
     </div>
+
+    <p class="final-cta-estimate">
+        Not sure about the budget?
+        <a href="{% url 'estimate' %}">Get an instant price estimate <i class="fas fa-arrow-right"></i></a>
+    </p>
 
 </div>
 

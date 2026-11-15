@@ -56,8 +56,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
 
     'base',
+    'appearance',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +84,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'appearance.context_processors.site_theme',
             ],
         },
     },
@@ -125,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Karachi'
 
 USE_I18N = True
 
@@ -148,6 +151,40 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
+# ================= EMAIL =================
+# Fill EMAIL_HOST_USER / EMAIL_HOST_PASSWORD in .env to send real emails.
+# For Gmail, EMAIL_HOST_PASSWORD is a 16-letter "App Password", not your
+# normal password. Without them, emails are printed in the terminal instead.
+
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_TIMEOUT = 10
+
+EMAIL_BACKEND = (
+    "django.core.mail.backends.smtp.EmailBackend"
+    if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD
+    else "django.core.mail.backends.console.EmailBackend"
+)
+
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DEFAULT_FROM_EMAIL",
+    f"Rana Umar <{EMAIL_HOST_USER}>" if EMAIL_HOST_USER else "webmaster@localhost",
+)
+
+# Where new enquiries and reviews are sent (comma separated).
+NOTIFY_EMAILS = [
+    email.strip()
+    for email in os.environ.get("NOTIFY_EMAILS", EMAIL_HOST_USER).split(",")
+    if email.strip()
+]
+
+OWNER_NAME = "Rana Umar"
+OWNER_WHATSAPP = "+92 323 8144826"
+
+
 # ================= PRODUCTION SECURITY =================
 
 if not DEBUG:
@@ -160,20 +197,111 @@ if not DEBUG:
 
 
 
+# ================= ADMIN DASHBOARD (Jazzmin) =================
+
 JAZZMIN_SETTINGS = {
 
-    "site_title": "Rana Umar Admin",
+    "site_title": "Rana Umar · Studio",
 
-    "site_header": "Rana Umar Developer",
+    "site_header": "RANA UMAR",
 
-    "site_brand": "Portfolio Dashboard",
+    "site_brand": "RUD Studio",
 
-    "welcome_sign": "Welcome Umar",
+    "site_logo": "images/logo-rud-mark.jpg",
 
-    "copyright": "Rana Umar © 2026",
+    "site_logo_classes": "rd-logo",
+
+    "site_icon": "images/favicon-rud.png",
+
+    "login_logo": "images/logo-rud.jpg",
+
+    "welcome_sign": "Sign in to your studio",
+
+    "copyright": "Rana Umar",
+
+    "search_model": ["base.ContactMessage", "base.Project"],
+
+    "user_avatar": None,
+
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin:index"},
+        {"name": "Leads", "url": "admin:base_contactmessage_changelist"},
+        {"name": "Themes", "url": "admin:theme_customizer"},
+        {"name": "View website", "url": "home", "new_window": True},
+    ],
+
+    "usermenu_links": [
+        {"name": "View website", "url": "home", "new_window": True, "icon": "fas fa-globe"},
+    ],
 
     "show_sidebar": True,
 
     "navigation_expanded": True,
 
+    "hide_apps": [],
+
+    "order_with_respect_to": [
+        "base",
+        "base.ContactMessage",
+        "base.Project",
+        "base.Post",
+        "base.Testimonial",
+        "appearance",
+        "auth",
+    ],
+
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "base.ContactMessage": "fas fa-inbox",
+        "base.Project": "fas fa-briefcase",
+        "base.Post": "fas fa-pen-nib",
+        "base.Testimonial": "fas fa-star",
+        "appearance": "fas fa-palette",
+        "appearance.SiteTheme": "fas fa-palette",
+    },
+
+    "default_icon_parents": "fas fa-folder",
+
+    "default_icon_children": "fas fa-circle",
+
+    "related_modal_active": True,
+
+    "custom_css": "admin-theme/dashboard.css",
+
+    "custom_js": "admin-theme/dashboard.js",
+
+    "use_google_fonts_cdn": False,
+
+    "show_ui_builder": False,
+
+    "changeform_format": "horizontal_tabs",
+
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+    },
+
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "default",
+    "default_theme_mode": "dark",
+    "navbar": "navbar-dark",
+    "no_navbar_border": True,
+    "navbar_fixed": True,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_flat_style": True,
+    "sidebar_nav_child_indent": True,
+    "accent": "accent-info",
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
 }

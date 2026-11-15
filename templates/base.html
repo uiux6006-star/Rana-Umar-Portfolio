@@ -1,13 +1,36 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark" data-site-theme="{{ site_theme.slug|default:'original' }}">
 
 <head>
 
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Apply saved / system theme before the page paints (no flash). -->
+    <script>
+        (function () {
+            var theme = "dark";
+            try {
+                var saved = localStorage.getItem("theme");
+                if (saved === "light" || saved === "dark") {
+                    theme = saved;
+                } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+                    theme = "light";
+                }
+            } catch (e) {}
+            document.documentElement.setAttribute("data-bs-theme", theme);
+
+            // The intro loader plays once per visit, not on every page.
+            try {
+                if (sessionStorage.getItem("rl-seen")) {
+                    document.documentElement.classList.add("rl-skip");
+                }
+            } catch (e) {}
+        })();
+    </script>
 
 
 <title>
@@ -21,37 +44,71 @@ Rana Umar | Full Stack Developer
 
     <link rel="icon"
           type="image/png"
-          href="{% static 'images/favicon.png' %}">
+          href="{% static 'images/favicon-rud.png' %}">
+
+    <link rel="apple-touch-icon" href="{% static 'images/logo-rud-mark.jpg' %}">
 
 
 
     <!-- SEO META -->
 
     <meta name="description"
-          content="Rana Umar is a Full Stack Developer specializing in Python, Django, modern websites and professional web applications.">
-
-
-    <meta name="keywords"
-          content="Rana Umar, Full Stack Developer, Python Developer, Django Developer, Web Developer, UI Designer">
-
+          content="{% block meta_description %}Rana Umar is a Full Stack Developer in Pakistan building fast business websites, online stores and custom Django web apps.{% endblock %}">
 
     <meta name="author"
           content="Rana Umar">
 
+    <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+
+    <meta name="theme-color" content="{{ site_theme.bg|default:'#070b16' }}" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f7fb" media="(prefers-color-scheme: light)">
 
 
-    <!-- OPEN GRAPH (Social Sharing) -->
+
+    <!-- OPEN GRAPH (WhatsApp / LinkedIn / Facebook previews) -->
+
+    <meta property="og:site_name" content="Rana Umar">
 
     <meta property="og:title"
-          content="Rana Umar | Full Stack Developer">
-
+          content="{% block og_title %}Rana Umar | Full Stack Developer{% endblock %}">
 
     <meta property="og:description"
-          content="Professional Django, Python and Full Stack Developer Portfolio.">
-
+          content="{% block og_description %}Business websites, online stores and custom web apps that bring you more customers.{% endblock %}">
 
     <meta property="og:type"
-          content="website">
+          content="{% block og_type %}website{% endblock %}">
+
+    <meta property="og:url"
+          content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+
+    <meta property="og:image"
+          content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo-rud.jpg' %}{% endblock %}">
+
+    <meta name="twitter:card" content="summary_large_image">
+
+
+
+    <!-- STRUCTURED DATA (helps Google understand who you are) -->
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rana Umar",
+        "jobTitle": "Full Stack Developer",
+        "url": "{{ request.scheme }}://{{ request.get_host }}/",
+        "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/pic1.jpg' %}",
+        "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo-rud-mark.jpg' %}",
+        "address": {"@type": "PostalAddress", "addressCountry": "PK"},
+        "sameAs": [
+            "https://github.com/uiux6006-star",
+            "https://www.linkedin.com/in/rana-umar-476b19409"
+        ],
+        "knowsAbout": ["Python", "Django", "Web Development", "E-commerce", "UI Design"]
+    }
+    </script>
+
+    {% block extra_head %}{% endblock %}
 
 
 
@@ -68,7 +125,7 @@ Rana Umar | Full Stack Developer
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600;1,700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 
 
@@ -78,113 +135,185 @@ Rana Umar | Full Stack Developer
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
+
+
+    <!-- Active theme from Appearance > Theme Customizer.
+         Rendered on the server, so the right colours are there on first paint. -->
+    {% if site_theme.font_query %}
+    <link href="https://fonts.googleapis.com/css2?{{ site_theme.font_query }}&display=swap" rel="stylesheet">
+    {% endif %}
+    {% if site_theme.css %}
+    <style id="site-theme">{{ site_theme.css|safe }}</style>
+    {% endif %}
 
 </head>
 
 
-<body>
+<body id="top">
+
+<!-- Scroll progress -->
+<div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+
+{% if site_theme.preview %}
+<!-- Theme preview bar (only visible to the admin who started the preview) -->
+<div class="theme-preview-bar" role="status">
+    <span class="theme-preview-label">
+        <i class="fas fa-palette"></i>
+        Previewing <strong>{{ site_theme.preview.name }}</strong>{% if site_theme.preview.accent %} with accent {{ site_theme.preview.accent }}{% endif %}
+        <small>Only you can see this.</small>
+    </span>
+    <span class="theme-preview-actions">
+        {% if not site_theme.preview.is_active %}
+        <form method="post" action="{% url 'admin:theme_apply' %}">
+            {% csrf_token %}
+            <input type="hidden" name="theme" value="{{ site_theme.slug }}">
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            {% if site_theme.preview.accent %}<input type="hidden" name="accent" value="{{ site_theme.preview.accent }}">{% endif %}
+            <button type="submit" class="btn-gold btn-sm">Apply this theme</button>
+        </form>
+        {% endif %}
+        <form method="post" action="{% url 'admin:theme_preview_exit' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{% url 'admin:theme_customizer' %}">
+            <button type="submit" class="btn-outline-gold btn-sm">Exit preview</button>
+        </form>
+    </span>
+</div>
+{% endif %}
 
 
 
-<div id="loader">
+<!-- ================= PRELOADER ================= -->
 
-    <div class="loader-inner">
-        <img src="{% static 'images/logo.png' %}" alt="" class="loader-logo">
-        <div class="loader-bar"><span></span></div>
+<div id="loader" class="rl" role="status" aria-live="polite" aria-label="Loading Rana Umar's portfolio">
+
+    <div class="rl-bg" aria-hidden="true"></div>
+
+    <div class="rl-core">
+
+        <div class="rl-emblem" aria-hidden="true">
+            <span class="rl-ring"></span>
+            <span class="rl-ring rl-ring-2"></span>
+            <span class="rl-orbit"><i></i></span>
+            <img src="{% static 'images/logo-rud-mark.jpg' %}" alt="" width="96" height="96">
+        </div>
+
+        <p class="rl-name" aria-hidden="true">
+            <span style="--i:0">R</span><span style="--i:1">A</span><span style="--i:2">N</span><span style="--i:3">A</span>
+            <span class="rl-space"></span>
+            <span style="--i:5">U</span><span style="--i:6">M</span><span style="--i:7">A</span><span style="--i:8">R</span>
+        </p>
+
+        <p class="rl-tag" aria-hidden="true">BUILD <b>•</b> CODE <b>•</b> INNOVATE</p>
+
+        <div class="rl-progress" aria-hidden="true"><span id="rlBar"></span></div>
+
+        <div class="rl-meta" aria-hidden="true">
+            <span>LOADING EXPERIENCE</span>
+            <span><span id="rlCount">0</span>%</span>
+        </div>
+
     </div>
+
+    <div class="rl-curtain" aria-hidden="true"></div>
 
 </div>
 
 <!-- ================= NAVBAR START ================= -->
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+{% with u=request.resolver_match.url_name %}
+<header class="site-nav" id="siteNav">
 
-    <div class="container">
+    <div class="sn-inner">
 
-        <a class="navbar-brand d-flex align-items-center" 
-   href="{% url 'home' %}">
+        <a class="sn-brand" href="{% url 'home' %}" aria-label="Rana Umar, home">
+            <span class="sn-logo">
+                <img src="{% static 'images/logo-rud-mark.jpg' %}" alt="" width="44" height="44">
+                <i class="sn-status" title="Available for new projects"></i>
+            </span>
+            <span class="sn-name">
+                RANA UMAR
+                <small>WEB DEVELOPER</small>
+            </span>
+        </a>
 
-    <img src="{% static 'images/logo.png' %}"
-         alt="Rana Umar Logo"
-         class="logo-img me-2">
+        <nav class="sn-links" aria-label="Main">
+            <span class="sn-indicator" aria-hidden="true"></span>
+            <a href="{% url 'home' %}" class="sn-link{% if u == 'home' %} is-active{% endif %}"{% if u == 'home' %} aria-current="page"{% endif %}>Home</a>
+            <a href="{% url 'about' %}" class="sn-link{% if u == 'about' %} is-active{% endif %}"{% if u == 'about' %} aria-current="page"{% endif %}>About</a>
+            <a href="{% url 'projects' %}" class="sn-link{% if u == 'projects' or u == 'project_detail' %} is-active{% endif %}"{% if u == 'projects' %} aria-current="page"{% endif %}>Projects</a>
+            <a href="{% url 'services' %}" class="sn-link{% if u == 'services' %} is-active{% endif %}"{% if u == 'services' %} aria-current="page"{% endif %}>Services</a>
+            <a href="{% url 'blog' %}" class="sn-link{% if u == 'blog' or u == 'post_detail' %} is-active{% endif %}"{% if u == 'blog' %} aria-current="page"{% endif %}>Blog</a>
+            <a href="{% url 'contact' %}" class="sn-link{% if u == 'contact' %} is-active{% endif %}"{% if u == 'contact' %} aria-current="page"{% endif %}>Contact</a>
+        </nav>
 
+        <div class="sn-actions">
 
-    <div>
+            <button class="theme-toggle sn-icon-btn"
+                    type="button"
+                    id="themeToggle"
+                    aria-label="Switch to light mode"
+                    title="Switch theme">
+                <i class="fas fa-sun icon-sun"></i>
+                <i class="fas fa-moon icon-moon"></i>
+            </button>
 
-        <h5 class="text-warning mb-0">
-            RANA UMAR
-        </h5>
+            <a href="{% url 'estimate' %}" class="sn-cta{% if u == 'estimate' %} is-active{% endif %}">
+                <span>Get Estimate</span>
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
 
-        <small class="text-white">
-            Full Stack Developer
-        </small>
-
-    </div>
-
-</a>
-
-
-        <button class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbar">
-
-            <span class="navbar-toggler-icon"></span>
-
-        </button>
-
-
-        <div class="collapse navbar-collapse" id="navbar">
-
-            <ul class="navbar-nav ms-auto">
-
-
-                <li class="nav-item">
-                 <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
-                    href="{% url 'home' %}">
-                    Home
-                 </a>
-                </li>
-
-                <li class="nav-item">
-    <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}"
-       href="{% url 'about' %}">
-        About
-    </a>
-</li>
-
-
-                <li class="nav-item">
-    <a class="nav-link {% if request.resolver_match.url_name == 'projects' %}active{% endif %}"
-       href="{% url 'projects' %}">
-        Projects
-    </a>
-</li>
-
-
-                <li class="nav-item">
-    <a class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}"
-       href="{% url 'services' %}">
-        Services
-    </a>
-</li>
-
-
-              <li class="nav-item">
-    <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}"
-       href="{% url 'contact' %}">
-        Contact
-    </a>
-</li>
-
-
-            </ul>
+            <button class="sn-burger"
+                    type="button"
+                    id="snBurger"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                    aria-controls="snMenu">
+                <span></span><span></span>
+            </button>
 
         </div>
 
     </div>
 
-</nav>
+</header>
+
+
+<!-- Mobile / tablet full-screen menu -->
+<div class="sn-menu" id="snMenu" hidden>
+
+    <div class="sn-menu-inner">
+
+        <p class="sn-menu-eyebrow">MENU</p>
+
+        <nav class="sn-menu-links" aria-label="Mobile">
+            <a href="{% url 'home' %}"{% if u == 'home' %} class="is-active" aria-current="page"{% endif %}><small>01</small>Home</a>
+            <a href="{% url 'about' %}"{% if u == 'about' %} class="is-active" aria-current="page"{% endif %}><small>02</small>About</a>
+            <a href="{% url 'projects' %}"{% if u == 'projects' or u == 'project_detail' %} class="is-active"{% endif %}><small>03</small>Projects</a>
+            <a href="{% url 'services' %}"{% if u == 'services' %} class="is-active" aria-current="page"{% endif %}><small>04</small>Services</a>
+            <a href="{% url 'blog' %}"{% if u == 'blog' or u == 'post_detail' %} class="is-active"{% endif %}><small>05</small>Blog</a>
+            <a href="{% url 'contact' %}"{% if u == 'contact' %} class="is-active" aria-current="page"{% endif %}><small>06</small>Contact</a>
+        </nav>
+
+        <a href="{% url 'estimate' %}" class="sn-menu-cta">
+            Get a free price estimate
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
+
+        <div class="sn-menu-foot">
+            <a href="mailto:uiux6006@gmail.com">uiux6006@gmail.com</a>
+            <span class="sn-menu-social">
+                <a href="https://github.com/uiux6006-star" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://wa.me/923238144826" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </span>
+        </div>
+
+    </div>
+
+</div>
+{% endwith %}
 
 <!-- ================= NAVBAR END ================= -->
 
@@ -201,199 +330,120 @@ Rana Umar | Full Stack Developer
         PREMIUM FOOTER START
 =====================================-->
 
-<footer class="premium-footer">
+<footer class="site-footer">
+
+    <div class="sf-glow" aria-hidden="true"></div>
+
+    <div class="container">
+
+        <!-- Call to action -->
+        <section class="sf-cta" aria-labelledby="sf-cta-title">
+
+            <div>
+                <p class="sf-eyebrow"><span class="sf-dot"></span> HAVE A PROJECT IN MIND?</p>
+                <h2 id="sf-cta-title">Let's build something <span>remarkable.</span></h2>
+            </div>
+
+            <div class="sf-cta-side">
+                <div class="sf-cta-buttons">
+                    <a href="{% url 'contact' %}" class="sf-btn sf-btn-primary">
+                        Start a project <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project."
+                       target="_blank" rel="noopener" class="sf-btn">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp
+                    </a>
+                </div>
+                <p class="sf-reply"><i class="fas fa-bolt" aria-hidden="true"></i> Usually replies within 24 hours</p>
+            </div>
+
+        </section>
+
+
+        <!-- Columns -->
+        <div class="sf-grid">
+
+            <div class="sf-brand">
+                <a href="{% url 'home' %}" class="footer-brand" aria-label="Rana Umar Developer, home">
+                    <img src="{% static 'images/logo-rud.jpg' %}"
+                         alt="RUD, Rana Umar Developer: Code, Create, Innovate"
+                         width="1200" height="800"
+                         loading="lazy">
+                </a>
+
+                <p>
+                    Web developer building fast, modern websites and Django apps
+                    that help businesses win more customers online.
+                </p>
+
+                <div class="sf-social" aria-label="Social links">
+                    <a href="https://github.com/uiux6006-star" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://wa.me/923238144826" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:uiux6006@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+
+            <nav class="sf-col" aria-label="Footer: pages">
+                <h3>Navigate</h3>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'projects' %}">Projects</a></li>
+                    <li><a href="{% url 'services' %}">Services</a></li>
+                    <li><a href="{% url 'blog' %}">Blog</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </nav>
+
+            <nav class="sf-col" aria-label="Footer: for clients">
+                <h3>For clients</h3>
+                <ul>
+                    <li><a href="{% url 'estimate' %}">Price estimate</a></li>
+                    <li><a href="{% url 'services' %}">Business websites</a></li>
+                    <li><a href="{% url 'services' %}">Online stores</a></li>
+                    <li><a href="{% url 'services' %}">Custom web apps</a></li>
+                    <li><a href="{% url 'leave_review' %}">Leave a review</a></li>
+                    <li><a href="{% static 'cv/Rana_Umar_CV.pdf' %}" download>Download CV</a></li>
+                </ul>
+            </nav>
+
+            <div class="sf-col">
+                <h3>Get in touch</h3>
+                <ul class="sf-contact">
+                    <li>
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <a href="mailto:uiux6006@gmail.com">uiux6006@gmail.com</a>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone" aria-hidden="true"></i>
+                        <a href="tel:+923238144826">+92 323 8144826</a>
+                    </li>
+                    <li>
+                        <i class="fas fa-location-dot" aria-hidden="true"></i>
+                        <span>Faisalabad, Pakistan
+                            <small>Local time <time id="sfClock">--:--</time></small>
+                        </span>
+                    </li>
+                </ul>
+                <span class="sf-available"><span class="sf-dot"></span> Available for freelance</span>
+            </div>
+
+        </div>
+
 
-<div class="container">
+        <!-- Giant wordmark -->
+        <p class="sf-wordmark" aria-hidden="true">RANA UMAR</p>
 
-<div class="row gy-5">
 
+        <!-- Bottom bar -->
+        <div class="sf-bottom">
+            <p>© {% now "Y" %} Rana Umar. All rights reserved.</p>
+            <p class="sf-motto">BUILD <b>•</b> CODE <b>•</b> INNOVATE</p>
+            <a href="#top" class="sf-top" id="sfTop">Back to top <i class="fas fa-arrow-up" aria-hidden="true"></i></a>
+        </div>
 
-<!-- Logo -->
-
-<div class="col-lg-4">
-
-<h2 class="footer-logo">
-
-RANA <span>UMAR</span>
-
-</h2>
-
-<p class="footer-text">
-
-Full Stack Developer specializing in
-modern websites, Django applications,
-Python development and premium UI/UX
-design.
-
-Let's build something extraordinary together.
-
-</p>
-
-
-<div class="footer-social">
-
-<a href="https://github.com/uiux6006-star" target="_blank">
-<i class="fab fa-github"></i>
-</a>
-
-<a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank">
-<i class="fab fa-linkedin"></i>
-</a>
-
-<a href="https://wa.me/923238144826" target="_blank">
-<i class="fab fa-whatsapp"></i>
-</a>
-
-<a href="mailto:uiux6006@gmail.com">
-<i class="fas fa-envelope"></i>
-</a>
-
-</div>
-
-</div>
-
-
-
-
-
-<!-- Quick Links -->
-
-<div class="col-lg-2 col-md-6">
-
-<h4>
-
-Quick Links
-
-</h4>
-
-<ul>
-
-<li><a href="{% url 'home' %}">Home</a></li>
-
-<li><a href="{% url 'about' %}">About</a></li>
-
-<li><a href="{% url 'projects' %}">Projects</a></li>
-
-<li><a href="{% url 'services' %}">Services</a></li>
-
-<li><a href="{% url 'contact' %}">Contact</a></li>
-
-</ul>
-
-</div>
-
-
-
-
-
-<!-- Services -->
-
-<div class="col-lg-3 col-md-6">
-
-<h4>
-
-Services
-
-</h4>
-
-<ul>
-
-<li>Business Websites</li>
-
-<li>Online Stores</li>
-
-<li>Custom Web Apps</li>
-
-<li>Landing Pages</li>
-
-<li>Website Redesign</li>
-
-</ul>
-
-</div>
-
-
-
-
-
-
-<!-- Contact -->
-
-<div class="col-lg-3">
-
-<h4>
-
-Contact
-
-</h4>
-
-<p>
-
-<i class="fas fa-envelope"></i>
-
-uiux6006@gmail.com
-
-</p>
-
-<p>
-
-<i class="fas fa-phone"></i>
-
-+92 323 8144826
-
-</p>
-
-<p>
-
-<i class="fas fa-location-dot"></i>
-
-Pakistan
-
-</p>
-
-<p>
-
-<i class="fas fa-briefcase"></i>
-
-Available For Freelance
-
-</p>
-
-</div>
-
-</div>
-
-
-
-
-
-<hr class="footer-line">
-
-
-
-
-
-<div class="footer-bottom">
-
-<p>
-
-© 2026 <span>Rana Umar.</span>
-
-All Rights Reserved.
-
-</p>
-
-<p>
-
-Designed & Developed with ❤️ by
-
-<span>Rana Umar</span>
-
-</p>
-
-</div>
-
-</div>
+    </div>
 
 </footer>
 
@@ -409,21 +459,31 @@ Designed & Developed with ❤️ by
 <div class="cursor-outline"></div>
 
 
-<!-- Floating WhatsApp -->
-<a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project."
-   class="whatsapp-float"
-   target="_blank"
-   rel="noopener"
-   aria-label="Chat on WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-    <span>Let's talk</span>
-</a>
+{% include "partials/chatbot.html" %}
 
 
-<!-- Back to top -->
-<div id="backToTop">
-    <i class="fas fa-arrow-up"></i>
+<!-- ================= FLOATING WHATSAPP ================= -->
+
+<div class="wa" id="waWidget">
+
+    <!-- The button -->
+    <a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project."
+       class="wa-btn"
+       target="_blank"
+       rel="noopener"
+       aria-label="Chat with Rana Umar on WhatsApp">
+        <span class="wa-icon" aria-hidden="true">
+            <i class="fab fa-whatsapp"></i>
+        </span>
+        <span class="wa-label" aria-hidden="true">
+            <strong>Let's talk</strong>
+            <small>WHATSAPP</small>
+        </span>
+    </a>
+
 </div>
+
+
 
  
 
@@ -435,6 +495,8 @@ Designed & Developed with ❤️ by
 
 
 <script src="{% static 'js/script.js' %}"></script>
+
+<script src="{% static 'js/chatbot.js' %}" defer></script>
 
 
 </body>

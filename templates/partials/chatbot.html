@@ -1,0 +1,67 @@
+{% load static %}
+<!-- ================= CHAT ASSISTANT ================= -->
+
+<div class="cb" id="chatbot"
+     data-knowledge-url="{% url 'chat_knowledge' %}"
+     data-lead-url="{% url 'chat_lead' %}">
+
+    <!-- Small greeting bubble (once per visit) -->
+    <div class="cb-teaser" id="cbTeaser" hidden>
+        <button type="button" class="cb-teaser-close" id="cbTeaserClose" aria-label="Dismiss message">
+            <i class="fas fa-xmark" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="cb-teaser-body" id="cbTeaserOpen">
+            <strong>Hi there 👋</strong>
+            Questions about a website? Ask me about prices, timelines or projects.
+        </button>
+    </div>
+
+    <!-- Chat window -->
+    <div class="cb-panel" id="cbPanel" role="dialog" aria-labelledby="cbTitle" hidden>
+
+        <header class="cb-head">
+            <span class="cb-avatar">
+                <img src="{% static 'images/logo-rud-mark.jpg' %}" alt="" width="42" height="42">
+                <i aria-hidden="true"></i>
+            </span>
+            <span class="cb-head-text">
+                <strong id="cbTitle">RUD Assistant</strong>
+                <small>Instant answers, any time</small>
+            </span>
+            <button type="button" class="cb-icon" id="cbRestart" aria-label="Start a new chat" title="Start over">
+                <i class="fas fa-rotate-right" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="cb-icon" id="cbClose" aria-label="Close chat" title="Close">
+                <i class="fas fa-xmark" aria-hidden="true"></i>
+            </button>
+        </header>
+
+        <div class="cb-body" id="cbBody" role="log" aria-live="polite" aria-label="Conversation"></div>
+
+        <div class="cb-quick" id="cbQuick" role="group" aria-label="Suggested questions"></div>
+
+        <form class="cb-input" id="cbForm" autocomplete="off" novalidate>
+            {% csrf_token %}
+            <input type="text" name="website" class="cb-hp" tabindex="-1" aria-hidden="true" autocomplete="off">
+            <label class="visually-hidden" for="cbText">Type your message</label>
+            <input id="cbText" type="text" maxlength="500" placeholder="Ask about prices, timeline, projects…">
+            <button type="submit" id="cbSend" aria-label="Send message">
+                <i class="fas fa-paper-plane" aria-hidden="true"></i>
+            </button>
+        </form>
+
+        <p class="cb-foot">Automated assistant · Rana replies personally on WhatsApp &amp; email</p>
+
+    </div>
+
+    <!-- Launcher -->
+    <button type="button" class="cb-launcher" id="cbLauncher"
+            aria-expanded="false" aria-controls="cbPanel" aria-label="Open chat assistant">
+        <span class="cb-launcher-icon" aria-hidden="true">
+            <i class="fas fa-comment-dots cb-i-open"></i>
+            <i class="fas fa-xmark cb-i-close"></i>
+        </span>
+        <span class="cb-badge" id="cbBadge" hidden>1</span>
+    </button>
+
+</div>

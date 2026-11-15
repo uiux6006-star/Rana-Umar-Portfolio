@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Leave a Review | Rana Umar Developer
+{% endblock %}
+
+{% block meta_description %}Worked with Rana Umar? Share your experience and help other business owners decide.{% endblock %}
+
+
+{% block content %}
+
+
+<!-- ================= HEADER ================= -->
+
+<section class="projects-page-header">
+
+<div class="container text-center">
+
+<span class="header-badge">
+<i class="fas fa-star"></i>
+CLIENT REVIEW
+</span>
+
+<h1>
+Share Your <span>Experience</span>
+</h1>
+
+<p>
+Thank you for trusting me with your project. A short review helps other
+business owners decide, and it means a lot to me.
+</p>
+
+<div class="header-line"></div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= FORM ================= -->
+
+<section class="contact-form-section">
+
+<div class="container">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="contact-form-box">
+
+<h2>Write A <span>Review</span></h2>
+
+{% for message in messages %}
+<div class="alert premium-alert alert-dismissible fade show">
+    <i class="fas fa-circle-check me-2"></i>
+    {{ message }}
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+
+
+<form method="POST" action="{% url 'leave_review' %}" novalidate>
+
+{% csrf_token %}
+
+{% if form.errors %}
+<div class="form-error">
+    <i class="fas fa-circle-exclamation me-2"></i>
+    Please check the highlighted fields and try again.
+</div>
+{% endif %}
+
+<!-- Honeypot (hidden from people) -->
+<div class="hp-field" aria-hidden="true">
+    <label for="id_website">Website</label>
+    <input type="text" name="website" id="id_website" tabindex="-1" autocomplete="off">
+</div>
+
+<div class="row">
+
+<div class="col-md-6 mb-4">
+{{ form.name }}
+{% for error in form.name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+</div>
+
+<div class="col-md-6 mb-4">
+{{ form.rating }}
+{% for error in form.rating.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+</div>
+
+</div>
+
+<div class="mb-4">
+{{ form.role }}
+</div>
+
+<div class="mb-4">
+{{ form.message }}
+{% for error in form.message.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+</div>
+
+<button type="submit" class="btn btn-gold btn-lg">
+<i class="fas fa-paper-plane"></i>
+Submit Review
+</button>
+
+<p class="estimator-note mt-4 mb-0">
+Reviews are checked before they appear on the website.
+</p>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

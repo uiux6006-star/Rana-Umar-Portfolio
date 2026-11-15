@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{% if tag %}{{ tag }} articles{% else %}Blog{% endif %} | Rana Umar Developer
+{% endblock %}
+
+{% block meta_description %}Practical tips on websites, Django, SEO and growing your business online, written by Rana Umar.{% endblock %}
+{% block og_title %}Blog | Rana Umar{% endblock %}
+
+
+{% block content %}
+
+
+<!-- ================= HEADER ================= -->
+
+<section class="projects-page-header">
+
+<div class="container text-center">
+
+<span class="header-badge">
+<i class="fas fa-pen-nib"></i>
+BLOG
+</span>
+
+<h1>
+Tips &amp; <span>Insights</span>
+</h1>
+
+<p>
+Simple, practical articles about websites, Django and getting more customers online.
+</p>
+
+<div class="header-line"></div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= POSTS ================= -->
+
+<section class="py-5">
+
+<div class="container">
+
+{% if tag %}
+<div class="blog-tag-bar">
+    Showing articles tagged <strong>{{ tag }}</strong>
+    <a href="{% url 'blog' %}"><i class="fas fa-xmark"></i> Clear</a>
+</div>
+{% endif %}
+
+<div class="row g-4">
+
+{% for post in page %}
+
+<div class="col-lg-4 col-md-6" data-aos="fade-up">
+    {% include "partials/post_card.html" %}
+</div>
+
+{% empty %}
+
+<div class="col-12">
+    <div class="blog-empty">
+        <i class="fas fa-pen-nib"></i>
+        <h3>Articles coming soon</h3>
+        <p>I'm writing the first posts. Meanwhile, have a look at my work.</p>
+        <a href="{% url 'projects' %}" class="btn btn-gold">View Projects</a>
+    </div>
+</div>
+
+{% endfor %}
+
+</div>
+
+
+{% if page.has_other_pages %}
+<nav class="blog-pagination" aria-label="Blog pages">
+    {% if page.has_previous %}
+    <a href="?page={{ page.previous_page_number }}{% if tag %}&tag={{ tag|urlencode }}{% endif %}"><i class="fas fa-arrow-left"></i> Newer</a>
+    {% endif %}
+    <span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+    {% if page.has_next %}
+    <a href="?page={{ page.next_page_number }}{% if tag %}&tag={{ tag|urlencode }}{% endif %}">Older <i class="fas fa-arrow-right"></i></a>
+    {% endif %}
+</nav>
+{% endif %}
+
+</div>
+
+</section>
+
+{% endblock %}

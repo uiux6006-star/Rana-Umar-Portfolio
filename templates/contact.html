@@ -5,601 +5,351 @@
 Contact | Rana Umar Developer
 {% endblock %}
 
+{% block meta_description %}Tell Rana Umar about your website project and get a free quote. Reply within 24 hours on email or WhatsApp.{% endblock %}
+{% block og_title %}Contact Rana Umar | Get a Free Website Quote{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
 {% block content %}
 
-
-<!-- ================= PREMIUM CONTACT HEADER START ================= -->
-
-
-<section class="contact-page-header">
-
-
-<div class="container text-center">
-
-
-
-<span class="header-badge">
-
-<i class="fas fa-envelope"></i>
-
-CONTACT ME
-
-</span>
-
-
-
-
-
-<h1>
-
-Let's Build Something <span>Amazing</span>
-
-</h1>
-
-
-
-
-<p>
-
-Have a project idea or need a professional website?
-Let's discuss your vision and create a modern,
-powerful digital solution together.
-
-</p>
-
-
-
-
-<div class="header-line"></div>
-
-
-
-</div>
-
-
-</section>
-
-<!-- ================= PREMIUM CONTACT INTRO START ================= -->
-
-
-<section class="contact-intro">
-
-
-<div class="container">
-
-
-<div class="row align-items-center g-5">
-
-
-
-<!-- CONTENT -->
-
-<div class="col-lg-6">
-
-
-<span class="section-badge">
-
-<i class="fas fa-comments"></i>
-
-GET IN TOUCH
-
-</span>
-
-
-
-
-<h2>
-
-Let's Create Something <span>Amazing</span>
-
-</h2>
-
-
-
-
-<p>
-
-I am available for freelance projects and long-term collaborations.
-Let's discuss your ideas and turn them into
-professional digital solutions.
-
-</p>
-
-
-
-
-<p>
-
-Whether you need a modern website, web application
-or creative UI/UX design, I am ready to help you
-build your online presence.
-
-</p>
-
-
-
-
-
-<div class="d-flex flex-wrap gap-3 mt-3">
-<a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project."
-target="_blank" rel="noopener"
-class="btn btn-gold">
-<i class="fab fa-whatsapp"></i>
-WhatsApp Me
-</a>
-<a href="mailto:uiux6006@gmail.com"
-class="btn btn-outline-gold">
-<i class="fas fa-envelope"></i>
-Email Me
-</a>
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-<!-- IMAGE -->
-
-<div class="col-lg-6 text-center">
-
-
-<div class="contact-image-box">
-
-
-<img src="{% static 'images/portfolio.jpg' %}"
-
-alt="Rana Umar Profile"
-
-class="img-fluid contact-profile-image">
-
-
-</div>
-
-
-</div>
-
-
-
-
-</div>
-
-
-</div>
-
-
-</section>
-
-<!-- ================= PREMIUM CONTACT FORM START ================= -->
-
-
-<section class="contact-form-section">
-
-
-<div class="container">
-
-
-<div class="row g-5">
-
-
-
-<!-- CONTACT INFORMATION -->
-
-<div class="col-lg-5">
-
-
-<span class="section-badge">
-
-<i class="fas fa-address-book"></i>
-
-CONTACT INFO
-
-</span>
-
-
-
-
-<h2 class="contact-title">
-
-Let's Stay <span>Connected</span>
-
-</h2>
-
-
-
-
-<p class="contact-text">
-
-Feel free to reach out for freelance projects,
-collaboration and professional web development
-opportunities.
-
-</p>
-
-
-
-
-
-<div class="contact-card">
-
-
-<div class="contact-icon">
-
-<i class="fas fa-envelope"></i>
-
-</div>
-
-
-<div>
-
-<h5>Email</h5>
-
-<p>
-uiux6006@gmail.com
-
-</p>
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="contact-card">
-
-
-<div class="contact-icon">
-
-<i class="fas fa-phone"></i>
-
-</div>
-
-
-<div>
-
-<h5>Phone</h5>
-
-<p>
-+92 323 8144826
-
-</p>
-
-</div>
-
-
-</div>
-
-<div class="contact-card">
-
-
-<div class="contact-icon">
-
-<i class="fas fa-location-dot"></i>
-
-</div>
-
-
-<div>
-
-<h5>Location</h5>
-
-<p>
-Pakistan
-</p>
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="contact-card">
-
-
-<div class="contact-icon">
-
-<i class="fas fa-briefcase"></i>
-
-</div>
-
-
-<div>
-
-<h5>Availability</h5>
-
-<p>
-Available For Freelance Projects
-</p>
-
-</div>
-
-
-</div>
-</div>
-
-<!-- CONTACT FORM -->
-
-<div class="col-lg-7">
-
-<div class="contact-form-box">
-
-<h2>
-
-Send Me A <span>Message</span>
-
-</h2>
-
-{% if messages %}
-
-{% for message in messages %}
-
-<div class="alert premium-alert alert-dismissible fade show">
-
-    <i class="fas fa-circle-check me-2"></i>
-
-    {{ message }}
-
-    <button type="button"
-            class="btn-close btn-close-white"
-            data-bs-dismiss="alert">
-    </button>
-
-</div>
-
-
-{% endfor %}
-
-{% endif %}
-
-
-
-
-
-<form method="POST" action="{% url 'contact' %}" novalidate>
-
-{% csrf_token %}
-
-{% if form.errors %}
-<div class="form-error">
-    <i class="fas fa-circle-exclamation me-2"></i>
-    Please check the highlighted fields and try again.
-</div>
-{% endif %}
-
-<!-- Honeypot (hidden from people) -->
-<div class="hp-field" aria-hidden="true">
-    <label for="id_website">Website</label>
-    <input type="text" name="website" id="id_website" tabindex="-1" autocomplete="off">
-</div>
-
-<div class="row">
-
-<div class="col-md-6 mb-4">
-{{ form.name }}
-{% for error in form.name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
-</div>
-
-<div class="col-md-6 mb-4">
-{{ form.email }}
-{% for error in form.email.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
-</div>
-
-<div class="col-md-6 mb-4">
-{{ form.project_type }}
-</div>
-
-<div class="col-md-6 mb-4">
-{{ form.budget }}
-</div>
-
-</div>
-
-<div class="mb-4">
-{{ form.subject }}
-{% for error in form.subject.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
-</div>
-
-<div class="mb-4">
-{{ form.message }}
-{% for error in form.message.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
-</div>
-
-<button type="submit"
-class="btn btn-gold btn-lg">
-<i class="fas fa-paper-plane"></i>
-Send Message
-</button>
-
-</form>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-</div>
-
-
-</div>
-
+<div class="ct">
+
+<!-- ================= HERO ================= -->
+
+<section class="ct-hero no-aos">
+
+    <div class="ct-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <div class="container">
+        <div class="ct-hero-grid">
+
+            <div class="ct-hero-copy">
+
+                <p class="ct-eyebrow"><span class="ct-live"></span> AVAILABLE FOR NEW PROJECTS</p>
+
+                <h1 class="ct-title" aria-label="Let's build something remarkable together.">
+                    <span class="ct-word" style="--i:0">Let's</span>
+                    <span class="ct-word" style="--i:1">build</span>
+                    <span class="ct-word" style="--i:2">something</span>
+                    <span class="ct-word ct-shine" style="--i:3">remarkable</span>
+                    <span class="ct-word" style="--i:4">together.</span>
+                </h1>
+
+                <p class="ct-lead">
+                    Tell me about your idea. Website, online store or custom web app,
+                    you'll get a clear plan and an honest quote, usually within a day.
+                </p>
+
+                <div class="ct-hero-actions">
+                    <a href="#contact-form" class="ct-btn ct-btn-primary">
+                        Send a message <i class="fas fa-arrow-down" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project."
+                       target="_blank" rel="noopener" class="ct-btn ct-btn-wa">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp
+                    </a>
+                </div>
+
+                <ul class="ct-trust">
+                    <li><i class="fas fa-bolt" aria-hidden="true"></i> Reply within 24 hours</li>
+                    <li><i class="fas fa-handshake" aria-hidden="true"></i> Free first consultation</li>
+                    <li><i class="fas fa-shield-halved" aria-hidden="true"></i> No hidden charges</li>
+                </ul>
+
+            </div>
+
+
+            <!-- Orbit visual -->
+            <div class="ct-orbit" aria-hidden="true">
+
+                <div class="ct-ring ct-ring-1">
+                    <span class="ct-planet" style="--a:0deg"><i class="fab fa-whatsapp"></i></span>
+                    <span class="ct-planet" style="--a:180deg"><i class="fas fa-envelope"></i></span>
+                </div>
+                <div class="ct-ring ct-ring-2">
+                    <span class="ct-planet" style="--a:90deg"><i class="fab fa-github"></i></span>
+                    <span class="ct-planet" style="--a:270deg"><i class="fab fa-linkedin-in"></i></span>
+                </div>
+
+                <div class="ct-card">
+                    <div class="ct-card-top">
+                        <img src="{% static 'images/pic1.jpg' %}" alt="" width="64" height="64">
+                        <div>
+                            <strong>Rana Umar</strong>
+                            <small>Web Developer · Faisalabad</small>
+                        </div>
+                    </div>
+                    <div class="ct-card-status">
+                        <span><span class="ct-live"></span> Available</span>
+                        <span><i class="far fa-clock"></i> <time class="js-pk-time">--:--</time> PKT</span>
+                    </div>
+
+                    <div class="ct-chat">
+                        <p class="ct-msg ct-msg-in">Hi Rana! I need a website for my business 👋</p>
+                        <p class="ct-msg ct-msg-typing"><i></i><i></i><i></i></p>
+                        <p class="ct-msg ct-msg-out">Sure! Tell me about it and I'll send you a plan 🚀</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 </section>
 
 
-<!-- ================= PREMIUM CONTACT FORM END ================= -->
 
-<!-- ================= PREMIUM SOCIAL MEDIA START ================= -->
-
-
-<section class="social-section">
-
-
-<div class="container text-center">
-
-
-<span class="section-badge">
-
-<i class="fas fa-share-nodes"></i>
-
-CONNECT WITH ME
-
-</span>
-
-
-
-<h2 class="social-title">
-
-Follow My <span>Journey</span>
-
-</h2>
-
-
-
-<p class="social-text">
-
-Let's connect on social platforms and stay updated
-with my latest projects, designs and development work.
-
-</p>
-
-
-
-
-<div class="social-icons">
-
-
-
-<!-- Github -->
-
-<a href="https://github.com/uiux6006-star"
-
-target="_blank">
-
-<i class="fab fa-github"></i>
-
-</a>
-
-
-
-
-<!-- LinkedIn -->
-
-<a href="https://www.linkedin.com/in/rana-umar-476b19409"
-
-target="_blank">
-
-<i class="fab fa-linkedin"></i>
-
-</a>
-
-
-
-
-<!-- WhatsApp -->
-
-<a href="https://wa.me/923238144826?text=Hello%20Rana%20Umar"
-
-target="_blank">
-
-<i class="fab fa-whatsapp"></i>
-
-</a>
-
-
-
-
-<!-- Email -->
-
-<a href="mailto:uiux6006@gmail.com?subject=Portfolio Inquiry">
-
-<i class="fas fa-envelope"></i>
-
-</a>
-
-
-
-</div>
-
-
-</div>
-
-
-</section>
-<!--====================================
-      FINAL PREMIUM CTA
-=====================================-->
-
-<section class="ultimate-cta">
-
-<div class="container">
-
-<div class="ultimate-box text-center">
-
-<span class="ultimate-badge">
-
-<i class="fas fa-crown"></i>
-
-LET'S BUILD SOMETHING EXTRAORDINARY
-
-</span>
-
-<h2>
-
-Ready To Turn Your <span>Ideas</span>
-Into Reality?
-
-</h2>
-
-<p>
-
-Whether you need a modern portfolio, business website,
-Python application or a powerful Django project,
-I'm here to transform your vision into a premium digital experience.
-
-</p>
-
-<div class="ultimate-buttons">
-
-<a href="{% url 'contact' %}" class="btn btn-gold btn-lg">
-
-<i class="fas fa-paper-plane"></i>
-
-Start Your Project
-
-</a>
-
-<a href="{% url 'projects' %}" class="btn btn-outline-gold btn-lg">
-
-<i class="fas fa-laptop-code"></i>
-
-View My Work
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
+<!-- ================= CHANNELS ================= -->
+
+<section class="ct-channels" aria-label="Ways to reach me">
+    <div class="container">
+        <div class="ct-channel-grid">
+
+            <a class="ct-channel ct-spot" data-aos="fade-up"
+               href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project."
+               target="_blank" rel="noopener">
+                <span class="ct-channel-icon ct-wa"><i class="fab fa-whatsapp" aria-hidden="true"></i></span>
+                <span class="ct-channel-label">WhatsApp</span>
+                <strong>Fastest reply</strong>
+                <span class="ct-channel-go">Start chat <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+            </a>
+
+            <div class="ct-channel ct-spot" data-aos="fade-up" data-aos-delay="80">
+                <span class="ct-channel-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                <span class="ct-channel-label">Email</span>
+                <a href="mailto:uiux6006@gmail.com" class="ct-channel-value">uiux6006@gmail.com</a>
+                <button type="button" class="ct-copy" data-copy="uiux6006@gmail.com" aria-label="Copy email address">
+                    <i class="far fa-copy" aria-hidden="true"></i> <span>Copy</span>
+                </button>
+            </div>
+
+            <div class="ct-channel ct-spot" data-aos="fade-up" data-aos-delay="160">
+                <span class="ct-channel-icon"><i class="fas fa-phone" aria-hidden="true"></i></span>
+                <span class="ct-channel-label">Phone</span>
+                <a href="tel:+923238144826" class="ct-channel-value">+92 323 8144826</a>
+                <button type="button" class="ct-copy" data-copy="+923238144826" aria-label="Copy phone number">
+                    <i class="far fa-copy" aria-hidden="true"></i> <span>Copy</span>
+                </button>
+            </div>
+
+            <div class="ct-channel ct-spot" data-aos="fade-up" data-aos-delay="240">
+                <span class="ct-channel-icon"><i class="fas fa-location-dot" aria-hidden="true"></i></span>
+                <span class="ct-channel-label">Location</span>
+                <strong>Faisalabad, Pakistan</strong>
+                <span class="ct-channel-note">Working with clients worldwide · <time class="js-pk-time">--:--</time> PKT</span>
+            </div>
+
+        </div>
+    </div>
 </section>
 
+
+
+<!-- ================= FORM ================= -->
+
+<section class="ct-form-section" id="contact-form">
+    <div class="container">
+        <div class="ct-form-grid">
+
+            <!-- What happens next -->
+            <aside class="ct-steps" data-aos="fade-right">
+                <p class="ct-eyebrow"><i class="fas fa-route" aria-hidden="true"></i> WHAT HAPPENS NEXT</p>
+                <h2>From message to <span>launch</span></h2>
+
+                <ol class="ct-timeline" id="ctTimeline">
+                    <li>
+                        <span class="ct-step-dot">01</span>
+                        <div><strong>You send your idea</strong><p>A few lines are enough. Goals, pages, deadline.</p></div>
+                    </li>
+                    <li>
+                        <span class="ct-step-dot">02</span>
+                        <div><strong>I reply within 24 hours</strong><p>With questions or a first plan, on email or WhatsApp.</p></div>
+                    </li>
+                    <li>
+                        <span class="ct-step-dot">03</span>
+                        <div><strong>Free consultation</strong><p>A quick call to agree on features, design and timeline.</p></div>
+                    </li>
+                    <li>
+                        <span class="ct-step-dot">04</span>
+                        <div><strong>Clear quote, then we build</strong><p>Fixed price, no hidden charges, regular progress updates.</p></div>
+                    </li>
+                </ol>
+
+                <a href="{% url 'estimate' %}" class="ct-estimate">
+                    <i class="fas fa-calculator" aria-hidden="true"></i>
+                    <span><strong>Not sure about the budget?</strong> Try the instant price estimator</span>
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </aside>
+
+
+            <!-- Form card -->
+            <div class="ct-form-card" data-aos="fade-up">
+
+                {% if messages %}
+
+                    <div class="ct-success" role="status">
+                        <svg class="ct-check" viewBox="0 0 52 52" aria-hidden="true">
+                            <circle cx="26" cy="26" r="24"/>
+                            <path d="M15 27l7 7 15-15"/>
+                        </svg>
+                        <h2>Message sent!</h2>
+                        {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+                        <p class="ct-success-note">I usually reply within 24 hours. Need it faster?</p>
+                        <div class="ct-success-actions">
+                            <a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20just%20sent%20you%20a%20message%20from%20your%20website."
+                               target="_blank" rel="noopener" class="ct-btn ct-btn-wa">
+                                <i class="fab fa-whatsapp" aria-hidden="true"></i> Message on WhatsApp
+                            </a>
+                            <a href="{% url 'projects' %}" class="ct-btn">See my work</a>
+                        </div>
+                    </div>
+
+                {% else %}
+
+                <div class="ct-form-head">
+                    <h2>Tell me about your <span>project</span></h2>
+                    <p>Fields marked <b>*</b> are required. Takes about a minute.</p>
+                </div>
+
+                <form method="POST" action="{% url 'contact' %}" class="ct-form" id="ctForm" novalidate>
+
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                    <div class="form-error" role="alert">
+                        <i class="fas fa-circle-exclamation me-2"></i>
+                        Please check the highlighted fields and try again.
+                    </div>
+                    {% endif %}
+
+                    <!-- Honeypot (hidden from people) -->
+                    <div class="hp-field" aria-hidden="true">
+                        <label for="id_website">Website</label>
+                        <input type="text" name="website" id="id_website" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <div class="ct-row">
+                        <div class="ct-field{% if form.name.errors %} has-error{% endif %}">
+                            <input type="text" name="name" id="id_name" maxlength="100" required
+                                   placeholder=" " autocomplete="name"
+                                   value="{{ form.name.value|default_if_none:'' }}">
+                            <label for="id_name">Your name *</label>
+                            {% for error in form.name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+                        </div>
+
+                        <div class="ct-field{% if form.email.errors %} has-error{% endif %}">
+                            <input type="email" name="email" id="id_email" maxlength="254" required
+                                   placeholder=" " autocomplete="email"
+                                   value="{{ form.email.value|default_if_none:'' }}">
+                            <label for="id_email">Email address *</label>
+                            {% for error in form.email.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+                        </div>
+                    </div>
+
+                    <fieldset class="ct-choice">
+                        <legend>What do you need?</legend>
+                        <div class="ct-chips">
+                            {% with current=form.project_type.value %}
+                            {% for value, label in form.fields.project_type.choices %}{% if value %}
+                            <label class="ct-chip">
+                                <input type="radio" name="project_type" value="{{ value }}"{% if current == value %} checked{% endif %}>
+                                <span>{{ label }}</span>
+                            </label>
+                            {% endif %}{% endfor %}
+                            {% endwith %}
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="ct-choice">
+                        <legend>Estimated budget</legend>
+                        <div class="ct-chips">
+                            {% with current=form.budget.value %}
+                            {% for value, label in form.fields.budget.choices %}{% if value %}
+                            <label class="ct-chip">
+                                <input type="radio" name="budget" value="{{ value }}"{% if current == value %} checked{% endif %}>
+                                <span>{{ label }}</span>
+                            </label>
+                            {% endif %}{% endfor %}
+                            {% endwith %}
+                        </div>
+                    </fieldset>
+
+                    <div class="ct-field{% if form.subject.errors %} has-error{% endif %}">
+                        <input type="text" name="subject" id="id_subject" maxlength="200" required
+                               placeholder=" " value="{{ form.subject.value|default_if_none:'' }}">
+                        <label for="id_subject">Subject *</label>
+                        {% for error in form.subject.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+                    </div>
+
+                    <div class="ct-field{% if form.message.errors %} has-error{% endif %}">
+                        <textarea name="message" id="id_message" rows="6" maxlength="2000" required
+                                  placeholder=" ">{{ form.message.value|default_if_none:'' }}</textarea>
+                        <label for="id_message">Your goals, pages and deadline *</label>
+                        <span class="ct-count" aria-live="polite"><span id="ctCount">0</span> / 2000</span>
+                        {% for error in form.message.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+                    </div>
+
+                    <div class="ct-submit-row">
+                        <button type="submit" class="ct-submit" id="ctSubmit">
+                            <span class="ct-submit-text">Send message</span>
+                            <span class="ct-submit-icon" aria-hidden="true"><i class="fas fa-paper-plane"></i></span>
+                            <span class="ct-spinner" aria-hidden="true"></span>
+                        </button>
+                        <p class="ct-privacy"><i class="fas fa-lock" aria-hidden="true"></i> Your details are only used to reply to you.</p>
+                    </div>
+
+                </form>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ================= FAQ ================= -->
+
+<section class="ct-faq">
+    <div class="container">
+
+        <div class="text-center" data-aos="fade-up">
+            <p class="ct-eyebrow ct-eyebrow-center"><i class="fas fa-circle-question" aria-hidden="true"></i> QUICK ANSWERS</p>
+            <h2 class="ct-faq-title">Before you <span>write</span></h2>
+        </div>
+
+        <div class="ct-faq-list" data-aos="fade-up">
+            <details class="ct-faq-item">
+                <summary>How much will my website cost?</summary>
+                <p>It depends on pages, features and design. Use the <a href="{% url 'estimate' %}">price estimator</a> for an instant range, then I'll send an exact quote with no hidden charges.</p>
+            </details>
+            <details class="ct-faq-item">
+                <summary>How long does it take?</summary>
+                <p>A landing page can be ready in about a week, a business website in one to two weeks, and online stores or custom apps in three to four weeks.</p>
+            </details>
+            <details class="ct-faq-item">
+                <summary>Do you work with clients outside Pakistan?</summary>
+                <p>Yes. I work fully online, so we can talk on WhatsApp, email or a video call wherever you are.</p>
+            </details>
+            <details class="ct-faq-item">
+                <summary>Will I be able to update the website myself?</summary>
+                <p>Yes. For dynamic sites I include an easy admin panel, so you can change text, images and products yourself.</p>
+            </details>
+        </div>
+
+    </div>
+</section>
+
+</div>
+
+<canvas class="ct-confetti" id="ctConfetti" aria-hidden="true"></canvas>
+
+<script src="{% static 'js/contact.js' %}" defer></script>
 
 {% endblock %}

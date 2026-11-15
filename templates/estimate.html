@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Website Price Estimator | Rana Umar Developer
+{% endblock %}
+
+{% block meta_description %}How much does a website cost in Pakistan? Pick your website type and features and get an instant price estimate from Rana Umar.{% endblock %}
+{% block og_title %}Website Price Estimator | How Much Will My Website Cost?{% endblock %}
+{% block og_description %}Choose your website type and features and see an instant price range in PKR.{% endblock %}
+
+
+{% block content %}
+
+
+<!-- ================= HEADER ================= -->
+
+<section class="projects-page-header">
+
+<div class="container text-center">
+
+<span class="header-badge">
+<i class="fas fa-calculator"></i>
+PRICE ESTIMATOR
+</span>
+
+<h1>
+How Much Will My <span>Website Cost?</span>
+</h1>
+
+<p>
+Pick what you need and see an instant price range. No sign-up, no obligation.
+You'll get an exact quote once we talk about the details.
+</p>
+
+<div class="header-line"></div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= ESTIMATOR ================= -->
+
+<section class="estimator-section">
+
+<div class="container">
+
+<form class="row g-4" id="estimator" onsubmit="return false">
+
+
+<!-- LEFT: OPTIONS -->
+
+<div class="col-lg-8">
+
+
+    <!-- Step 1 -->
+    <div class="estimator-step">
+        <h3><span>1</span> What kind of website do you need?</h3>
+
+        <div class="estimator-options estimator-types">
+            {% for type in prices.types %}
+            <label class="estimator-option">
+                <input type="radio" name="type" value="{{ type.id }}" {% if forloop.counter == 2 %}checked{% endif %}>
+                <span class="estimator-option-body">
+                    <i class="fas {{ type.icon }}"></i>
+                    <strong>{{ type.label }}</strong>
+                    <small>from Rs {{ type.base|floatformat:"0g" }}</small>
+                </span>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <!-- Step 2 -->
+    <div class="estimator-step">
+        <h3><span>2</span> How many pages?</h3>
+
+        <div class="estimator-range">
+            <input type="range" id="estPages" name="pages" min="1" max="30" value="5">
+            <output for="estPages" id="estPagesOut">5 pages</output>
+        </div>
+        <small class="estimator-hint">
+            Home, About, Services, Contact... each one counts as a page.
+            Product pages in an online store don't count, you can add unlimited products.
+        </small>
+    </div>
+
+
+    <!-- Step 3 -->
+    <div class="estimator-step">
+        <h3><span>3</span> Extra features</h3>
+
+        <div class="estimator-features">
+            {% for feature in prices.features %}
+            <label class="estimator-check">
+                <input type="checkbox" name="features" value="{{ feature.id }}">
+                <span>{{ feature.label }}</span>
+                <small>+ Rs {{ feature.price|floatformat:"0g" }}</small>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <!-- Step 4 -->
+    <div class="estimator-step">
+        <h3><span>4</span> Design &amp; delivery</h3>
+
+        <div class="estimator-options estimator-designs">
+            {% for design in prices.designs %}
+            <label class="estimator-option estimator-option-sm">
+                <input type="radio" name="design" value="{{ design.id }}" {% if forloop.first %}checked{% endif %}>
+                <span class="estimator-option-body">
+                    <strong>{{ design.label }}</strong>
+                </span>
+            </label>
+            {% endfor %}
+        </div>
+
+        <label class="estimator-check mt-3">
+            <input type="checkbox" name="rush" id="estRush">
+            <span>I need it urgently (priority delivery)</span>
+            <small>+25%</small>
+        </label>
+    </div>
+
+</div>
+
+
+
+<!-- RIGHT: RESULT -->
+
+<div class="col-lg-4">
+
+    <aside class="estimator-result" aria-live="polite">
+
+        <span class="estimator-result-label">Estimated price</span>
+
+        <div class="estimator-price" id="estPrice">Rs 0</div>
+
+        <div class="estimator-meta">
+            <div>
+                <i class="fas fa-clock"></i>
+                <span id="estDays">-</span>
+            </div>
+            <div>
+                <i class="fas fa-file"></i>
+                <span id="estPagesSummary">-</span>
+            </div>
+        </div>
+
+        <ul class="estimator-summary" id="estSummary"></ul>
+
+        <a href="{% url 'contact' %}" class="btn btn-gold w-100" id="estQuote">
+            <i class="fas fa-paper-plane"></i>
+            Get My Exact Quote
+        </a>
+
+        <a href="https://wa.me/923238144826" target="_blank" rel="noopener" class="btn btn-outline-gold w-100 mt-3" id="estWhatsapp">
+            <i class="fab fa-whatsapp"></i>
+            Discuss on WhatsApp
+        </a>
+
+        <p class="estimator-note">
+            This is an estimate. The final price depends on content, design details
+            and integrations. No hidden charges.
+        </p>
+
+    </aside>
+
+</div>
+
+</form>
+
+</div>
+
+</section>
+
+
+{{ prices|json_script:"estimator-prices" }}
+
+<script src="{% static 'js/estimate.js' %}"></script>
+
+{% endblock %}

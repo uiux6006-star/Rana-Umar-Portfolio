@@ -1,0 +1,281 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Theme Customizer | Rana Umar · Studio{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin-theme/customizer.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} rd-dashboard tc-page{% endblock %}
+
+{% block content_title %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+
+{% block content %}
+<div class="rd tc">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="rd-hero tc-hero">
+        <div>
+            <p class="rd-eyebrow"><i class="fas fa-palette"></i> APPEARANCE</p>
+            <h1>Theme Customizer</h1>
+            <p class="rd-hero-sub">
+                Choose how your website looks to clients. Preview any theme first,
+                then apply it. It goes live on every page for every visitor.
+            </p>
+        </div>
+
+        <div class="tc-live">
+            <span class="tc-live-dots" aria-hidden="true">
+                {% for s in themes %}{% if s.is_active %}
+                    <i style="--c: {{ s.bg }}"></i>
+                    <i style="--c: {% if setting.custom_accent %}{{ setting.custom_accent }}{% else %}{{ s.primary }}{% endif %}"></i>
+                    <i style="--c: {{ s.accent }}"></i>
+                {% endif %}{% endfor %}
+            </span>
+            <span>
+                <small><span class="rd-live"></span> LIVE NOW</small>
+                <strong>{{ active.name }}</strong>
+                {% if setting.custom_accent %}<em>Custom accent {{ setting.custom_accent }}</em>{% endif %}
+                {% if setting.updated_by %}<em>Changed {{ setting.updated_at|timesince }} ago by {{ setting.updated_by.get_username }}</em>{% endif %}
+            </span>
+        </div>
+    </header>
+
+
+    {% if previewing %}
+    <div class="tc-notice" role="status">
+        <i class="fas fa-eye"></i>
+        You are previewing a theme on the live site (only you can see it).
+        <form method="post" action="{% url 'admin:theme_preview_exit' %}">
+            {% csrf_token %}
+            <button type="submit" class="rd-link-btn">Exit preview</button>
+        </form>
+    </div>
+    {% endif %}
+
+
+    <div class="tc-layout">
+
+        <!-- ================= THEME GRID ================= -->
+
+        <section class="tc-main" aria-label="Themes">
+
+            <div class="tc-toolbar">
+                <label class="tc-search">
+                    <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+                    <input type="search" id="tcSearch" placeholder="Search themes…" aria-label="Search themes">
+                </label>
+
+                <div class="tc-chips" role="group" aria-label="Filter themes">
+                    <button type="button" class="tc-chip is-active" data-filter="all">All</button>
+                    <button type="button" class="tc-chip" data-filter="tech">Tech</button>
+                    <button type="button" class="tc-chip" data-filter="luxury">Luxury</button>
+                    <button type="button" class="tc-chip" data-filter="creative">Creative</button>
+                    <button type="button" class="tc-chip" data-filter="bold">Bold</button>
+                    <button type="button" class="tc-chip" data-filter="professional">Professional</button>
+                </div>
+            </div>
+
+            <div class="tc-grid" id="tcGrid">
+                {% for t in themes %}
+                <article class="tc-card{% if t.is_active %} is-active{% endif %}"
+                         data-slug="{{ t.slug }}"
+                         data-name="{{ t.name|lower }}"
+                         data-tags="{{ t.tags|join:' ' }}">
+
+                    <button type="button" class="tc-mock" data-preview="{{ t.slug }}"
+                            aria-label="Preview {{ t.name }}"
+                            style="--m-bg: {{ t.bg }}; --m-surface: {{ t.surface }}; --m-primary: {{ t.primary }}; --m-accent: {{ t.accent }}; --m-text: {{ t.text }}; --m-muted: {{ t.muted }}; --m-on: {{ t.on_accent }}; --m-radius: {{ t.radius }}; --m-font: {{ t.font }};">
+                        <span class="tc-mock-nav"><i></i><b></b><b></b><b></b><em></em></span>
+                        <span class="tc-mock-hero">
+                            <small>HELLO, I'M</small>
+                            <strong>Rana <span>Umar</span></strong>
+                            <span class="tc-mock-btns"><em></em><em></em></span>
+                        </span>
+                        <span class="tc-mock-cards"><i></i><i></i><i></i></span>
+                        {% if t.is_active %}<span class="tc-badge"><i class="fas fa-circle-check"></i> Active</span>{% endif %}
+                    </button>
+
+                    <div class="tc-card-body">
+                        <div class="tc-card-title">
+                            <h2>{{ t.name }}</h2>
+                            <span class="tc-num">{{ forloop.counter|stringformat:"02d" }}</span>
+                        </div>
+                        <p>{{ t.tagline }}</p>
+
+                        <ul class="tc-swatches">
+                            {% for s in t.swatches %}
+                            <li title="{{ s.label }} {{ s.value }}">
+                                <i style="--c: {{ s.value }}"></i>
+                                <span>{{ s.label }}</span>
+                                <code>{{ s.value }}</code>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <div class="tc-actions">
+                            <button type="button" class="rd-btn" data-preview="{{ t.slug }}">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            {% if t.is_active %}
+                                <span class="rd-btn tc-is-live" aria-disabled="true"><i class="fas fa-check"></i> Live</span>
+                            {% elif can_edit %}
+                                <form method="post" action="{% url 'admin:theme_apply' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="theme" value="{{ t.slug }}">
+                                    <button type="submit" class="rd-btn rd-btn-primary"><i class="fas fa-wand-magic-sparkles"></i> Apply</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+            <p class="tc-empty" id="tcEmpty" hidden>No theme matches your search.</p>
+        </section>
+
+
+        <!-- ================= SIDE PANEL ================= -->
+
+        <aside class="tc-side">
+
+            <!-- Live preview -->
+            <section class="rd-card tc-preview">
+                <header class="rd-card-head">
+                    <div>
+                        <h2>Preview</h2>
+                        <p id="tcPreviewName">{{ active.name }}</p>
+                    </div>
+                    <div class="tc-mode" role="group" aria-label="Preview mode">
+                        <button type="button" class="is-active" data-mode="dark" aria-pressed="true"><i class="fas fa-moon"></i></button>
+                        <button type="button" data-mode="light" aria-pressed="false"><i class="fas fa-sun"></i></button>
+                    </div>
+                </header>
+
+                <div class="tc-stage" id="tcStage" data-theme="{{ setting.theme }}">
+                    <div class="tc-stage-nav">
+                        <img src="{% static 'images/logo-rud-mark.jpg' %}" alt="">
+                        <span class="tc-stage-brand">RANA UMAR<small>WEB DEVELOPER</small></span>
+                        <span class="tc-stage-links"><b class="is-on">Home</b><b>Work</b><b>Contact</b></span>
+                    </div>
+                    <div class="tc-stage-hero">
+                        <span class="tc-stage-eyebrow"><i></i> BUILD • CODE • INNOVATE</span>
+                        <h3>Rana <span>Umar</span></h3>
+                        <p>I build fast, modern websites that turn visitors into customers.</p>
+                        <div class="tc-stage-btns">
+                            <span class="tc-stage-btn">Start Your Project</span>
+                            <span class="tc-stage-btn is-ghost">View Work</span>
+                        </div>
+                    </div>
+                    <div class="tc-stage-card">
+                        <span class="tc-stage-thumb"></span>
+                        <span>
+                            <strong>Umer Gold Lab</strong>
+                            <span class="tc-stage-tags"><em>Django</em><em>Python</em></span>
+                        </span>
+                    </div>
+                </div>
+
+                {% if can_edit %}
+                <div class="tc-preview-actions">
+                    <form method="post" action="{% url 'admin:theme_preview' %}" target="_blank" id="tcLiveForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="theme" value="{{ setting.theme }}">
+                        <input type="hidden" name="accent" value="{{ setting.custom_accent }}">
+                        <button type="submit" class="rd-btn"><i class="fas fa-arrow-up-right-from-square"></i> Open on live site</button>
+                    </form>
+                    <form method="post" action="{% url 'admin:theme_apply' %}" id="tcApplyForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="theme" value="{{ setting.theme }}">
+                        <input type="hidden" name="accent" value="{{ setting.custom_accent }}">
+                        <button type="submit" class="rd-btn rd-btn-primary" id="tcApplyBtn" disabled>
+                            <i class="fas fa-wand-magic-sparkles"></i> <span>Already live</span>
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </section>
+
+
+            {% if can_edit %}
+            <!-- Custom accent -->
+            <section class="rd-card tc-accent">
+                <header class="rd-card-head">
+                    <div>
+                        <h2>Custom accent colour</h2>
+                        <p>Replace the theme's main colour with your own brand colour.</p>
+                    </div>
+                </header>
+
+                <form method="post" action="{% url 'admin:theme_accent' %}" class="tc-accent-form">
+                    {% csrf_token %}
+                    <div class="tc-accent-row">
+                        <input type="color" id="tcAccentPicker"
+                               value="{% if setting.custom_accent %}{{ setting.custom_accent }}{% else %}{{ active.primary }}{% endif %}"
+                               aria-label="Pick accent colour">
+                        <input type="text" name="accent" id="tcAccentHex" maxlength="7"
+                               pattern="#[0-9a-fA-F]{6}" required
+                               value="{% if setting.custom_accent %}{{ setting.custom_accent }}{% else %}{{ active.primary }}{% endif %}"
+                               aria-label="Accent colour hex code" spellcheck="false">
+                    </div>
+                    <p class="tc-contrast" id="tcContrast" aria-live="polite"></p>
+                    <div class="tc-accent-actions">
+                        <button type="submit" class="rd-btn rd-btn-primary"><i class="fas fa-droplet"></i> Apply accent to “{{ active.name }}”</button>
+                    </div>
+                </form>
+
+                {% if setting.custom_accent %}
+                <form method="post" action="{% url 'admin:theme_accent' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="clear" value="1">
+                    <button type="submit" class="rd-link-btn tc-clear"><i class="fas fa-xmark"></i> Remove custom accent</button>
+                </form>
+                {% endif %}
+            </section>
+
+
+            <!-- Restore -->
+            <section class="rd-card tc-restore">
+                <header class="rd-card-head">
+                    <div>
+                        <h2>Go back</h2>
+                        <p>Switch back any time. Nothing is ever lost.</p>
+                    </div>
+                </header>
+
+                {% if previous and setting.previous_theme != setting.theme %}
+                <form method="post" action="{% url 'admin:theme_apply' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="theme" value="{{ setting.previous_theme }}">
+                    <button type="submit" class="rd-btn tc-wide"><i class="fas fa-clock-rotate-left"></i> Restore previous: {{ previous.name }}</button>
+                </form>
+                {% endif %}
+
+                {% if setting.theme != "original" or setting.custom_accent %}
+                <form method="post" action="{% url 'admin:theme_reset' %}"
+                      onsubmit="return confirm('Switch the website back to the Original theme?');">
+                    {% csrf_token %}
+                    <button type="submit" class="rd-btn tc-wide tc-reset"><i class="fas fa-rotate-left"></i> Reset to Original theme</button>
+                </form>
+                {% else %}
+                <p class="rd-muted tc-small">You're on the Original theme.</p>
+                {% endif %}
+            </section>
+            {% endif %}
+
+        </aside>
+    </div>
+</div>
+
+{{ preview_tokens|json_script:"tc-tokens" }}
+{{ setting.theme|json_script:"tc-active" }}
+{{ setting.custom_accent|json_script:"tc-active-accent" }}
+<script src="{% static 'admin-theme/customizer.js' %}" defer></script>
+{% endblock %}

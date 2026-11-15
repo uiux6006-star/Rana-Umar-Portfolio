@@ -7,6 +7,10 @@
 About Me | Rana Umar Developer
 {% endblock %}
 
+{% block meta_description %}Meet Rana Umar, a Full Stack Developer from Pakistan who builds modern websites and Django web apps for small businesses and brands.{% endblock %}
+{% block og_title %}About Rana Umar | Full Stack Developer{% endblock %}
+{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/pic2.jpg' %}{% endblock %}
+
 
 {% block content %}
 
@@ -75,7 +79,7 @@ with clean code, creative design and innovative solutions.
 
 <div class="profile-box">
 
-<img src="{% static 'images/portfolio.jpg' %}"
+<img src="{% static 'images/pic2.jpg' %}"
 
 alt="Rana Umar Profile"
 
@@ -670,11 +674,11 @@ My <span>Achievements</span>
 <div class="achievement-card">
 
 
-<h1>
+<p class="achievement-number">
 
-06+
+{{ project_count|stringformat:"02d" }}+
 
-</h1>
+</p>
 
 
 <p>
@@ -699,11 +703,11 @@ Completed Projects
 <div class="achievement-card">
 
 
-<h1>
+<p class="achievement-number">
 
 06+
 
-</h1>
+</p>
 
 
 <p>
@@ -728,9 +732,9 @@ Technologies Learned
 <div class="achievement-card">
 
 
-<h1>
+<p class="achievement-number">
 100%
-</h1>
+</p>
 <p>
 Responsive Builds
 </p>
@@ -751,9 +755,9 @@ Responsive Builds
 <div class="achievement-card">
 
 
-<h1>
+<p class="achievement-number">
 2
-</h1>
+</p>
 <p>
 Languages: English &amp; Urdu
 </p>

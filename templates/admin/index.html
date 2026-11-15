@@ -1,0 +1,282 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static dashboard %}
+
+{% block bodyclass %}{{ block.super }} dashboard rd-dashboard{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+
+{% block content %}
+{% dashboard_data as d %}
+
+<div class="rd">
+
+    <!-- ================= WELCOME ================= -->
+
+    <header class="rd-hero">
+        <div>
+            <p class="rd-eyebrow"><span class="rd-live"></span> {{ d.today|date:"l, d F Y" }}</p>
+            <h1>{{ d.greeting }}, {{ request.user.first_name|default:request.user.get_username|title }}.</h1>
+            <p class="rd-hero-sub">
+                {% if d.leads_new %}
+                    You have <strong>{{ d.leads_new }} new lead{{ d.leads_new|pluralize }}</strong> waiting for a reply{% if d.reviews_pending %} and <strong>{{ d.reviews_pending }} review{{ d.reviews_pending|pluralize }}</strong> to approve{% endif %}.
+                {% elif d.reviews_pending %}
+                    All leads answered. <strong>{{ d.reviews_pending }} review{{ d.reviews_pending|pluralize }}</strong> waiting for approval.
+                {% else %}
+                    You're all caught up. Nothing is waiting for you.
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="rd-hero-actions">
+            <a href="{% url 'admin:base_project_add' %}" class="rd-btn rd-btn-primary"><i class="fas fa-plus"></i> New project</a>
+            <a href="{% url 'admin:base_post_add' %}" class="rd-btn"><i class="fas fa-pen-nib"></i> Write article</a>
+            <a href="{% url 'admin:theme_customizer' %}" class="rd-btn"><i class="fas fa-palette"></i> Themes</a>
+            <a href="{% url 'home' %}" target="_blank" rel="noopener" class="rd-btn"><i class="fas fa-arrow-up-right-from-square"></i> View site</a>
+        </div>
+    </header>
+
+
+    <!-- ================= KPI TILES ================= -->
+
+    <section class="rd-kpis" aria-label="Key numbers">
+
+        <a class="rd-kpi rd-kpi-accent" href="{% url 'admin:base_contactmessage_changelist' %}?status__exact=new">
+            <span class="rd-kpi-label"><i class="fas fa-inbox"></i> New leads</span>
+            <strong class="rd-kpi-value">{{ d.leads_new }}</strong>
+            <span class="rd-kpi-foot">{{ d.leads_week }} in the last 7 days</span>
+        </a>
+
+        <a class="rd-kpi" href="{% url 'admin:base_contactmessage_changelist' %}">
+            <span class="rd-kpi-label"><i class="fas fa-calendar"></i> Leads this month</span>
+            <strong class="rd-kpi-value">{{ d.leads_this_month }}</strong>
+            <span class="rd-kpi-foot">
+                {% if d.leads_change is None %}
+                    {{ d.leads_total }} all time
+                {% elif d.leads_change >= 0 %}
+                    <span class="rd-up"><i class="fas fa-arrow-trend-up"></i> {{ d.leads_change }}%</span> vs last month
+                {% else %}
+                    <span class="rd-down"><i class="fas fa-arrow-trend-down"></i> {{ d.leads_change }}%</span> vs last month
+                {% endif %}
+            </span>
+        </a>
+
+        <a class="rd-kpi" href="{% url 'admin:base_contactmessage_changelist' %}?status__exact=won">
+            <span class="rd-kpi-label"><i class="fas fa-trophy"></i> Clients won</span>
+            <strong class="rd-kpi-value">{{ d.won }}</strong>
+            <span class="rd-kpi-foot">
+                {% if d.win_rate is not None %}{{ d.win_rate }}% win rate{% else %}Mark leads as Won / Lost{% endif %}
+            </span>
+        </a>
+
+        <a class="rd-kpi" href="{% url 'admin:base_testimonial_changelist' %}">
+            <span class="rd-kpi-label"><i class="fas fa-star"></i> Reviews</span>
+            <strong class="rd-kpi-value">
+                {% if d.rating_avg %}{{ d.rating_avg|floatformat:1 }}<small>/5</small>{% else %}{{ d.reviews_published }}{% endif %}
+            </strong>
+            <span class="rd-kpi-foot">
+                {{ d.reviews_published }} published{% if d.reviews_pending %} · <span class="rd-warn-text">{{ d.reviews_pending }} pending</span>{% endif %}
+            </span>
+        </a>
+
+    </section>
+
+
+    <!-- ================= CHARTS ================= -->
+
+    <section class="rd-grid">
+
+        <!-- Leads per month -->
+        <article class="rd-card rd-span-2">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Leads per month</h2>
+                    <p>{{ d.months_total }} enquir{{ d.months_total|pluralize:"y,ies" }} in the last 6 months</p>
+                </div>
+                <button type="button" class="rd-link-btn" data-table-toggle="months-table">
+                    <i class="fas fa-table"></i> <span>Table</span>
+                </button>
+            </header>
+
+            <div class="rd-bars" role="img" aria-label="Bar chart of leads per month for the last six months">
+                <div class="rd-bars-grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+                {% for m in d.months %}
+                <div class="rd-bar-col{% if m.current %} is-current{% endif %}" tabindex="0"
+                     data-tip="{{ m.full_label }}: {{ m.count }} lead{{ m.count|pluralize }}">
+                    <span class="rd-bar-value">{% if m.count %}{{ m.count }}{% endif %}</span>
+                    <span class="rd-bar" style="height: {% if m.count %}max({{ m.pct }}%, 6px){% else %}2px{% endif %}"></span>
+                    <span class="rd-bar-label">{{ m.label }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <table class="rd-table rd-data-table" id="months-table" hidden>
+                <thead><tr><th>Month</th><th class="num">Leads</th></tr></thead>
+                <tbody>
+                {% for m in d.months %}<tr><td>{{ m.full_label }}</td><td class="num">{{ m.count }}</td></tr>{% endfor %}
+                </tbody>
+            </table>
+        </article>
+
+        <!-- Pipeline -->
+        <article class="rd-card">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Lead pipeline</h2>
+                    <p>{{ d.leads_total }} total</p>
+                </div>
+            </header>
+
+            <ul class="rd-pipeline">
+                {% for stage in d.pipeline %}
+                <li>
+                    <a href="{% url 'admin:base_contactmessage_changelist' %}{{ stage.url_filter }}">
+                        <span class="rd-status rd-status-{{ stage.key }}">
+                            {% if stage.key == "new" %}<i class="fas fa-circle-dot"></i>
+                            {% elif stage.key == "replied" %}<i class="fas fa-reply"></i>
+                            {% elif stage.key == "won" %}<i class="fas fa-circle-check"></i>
+                            {% else %}<i class="fas fa-circle-xmark"></i>{% endif %}
+                            {{ stage.label }}
+                        </span>
+                        <strong>{{ stage.count }}</strong>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <!-- Budgets -->
+        <article class="rd-card">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Budgets clients choose</h2>
+                    <p>From the contact form</p>
+                </div>
+            </header>
+            <ul class="rd-hbars">
+                {% for b in d.budgets %}
+                <li data-tip="{{ b.label }}: {{ b.count }} lead{{ b.count|pluralize }}" tabindex="0">
+                    <div class="rd-hbar-top"><span>{{ b.label }}</span><strong>{{ b.count }}</strong></div>
+                    <div class="rd-hbar-track"><span style="width: {% if b.count %}max({{ b.pct }}%, 4px){% else %}0{% endif %}"></span></div>
+                </li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <!-- Project types -->
+        <article class="rd-card">
+            <header class="rd-card-head">
+                <div>
+                    <h2>What clients want</h2>
+                    <p>Project type per lead</p>
+                </div>
+            </header>
+            <ul class="rd-hbars">
+                {% for t in d.project_types %}
+                <li data-tip="{{ t.label }}: {{ t.count }} lead{{ t.count|pluralize }}" tabindex="0">
+                    <div class="rd-hbar-top"><span>{{ t.label }}</span><strong>{{ t.count }}</strong></div>
+                    <div class="rd-hbar-track"><span style="width: {% if t.count %}max({{ t.pct }}%, 4px){% else %}0{% endif %}"></span></div>
+                </li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <!-- Content -->
+        <article class="rd-card">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Website content</h2>
+                    <p>What visitors can see</p>
+                </div>
+            </header>
+            <div class="rd-mini-stats">
+                <a href="{% url 'admin:base_project_changelist' %}">
+                    <i class="fas fa-briefcase"></i>
+                    <strong>{{ d.projects_total }}</strong>
+                    <span>Projects · {{ d.projects_featured }} featured</span>
+                </a>
+                <a href="{% url 'admin:base_post_changelist' %}">
+                    <i class="fas fa-pen-nib"></i>
+                    <strong>{{ d.posts_published }}</strong>
+                    <span>Articles{% if d.posts_draft %} · {{ d.posts_draft }} draft{{ d.posts_draft|pluralize }}{% endif %}</span>
+                </a>
+                <a href="{% url 'admin:base_testimonial_changelist' %}?is_published__exact=0">
+                    <i class="fas fa-comment-dots"></i>
+                    <strong>{{ d.reviews_pending }}</strong>
+                    <span>Reviews to approve</span>
+                </a>
+                <a href="{% url 'estimate' %}" target="_blank" rel="noopener">
+                    <i class="fas fa-calculator"></i>
+                    <strong><i class="fas fa-arrow-up-right-from-square rd-ext"></i></strong>
+                    <span>Price estimator</span>
+                </a>
+            </div>
+        </article>
+
+
+        <!-- Recent leads -->
+        <article class="rd-card rd-span-3">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Latest enquiries</h2>
+                    <p>Newest first</p>
+                </div>
+                <a href="{% url 'admin:base_contactmessage_changelist' %}" class="rd-link-btn">View all <i class="fas fa-arrow-right"></i></a>
+            </header>
+
+            {% if d.recent_leads %}
+            <div class="rd-table-wrap">
+                <table class="rd-table">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Needs</th>
+                            <th>Budget</th>
+                            <th>Status</th>
+                            <th>Received</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for lead in d.recent_leads %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'admin:base_contactmessage_change' lead.pk %}" class="rd-client">
+                                    <span class="rd-avatar">{{ lead.name|first|upper }}</span>
+                                    <span>
+                                        <strong>{{ lead.name }}</strong>
+                                        <small>{{ lead.subject|truncatechars:42 }}</small>
+                                    </span>
+                                </a>
+                            </td>
+                            <td>{{ lead.get_project_type_display|default:"—" }}</td>
+                            <td>{{ lead.get_budget_display|default:"—" }}</td>
+                            <td><span class="rd-status rd-status-{{ lead.status }}">{{ lead.get_status_display }}</span></td>
+                            <td class="rd-muted">{{ lead.created_at|timesince }} ago</td>
+                            <td class="num">
+                                <a href="mailto:{{ lead.email }}?subject=Re: {{ lead.subject|urlencode }}" class="rd-icon-btn" title="Reply by email" aria-label="Reply to {{ lead.name }} by email">
+                                    <i class="fas fa-reply"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="rd-empty">
+                <i class="fas fa-inbox"></i>
+                <p>No enquiries yet. When someone fills the contact form, they'll show up here.</p>
+            </div>
+            {% endif %}
+        </article>
+
+    </section>
+
+</div>
+
+<div class="rd-tooltip" id="rdTooltip" role="tooltip" hidden></div>
+
+{% endblock %}

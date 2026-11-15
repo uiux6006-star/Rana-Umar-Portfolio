@@ -1,0 +1,27 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block footer %}
+{% if not is_popup %}
+<footer class="app-footer rd-footer">
+    <span>© {% now "Y" %} Rana Umar · Studio</span>
+    <a href="{% url 'home' %}" target="_blank" rel="noopener">View website <i class="fas fa-arrow-up-right-from-square"></i></a>
+</footer>
+{% endif %}
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<!-- Use the same light/dark choice as the public website. -->
+<script>
+    (function () {
+        var theme = null;
+        try { theme = localStorage.getItem("theme"); } catch (e) {}
+        if (theme !== "light" && theme !== "dark") {
+            theme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        document.documentElement.setAttribute("data-bs-theme", theme);
+    })();
+</script>
+{% endblock %}

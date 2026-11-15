@@ -5,6 +5,11 @@
 {{ project.title }} | Rana Umar Developer
 {% endblock %}
 
+{% block meta_description %}{{ project.description|striptags|truncatechars:155 }}{% endblock %}
+{% block og_title %}{{ project.title }} | Rana Umar{% endblock %}
+{% block og_description %}{{ project.description|striptags|truncatechars:200 }}{% endblock %}
+{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ project.image.url }}{% endblock %}
+
 
 {% block content %}
 
@@ -244,6 +249,28 @@ Built With
 </div>
 
 
+{% if project.client %}
+<div class="col-lg-{% if project.duration %}6{% else %}12{% endif %}">
+<div class="detail-card">
+<i class="fas fa-user-tie"></i>
+<h4>Client</h4>
+<p>{{ project.client }}</p>
+</div>
+</div>
+{% endif %}
+
+
+{% if project.duration %}
+<div class="col-lg-{% if project.client %}6{% else %}12{% endif %}">
+<div class="detail-card">
+<i class="fas fa-clock"></i>
+<h4>Timeline</h4>
+<p>{{ project.duration }}</p>
+</div>
+</div>
+{% endif %}
+
+
 
 </div>
 
@@ -331,6 +358,114 @@ Technologies Used
 
 
 </section>
+
+
+
+{% if project.has_case_study %}
+
+<!-- ================= CASE STUDY ================= -->
+
+<section class="py-5">
+
+<div class="container">
+
+<div class="text-center mb-5" data-aos="fade-up">
+    <span class="section-badge">
+        <i class="fas fa-book-open"></i>
+        CASE STUDY
+    </span>
+    <h2 class="fw-bold mt-3">How This Project <span class="text-warning">Came Together</span></h2>
+</div>
+
+<div class="case-study">
+
+    {% if project.problem %}
+    <div class="case-step" data-aos="fade-up">
+        <div class="case-step-icon"><i class="fas fa-triangle-exclamation"></i></div>
+        <div>
+            <span class="case-step-label">01 · The Problem</span>
+            <p>{{ project.problem|linebreaksbr }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if project.solution %}
+    <div class="case-step" data-aos="fade-up">
+        <div class="case-step-icon"><i class="fas fa-lightbulb"></i></div>
+        <div>
+            <span class="case-step-label">02 · The Solution</span>
+            <p>{{ project.solution|linebreaksbr }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if project.result %}
+    <div class="case-step case-step-result" data-aos="fade-up">
+        <div class="case-step-icon"><i class="fas fa-chart-line"></i></div>
+        <div>
+            <span class="case-step-label">03 · The Result</span>
+            <p>{{ project.result|linebreaksbr }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+</div>
+
+</section>
+
+{% endif %}
+
+
+
+{% with gallery=project.gallery.all %}
+{% if gallery %}
+
+<!-- ================= GALLERY ================= -->
+
+<section class="py-5">
+
+<div class="container">
+
+<div class="text-center mb-5" data-aos="fade-up">
+    <span class="section-badge">
+        <i class="fas fa-images"></i>
+        SCREENSHOTS
+    </span>
+    <h2 class="fw-bold mt-3">Project <span class="text-warning">Gallery</span></h2>
+</div>
+
+<div class="project-gallery">
+    {% for shot in gallery %}
+    <button type="button"
+            class="gallery-item"
+            data-full="{{ shot.image.url }}"
+            data-caption="{{ shot.caption }}"
+            data-aos="zoom-in">
+        <img src="{{ shot.image.url }}" alt="{{ shot.caption|default:project.title }}" loading="lazy">
+        {% if shot.caption %}<span>{{ shot.caption }}</span>{% endif %}
+    </button>
+    {% endfor %}
+</div>
+
+</div>
+
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" hidden>
+    <button type="button" class="lightbox-close" aria-label="Close"><i class="fas fa-xmark"></i></button>
+    <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <figure>
+        <img src="" alt="">
+        <figcaption></figcaption>
+    </figure>
+    <button type="button" class="lightbox-nav lightbox-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+{% endif %}
+{% endwith %}
 
 
 
@@ -501,6 +636,12 @@ class="btn btn-warning btn-lg">
 
 <i class="fas fa-paper-plane"></i>
 Start Your Project
+</a>
+
+<a href="{% url 'estimate' %}"
+class="btn btn-outline-warning btn-lg ms-sm-2 mt-2 mt-sm-0">
+<i class="fas fa-calculator"></i>
+Estimate The Price
 </a>
 
 </div>
