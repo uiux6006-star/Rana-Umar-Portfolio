@@ -185,6 +185,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+    // Click (or Enter / Space) makes the robot do a full 360° spin.
+    if (robot && !prefersReducedMotion) {
+
+        const spin = () => {
+            if (robot.classList.contains("is-spinning")) return;
+            robot.classList.add("is-spinning");
+        };
+
+        robot.addEventListener("click", spin);
+        robot.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                spin();
+            }
+        });
+
+        robot.querySelector(".robot-spin")?.addEventListener("animationend", (e) => {
+            if (e.animationName === "robotSpin360") robot.classList.remove("is-spinning");
+        });
+
+    }
+
 
     /* ==========================================
             SCROLL ANIMATIONS (AOS)
@@ -385,55 +407,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     });
-
-
-
-    /* ==========================================
-            PROJECT FILTER
-    ========================================== */
-
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    const projectItems = document.querySelectorAll(".project-item");
-    const projectSearch = document.getElementById("projectSearch");
-    const searchEmpty = document.getElementById("projectSearchEmpty");
-
-    let activeFilter = "all";
-
-    function applyProjectFilters() {
-
-        const query = projectSearch ? projectSearch.value.trim().toLowerCase() : "";
-        let visible = 0;
-
-        projectItems.forEach(project => {
-            const matchesCategory = activeFilter === "all" || project.classList.contains(activeFilter);
-            const matchesSearch = !query || (project.dataset.search || "").includes(query);
-            const show = matchesCategory && matchesSearch;
-
-            project.style.display = show ? "block" : "none";
-            if (show) visible++;
-        });
-
-        if (searchEmpty) searchEmpty.hidden = visible > 0 || !projectItems.length;
-
-    }
-
-    filterButtons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            filterButtons.forEach(btn => btn.classList.remove("active"));
-            button.classList.add("active");
-
-            activeFilter = button.dataset.filter;
-            applyProjectFilters();
-
-        });
-
-    });
-
-    if (projectSearch) {
-        projectSearch.addEventListener("input", applyProjectFilters);
-    }
 
 
 

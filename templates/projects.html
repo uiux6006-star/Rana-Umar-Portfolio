@@ -8,425 +8,208 @@ Projects | Rana Umar Developer
 {% block meta_description %}Websites, Django apps and Python projects built by Rana Umar, with live demos and source code.{% endblock %}
 {% block og_title %}Projects by Rana Umar | Full Stack Developer{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/projects.css' %}">
+{% endblock %}
+
 
 {% block content %}
 
 
-<!-- ================= PAGE HEADER START ================= -->
-
-<!--==============================
-        PROJECTS HEADER
-===============================-->
-
-<section class="projects-page-header">
-
-<div class="container text-center">
-
-
-<span class="header-badge">
-
-<i class="fas fa-code"></i>
-
-MY WORK
-
-</span>
-
-
-
-<h1>
-
-My Featured <span>Projects</span>
-
-</h1>
-
-
-
-<p>
-
-A showcase of my creative work including
-modern websites, Python applications and
-Django based solutions built with clean code,
-responsive design and professional UI.
-
-</p>
-
-
-<div class="header-line"></div>
-
-
-</div>
-
-</section>
-
-<!-- ================= PAGE HEADER END ================= -->
-
-
-
-
-<!--==============================
-        PROJECT INTRO
-===============================-->
-
-<section class="project-intro py-5">
-
-<div class="container">
-
-<div class="row align-items-center g-5">
-
-<!-- Left Content -->
-
-<div class="col-lg-6" data-aos="fade-right">
-
-<span class="section-badge">
-
-<i class="fas fa-code"></i>
-
-My Development Journey
-
-</span>
-
-<h2 class="mt-4">
-
-Building <span class="text-warning">Modern Digital Solutions</span>
-
-</h2>
-
-<p class="mt-4">
-
-I specialize in developing modern web applications,
-responsive frontend websites, and Python-based systems
-that combine clean design with practical functionality.
-Every project reflects my commitment to quality,
-performance, and user experience.
-
-</p>
-
-<p>
-
-From business websites to management systems,
-I enjoy transforming ideas into elegant,
-professional, and scalable digital products using
-the latest web technologies.
-
-</p>
-
-<div class="mt-4">
-
-<a href="#projects" class="btn btn-gold me-3">
-
-<i class="fas fa-rocket"></i>
-
-View Projects
-
-</a>
-
-<a href="{% static 'cv/Rana_Umar_CV.pdf' %}"
-
-class="btn btn-outline-gold" download>
-
-<i class="fas fa-download"></i>
-
-Download CV
-
-</a>
-
-</div>
-
-</div>
-
-<!-- Right Image -->
-
-<div class="col-lg-6 text-center" data-aos="fade-left">
-
-<img src="{% static 'images/projects.jpg' %}"
-
-class="img-fluid project-image"
-
-alt="Projects">
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!--------filter buttons--------------->
-
-<!-- ================= FILTER BUTTONS ================= -->
-
-<section class="pb-4">
+<!--=================================
+        PROJECTS HERO
+==================================-->
+
+<section class="pj-hero no-aos" aria-labelledby="pjTitle">
+
+    <div class="hero-bg" aria-hidden="true">
+        <div class="hero-grid"></div>
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-2"></div>
+    </div>
 
     <div class="container">
 
-        <div class="text-center">
+        <div class="pj-hero-grid">
 
-            <button class="filter-btn active" data-filter="all">
-                All
-            </button>
+            <div class="pj-hero-copy">
 
-            <button class="filter-btn" data-filter="python">
-                Python
-            </button>
+                <p class="hp-eyebrow" data-aos="fade-up">
+                    <i class="fas fa-layer-group"></i> MY WORK
+                </p>
 
-            <button class="filter-btn" data-filter="django">
-                Django
-            </button>
+                <h1 id="pjTitle" class="pj-title" data-aos="fade-up" data-aos-delay="80">
+                    Selected work,<br>
+                    <span>built to perform.</span>
+                </h1>
 
-            <button class="filter-btn" data-filter="frontend">
-                Frontend
-            </button>
+                <p class="pj-lead" data-aos="fade-up" data-aos-delay="160">
+                    Business websites, online stores, Django web apps and Python systems.
+                    Every project is designed with care, built with clean code and made
+                    to work beautifully on every screen.
+                </p>
+
+                <ul class="pj-stats" data-aos="fade-up" data-aos-delay="220">
+                    <li><strong>{{ projects|length|stringformat:"02d" }}</strong><span>Projects</span></li>
+                    <li><strong>{{ live_count|stringformat:"02d" }}</strong><span>Live sites</span></li>
+                    <li><strong>{{ tech_count|stringformat:"02d" }}</strong><span>Technologies</span></li>
+                </ul>
+
+                <div class="pj-actions" data-aos="fade-up" data-aos-delay="280">
+                    <a href="#work" class="hp-btn hp-btn-primary">
+                        Browse projects <i class="fas fa-arrow-down"></i>
+                    </a>
+                    <a href="{% url 'estimate' %}" class="hp-btn">
+                        <i class="fas fa-calculator"></i> Price my project
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Fanned stack of the latest projects -->
+            {% if projects %}
+            <div class="pj-stack" data-aos="zoom-in" data-aos-delay="150" aria-hidden="true">
+                {% for project in projects|slice:":3" %}
+                <a href="{% url 'project_detail' project.slug %}" class="pj-stack-card pj-stack-{{ forloop.counter }}" tabindex="-1">
+                    <span class="hp-browser"><i></i><i></i><i></i><em>{{ project.title|lower|cut:" " }}</em></span>
+                    <img src="{{ project.image.url }}" alt="" loading="eager">
+                </a>
+                {% endfor %}
+                <span class="pj-stack-badge">
+                    <span class="sf-dot"></span> Latest: {{ projects.0.title }}
+                </span>
+            </div>
+            {% endif %}
 
         </div>
-
-        <div class="project-search">
-            <i class="fas fa-magnifying-glass"></i>
-            <input type="search"
-                   id="projectSearch"
-                   placeholder="Search by name or technology, e.g. Django, Bootstrap"
-                   aria-label="Search projects">
-        </div>
-
-        <p class="project-search-empty" id="projectSearchEmpty" hidden>
-            No projects match your search.
-        </p>
 
     </div>
 
 </section>
 
 
+<!--=================================
+        WORK GRID
+==================================-->
+
+<section class="pj-work no-aos" id="work">
+
+    <div class="container">
+
+        <!-- Toolbar: filters + search -->
+        <div class="pj-toolbar" id="pjToolbar">
+
+            <div class="pj-filters" role="group" aria-label="Filter projects by category">
+                <button type="button" class="pj-filter is-active" data-filter="all" aria-pressed="true">
+                    All <span>{{ projects|length }}</span>
+                </button>
+                {% for c in categories %}
+                <button type="button" class="pj-filter" data-filter="{{ c.value }}" aria-pressed="false">
+                    {{ c.label }} <span>{{ c.count }}</span>
+                </button>
+                {% endfor %}
+            </div>
+
+            <label class="pj-search">
+                <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="search"
+                       id="pjSearch"
+                       placeholder="Search name or tech, e.g. Django"
+                       aria-label="Search projects"
+                       autocomplete="off">
+                <kbd aria-hidden="true">/</kbd>
+            </label>
+
+        </div>
+
+        <p class="pj-result" aria-live="polite">
+            Showing <strong id="pjCount">{{ projects|length }}</strong> of {{ projects|length }} projects
+        </p>
+
+
+        <div class="pj-grid" id="pjGrid">
+
+            {% for project in projects %}
+            <article class="pj-card hp-spot"
+                     data-category="{{ project.category }}"
+                     data-search="{{ project.title|lower }} {{ project.technologies|lower }} {{ project.category }} {{ project.client|lower }}"
+                     data-aos="fade-up"
+                     data-aos-delay="{% cycle '0' '80' '160' %}">
+
+                <a href="{% url 'project_detail' project.slug %}" class="pj-visual" aria-label="Open {{ project.title }}">
+                    <span class="hp-browser" aria-hidden="true"><i></i><i></i><i></i><em>{{ project.title|lower|cut:" " }}</em></span>
+                    <span class="pj-shot">
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
+                    </span>
+                    <span class="pj-overlay" aria-hidden="true">
+                        <span>View case study <i class="fas fa-arrow-right"></i></span>
+                    </span>
+                    <span class="pj-num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
+                    {% if project.live_demo %}<span class="pj-live" aria-hidden="true"><span class="sf-dot"></span> LIVE</span>{% endif %}
+                </a>
+
+                <div class="pj-body">
+
+                    <p class="pj-type">
+                        {{ project.get_category_display }}
+                        {% if project.client %}<span>· {{ project.client }}</span>{% endif %}
+                    </p>
+
+                    <h2 class="pj-name">
+                        <a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a>
+                    </h2>
+
+                    <p class="pj-desc">{{ project.description|truncatewords:22 }}</p>
+
+                    <div class="hp-chips">
+                        {% for tech in project.tech_list|slice:":4" %}<span>{{ tech }}</span>{% endfor %}
+                        {% if project.tech_list|length > 4 %}<span class="pj-more">+{{ project.tech_list|length|add:"-4" }}</span>{% endif %}
+                    </div>
+
+                    <div class="pj-links">
+                        <a href="{% url 'project_detail' project.slug %}" class="pj-link-main">
+                            Details <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                        <span class="pj-icons">
+                            {% if project.live_demo %}
+                            <a href="{{ project.live_demo }}" target="_blank" rel="noopener" aria-label="Live demo of {{ project.title }}" title="Live demo">
+                                <i class="fas fa-arrow-up-right-from-square"></i>
+                            </a>
+                            {% endif %}
+                            {% if project.github_link %}
+                            <a href="{{ project.github_link }}" target="_blank" rel="noopener" aria-label="Source code of {{ project.title }} on GitHub" title="Source code">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                </div>
+
+            </article>
+            {% empty %}
+            <p class="hp-empty">Projects are coming soon.</p>
+            {% endfor %}
 
+        </div>
 
 
+        <div class="pj-empty" id="pjEmpty" hidden>
+            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+            <h3>No projects match that</h3>
+            <p>Try another word or category, or tell me what you need built.</p>
+            <button type="button" class="hp-btn" id="pjReset">
+                <i class="fas fa-rotate-left"></i> Clear filters
+            </button>
+        </div>
 
-<!--============ PROJECT CARDS ============-->
-
-<section class="py-5" id="projects">
-
-<div class="container">
-
-
-<div class="text-center mb-5">
-
-<h5 class="text-warning">
-FEATURED PROJECTS
-</h5>
-
-
-<h2 class="fw-bold">
-My Recent Work
-</h2>
-
-
-</div>
-
-
-
-<div class="row g-4">
-
-
-
-{% for project in projects %}
-
-
-<div class="col-lg-4 col-md-6 project-item {{project.category}}"
-     data-search="{{ project.title|lower }} {{ project.technologies|lower }} {{ project.category }}">
-
-
-<div class="card project-card h-100">
-
-
-
-<img src="{{project.image.url}}"
-
-class="card-img-top"
-
-alt="{{project.title}}"
-
-loading="lazy">
-
-
-
-
-
-<div class="card-body d-flex flex-column">
-
-
-
-<h4 class="text-warning">
-
-{{project.title}}
-
-</h4>
-
-
-
-
-<p>
-
-{{project.description|truncatewords:20}}
-
-</p>
-
-
-
-
-
-<div class="mb-3">
-
-
-<span class="badge bg-warning text-dark me-2">
-
-{{project.category|title}}
-
-</span>
-
-
-
-
-{% for tech in project.tech_list %}
-<span class="badge bg-dark border border-warning me-1 mb-1">
-{{ tech }}
-</span>
-{% endfor %}
-
-
-
-</div>
-
-
-
-
-
-<div class="mt-auto">
-
-
-<div class="d-grid gap-2">
-
-
-
-
-
-<a href="{% url 'project_detail' project.slug %}"
-
-class="btn btn-warning">
-
-
-<i class="fas fa-folder-open me-2"></i>
-
-View Details
-
-
-</a>
-
-
-
-
-
-{% if project.live_demo %}
-
-
-<a href="{{project.live_demo}}"
-
-target="_blank"
-
-class="btn btn-outline-warning">
-
-
-<i class="fas fa-eye me-2"></i>
-
-Live Demo
-
-
-</a>
-
-
-{% endif %}
-
-
-
-
-
-
-
-{% if project.github_link %}
-
-
-<a href="{{project.github_link}}"
-
-target="_blank"
-
-class="btn btn-outline-light">
-
-
-<i class="fab fa-github me-2"></i>
-
-GitHub
-
-
-</a>
-
-
-{% endif %}
-
-
-
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-{% empty %}
-
-
-
-<div class="col-12 text-center">
-
-
-<h3 class="text-warning">
-
-No Projects Added Yet
-
-</h3>
-
-
-<p>
-
-Add projects from Django Admin Panel.
-
-</p>
-
-
-</div>
-
-
-
-{% endfor %}
-
-
-
-</div>
-
-
-</div>
-
+    </div>
 
 </section>
 
+
+<script src="{% static 'js/home.js' %}" defer></script>
+<script src="{% static 'js/projects.js' %}" defer></script>
 
 {% endblock %}

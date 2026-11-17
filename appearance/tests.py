@@ -15,8 +15,8 @@ def make_admin(username="boss"):
 
 class ThemeDefinitionTests(TestCase):
 
-    def test_there_are_eight_themes_with_original_first(self):
-        self.assertEqual(len(THEMES), 8)
+    def test_there_are_nine_themes_with_original_first(self):
+        self.assertEqual(len(THEMES), 9)
         self.assertEqual(list(THEMES)[0], ORIGINAL)
 
     def test_every_theme_is_readable_in_both_modes(self):
@@ -70,6 +70,14 @@ class PublicSiteTests(TestCase):
         self.assertContains(self.client.get(reverse("home")), "Playfair+Display")
         SiteTheme.load().apply("ocean-teal")
         self.assertNotContains(self.client.get(reverse("home")), "Playfair+Display")
+
+    def test_sora_font_is_loaded_only_for_obsidian_emerald(self):
+        SiteTheme.load().apply("obsidian-emerald")
+        response = self.client.get(reverse("home"))
+        self.assertContains(response, "family=Sora")
+        self.assertContains(response, "--accent:#34e0a1")
+        SiteTheme.load().apply("ocean-teal")
+        self.assertNotContains(self.client.get(reverse("home")), "family=Sora")
 
     def test_theme_persists_across_requests(self):
         SiteTheme.load().apply("neon-pink")

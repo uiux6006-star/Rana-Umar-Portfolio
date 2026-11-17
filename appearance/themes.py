@@ -14,7 +14,7 @@ HEX_RE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
 
 # ---------------------------------------------------------------------------
-#  The 8 themes
+#  The 9 themes
 #  bg / surface / primary / accent / text / muted  -> the brand palette
 #  font / radius / tracking / glow                  -> the "personality"
 # ---------------------------------------------------------------------------
@@ -28,6 +28,15 @@ THEMES = {
         "primary": "#69d7ff", "accent": "#a5e8ff",
         "text": "#eef3ff", "muted": "#8f9db6",
         "font": "manrope", "radius": "sharp",
+    },
+    "obsidian-emerald": {
+        "name": "Obsidian Emerald",
+        "tagline": "Jet-black obsidian, emerald glow and champagne gold. Quiet, ultra premium luxury.",
+        "tags": ["luxury", "tech"],
+        "bg": "#040807", "surface": "#0b1411",
+        "primary": "#34e0a1", "accent": "#e8cf8f",
+        "text": "#f3f7f4", "muted": "#94a89f",
+        "font": "sora", "radius": "soft",
     },
     "royal-gold": {
         "name": "Royal Gold Luxury",
@@ -106,6 +115,11 @@ FONTS = {
         "heading": '"Playfair Display", Georgia, serif',
         "tracking": "-.02em",
         "google": "family=Playfair+Display:wght@600;700;800",
+    },
+    "sora": {
+        "heading": '"Sora", "Manrope", "Segoe UI", sans-serif',
+        "tracking": "-.05em",
+        "google": "family=Sora:wght@600;700;800",
     },
     "mono": {
         "heading": '"DM Mono", ui-monospace, monospace',

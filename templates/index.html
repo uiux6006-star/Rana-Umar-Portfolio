@@ -9,6 +9,11 @@ Home | Rana Umar Developer
 {% endblock %}
 
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+
 {% block content %}
 
 
@@ -128,28 +133,41 @@ Home | Rana Umar Developer
     <div class="robot-label"><span class="label-line"></span> DIGITAL CREATOR</div>
 
     <!-- Built with HTML/CSS only, so it always shows (no 3D library needed). -->
-    <div class="robot-figure" id="robotFigure" role="img" aria-label="Animated robot mascot">
+    <div class="robot-figure" id="robotFigure" role="button" tabindex="0"
+         aria-label="Robot mascot. Press to make it spin." title="Click me!">
         <div class="robot-aura"></div>
         <div class="robot-shadow"></div>
-        <div class="robot-antenna"><i></i></div>
-        <div class="robot-head">
-            <div class="ear ear-left"></div>
-            <div class="ear ear-right"></div>
-            <div class="face-plate"><i class="eye eye-left"></i><i class="eye eye-right"></i><span class="mouth"></span></div>
-            <div class="head-highlight"></div>
+
+        <!-- Everything inside .robot-spin turns together in 3D -->
+        <div class="robot-spin">
+            <div class="robot-antenna"><i></i></div>
+            <div class="robot-head">
+                <div class="ear ear-left"></div>
+                <div class="ear ear-right"></div>
+                <div class="face-plate"><i class="eye eye-left"></i><i class="eye eye-right"></i><span class="mouth"></span></div>
+                <div class="head-highlight"></div>
+            </div>
+            <div class="robot-neck"></div>
+            <div class="robot-body">
+                <div class="shoulder shoulder-left"></div>
+                <div class="shoulder shoulder-right"></div>
+                <div class="chest-glass"><span>RUD</span><i></i><i></i><i></i></div>
+                <div class="body-line"></div>
+            </div>
+            <!-- Arms: the forearm bends at the elbow -->
+            <div class="robot-arm arm-left">
+                <div class="upper-arm"></div><div class="elbow"></div>
+                <div class="robot-forearm"><div class="lower-arm"></div><div class="hand"><i></i><i></i><i></i><b></b></div></div>
+            </div>
+            <div class="robot-arm arm-right">
+                <div class="upper-arm"></div><div class="elbow"></div>
+                <div class="robot-forearm"><div class="lower-arm"></div><div class="hand"><i></i><i></i><i></i><b></b></div></div>
+            </div>
+            <div class="robot-waist"></div>
+            <div class="robot-leg leg-left"><div class="knee"></div><div class="boot"></div></div>
+            <div class="robot-leg leg-right"><div class="knee"></div><div class="boot"></div></div>
         </div>
-        <div class="robot-neck"></div>
-        <div class="robot-body">
-            <div class="shoulder shoulder-left"></div>
-            <div class="shoulder shoulder-right"></div>
-            <div class="chest-glass"><span>RUD</span><i></i><i></i><i></i></div>
-            <div class="body-line"></div>
-        </div>
-        <div class="robot-arm arm-left"><div class="upper-arm"></div><div class="elbow"></div><div class="lower-arm"></div><div class="hand"><i></i><i></i><i></i><b></b></div></div>
-        <div class="robot-arm arm-right"><div class="upper-arm"></div><div class="elbow"></div><div class="lower-arm"></div><div class="hand"><i></i><i></i><i></i><b></b></div></div>
-        <div class="robot-waist"></div>
-        <div class="robot-leg leg-left"><div class="knee"></div><div class="boot"></div></div>
-        <div class="robot-leg leg-right"><div class="knee"></div><div class="boot"></div></div>
+
         <div class="code-holo">&lt;/&gt;</div>
     </div>
 
@@ -193,165 +211,149 @@ Home | Rana Umar Developer
 
 
 <!--=================================
-        SERVICES FOR CLIENTS
+        SERVICES (bento grid)
 ==================================-->
 
-<section class="home-section" id="services">
-
+<section class="hp-section" id="services">
 <div class="container">
 
-<div class="section-heading text-center" data-aos="fade-up">
-    <span class="section-badge">
-        <i class="fas fa-briefcase"></i>
-        WHAT I CAN BUILD FOR YOU
-    </span>
-    <h2>Websites That <span>Grow Your Business</span></h2>
-    <p>
-        Whether you're launching a brand, selling online or managing
-        your operations, I'll build the right solution for you.
-    </p>
-</div>
+    <header class="hp-head" data-aos="fade-up">
+        <p class="hp-eyebrow"><i class="fas fa-briefcase" aria-hidden="true"></i> WHAT I CAN BUILD FOR YOU</p>
+        <h2>Websites that <span>grow your business</span></h2>
+        <p>Launching a brand, selling online or running your operations, I'll build the right solution and keep it simple for you.</p>
+    </header>
 
-<div class="row g-4 mt-4">
+    <div class="hp-bento">
 
-    <div class="col-lg-3 col-md-6" data-aos="fade-up">
-        <div class="offer-card">
-            <div class="offer-icon"><i class="fas fa-store"></i></div>
-            <h4>Business Websites</h4>
-            <p>A professional online presence that builds trust and brings enquiries for your shop, brand or service.</p>
-            <ul>
-                <li>Mobile-friendly design</li>
-                <li>WhatsApp &amp; contact forms</li>
-                <li>Google-ready SEO basics</li>
-            </ul>
-        </div>
-    </div>
+        <!-- Online stores (large) -->
+        <article class="hp-tile hp-tile-xl hp-spot" data-aos="fade-up">
+            <div class="hp-tile-copy">
+                <span class="hp-tile-icon"><i class="fas fa-cart-shopping" aria-hidden="true"></i></span>
+                <h3>Online Stores</h3>
+                <p>Show your products beautifully and let customers browse, add to cart and order with ease. JazzCash, Easypaisa and card payments available.</p>
+                <ul class="hp-ticks">
+                    <li>Product catalogue &amp; categories</li>
+                    <li>Cart, checkout &amp; order emails</li>
+                    <li>Admin panel to manage stock</li>
+                </ul>
+                <a href="{% url 'estimate' %}" class="hp-price">from <strong>Rs {{ start_prices.ecommerce|floatformat:"0g" }}</strong> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+            <div class="hp-mock-store" aria-hidden="true">
+                <div class="hp-mock-bar"><i></i><i></i><i></i><span>yourstore.pk</span></div>
+                <div class="hp-mock-products">
+                    <span><b></b><em></em><small>Rs 2,499</small></span>
+                    <span><b></b><em></em><small>Rs 3,999</small></span>
+                    <span><b></b><em></em><small>Rs 1,799</small></span>
+                    <span><b></b><em></em><small>Rs 5,499</small></span>
+                </div>
+                <div class="hp-mock-cart"><i class="fas fa-bag-shopping"></i> 3 items · Checkout</div>
+            </div>
+        </article>
 
-    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="offer-card">
-            <div class="offer-icon"><i class="fas fa-cart-shopping"></i></div>
-            <h4>Online Stores</h4>
-            <p>Show your products beautifully and let customers browse and order with ease.</p>
-            <ul>
-                <li>Product catalogue</li>
-                <li>Cart &amp; order flow</li>
-                <li>Easy admin panel</li>
-            </ul>
-        </div>
-    </div>
+        <!-- Business websites -->
+        <article class="hp-tile hp-spot" data-aos="fade-up" data-aos-delay="80">
+            <span class="hp-tile-icon"><i class="fas fa-store" aria-hidden="true"></i></span>
+            <h3>Business Websites</h3>
+            <p>A professional online presence that builds trust and brings enquiries.</p>
+            <div class="hp-mock-site" aria-hidden="true">
+                <i></i><b></b><b></b><span><em></em><em></em></span>
+            </div>
+            <a href="{% url 'estimate' %}" class="hp-price">from <strong>Rs {{ start_prices.business|floatformat:"0g" }}</strong> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
 
-    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="offer-card">
-            <div class="offer-icon"><i class="fas fa-gears"></i></div>
-            <h4>Custom Web Apps</h4>
-            <p>Management systems for schools, clinics, inventory or anything your business runs on.</p>
-            <ul>
-                <li>Built with Django</li>
-                <li>Secure logins &amp; roles</li>
-                <li>Reports &amp; dashboards</li>
-            </ul>
-        </div>
-    </div>
+        <!-- Custom web apps -->
+        <article class="hp-tile hp-spot" data-aos="fade-up" data-aos-delay="160">
+            <span class="hp-tile-icon"><i class="fas fa-gears" aria-hidden="true"></i></span>
+            <h3>Custom Web Apps</h3>
+            <p>Management systems for schools, clinics or inventory, built with Django.</p>
+            <div class="hp-mock-chart" aria-hidden="true">
+                <i style="--h:45%"></i><i style="--h:70%"></i><i style="--h:55%"></i><i style="--h:90%"></i><i style="--h:65%"></i><i style="--h:80%"></i>
+            </div>
+            <a href="{% url 'estimate' %}" class="hp-price">from <strong>Rs {{ start_prices.webapp|floatformat:"0g" }}</strong> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
 
-    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="offer-card">
-            <div class="offer-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-            <h4>Redesign &amp; Fixes</h4>
+        <!-- Landing pages -->
+        <article class="hp-tile hp-spot" data-aos="fade-up" data-aos-delay="80">
+            <span class="hp-tile-icon"><i class="fas fa-rocket" aria-hidden="true"></i></span>
+            <h3>Landing Pages</h3>
+            <p>One focused page built to turn visitors into leads, fast.</p>
+            <a href="{% url 'estimate' %}" class="hp-price">from <strong>Rs {{ start_prices.landing|floatformat:"0g" }}</strong> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
+
+        <!-- Redesign -->
+        <article class="hp-tile hp-spot" data-aos="fade-up" data-aos-delay="160">
+            <span class="hp-tile-icon"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i></span>
+            <h3>Redesign &amp; Fixes</h3>
             <p>Give an old or slow website a modern look, better speed and a smooth mobile experience.</p>
-            <ul>
-                <li>Modern UI refresh</li>
-                <li>Speed improvements</li>
-                <li>Bug fixes</li>
-            </ul>
-        </div>
+            <a href="{% url 'contact' %}?type=redesign" class="hp-price">Get a free review <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
+
+        <!-- Estimator CTA -->
+        <a class="hp-tile hp-tile-cta" href="{% url 'estimate' %}" data-aos="fade-up" data-aos-delay="240">
+            <span class="hp-tile-icon"><i class="fas fa-calculator" aria-hidden="true"></i></span>
+            <h3>Not sure what it costs?</h3>
+            <p>Pick your pages and features and see a price range in seconds.</p>
+            <span class="hp-cta-go">Open the estimator <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+        </a>
+
     </div>
 
 </div>
-
-</div>
-
 </section>
 
 
 
 <!--=================================
-        FEATURED WORK
+        FEATURED WORK (showcase)
 ==================================-->
 
-<section class="home-section home-section-alt" id="featured">
-
+<section class="hp-section hp-alt" id="featured">
 <div class="container">
 
-<div class="section-heading text-center" data-aos="fade-up">
-    <span class="section-badge">
-        <i class="fas fa-star"></i>
-        FEATURED WORK
-    </span>
-    <h2>Recent <span>Projects</span></h2>
-    <p>A few things I've designed and built. Open any project to see the details.</p>
-</div>
+    <header class="hp-head" data-aos="fade-up">
+        <p class="hp-eyebrow"><i class="fas fa-star" aria-hidden="true"></i> FEATURED WORK</p>
+        <h2>Things I've <span>built</span></h2>
+        <p>A few projects I've designed and developed. Open any one to see the full case study.</p>
+    </header>
 
-<div class="row g-4 mt-4">
+    <div class="hp-showcase">
 
-{% for project in featured_projects %}
+        {% for project in featured_projects %}
+        <article class="hp-work{% if forloop.counter|divisibleby:2 %} is-reverse{% endif %}" data-aos="fade-up">
 
-<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{% widthratio forloop.counter0 1 100 %}">
+            <a href="{% url 'project_detail' project.slug %}" class="hp-work-visual" data-tilt aria-label="Open {{ project.title }}">
+                <span class="hp-browser" aria-hidden="true"><i></i><i></i><i></i><em>{{ project.title|lower|cut:" " }}</em></span>
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
+                <span class="hp-work-num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
+            </a>
 
-    <article class="work-card">
-
-        <a href="{% url 'project_detail' project.slug %}" class="work-thumb">
-            <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
-            <span class="work-category">{{ project.get_category_display }}</span>
-        </a>
-
-        <div class="work-body">
-
-            <h4>
-                <a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a>
-            </h4>
-
-            <p>{{ project.description|truncatewords:16 }}</p>
-
-            <div class="project-tech">
-                {% for tech in project.tech_list %}
-                <span>{{ tech }}</span>
-                {% endfor %}
+            <div class="hp-work-info">
+                <p class="hp-work-type">{{ project.get_category_display }}{% if project.client and project.client != "Personal project" and project.client != "Concept project" %} · {{ project.client }}{% endif %}</p>
+                <h3><a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a></h3>
+                <p>{{ project.description|truncatewords:34 }}</p>
+                <div class="hp-chips">
+                    {% for tech in project.tech_list|slice:":5" %}<span>{{ tech }}</span>{% endfor %}
+                </div>
+                <div class="hp-work-links">
+                    <a href="{% url 'project_detail' project.slug %}" class="hp-link-strong">View case study <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    {% if project.live_demo %}
+                    <a href="{{ project.live_demo }}" target="_blank" rel="noopener">Live demo <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    {% endif %}
+                </div>
             </div>
 
-            <div class="work-links">
-                <a href="{% url 'project_detail' project.slug %}">
-                    View Details <i class="fas fa-arrow-right"></i>
-                </a>
-                {% if project.live_demo %}
-                <a href="{{ project.live_demo }}" target="_blank" rel="noopener">
-                    Live Demo <i class="fas fa-arrow-up-right-from-square"></i>
-                </a>
-                {% endif %}
-            </div>
+        </article>
+        {% empty %}
+        <p class="hp-empty">Projects are coming soon.</p>
+        {% endfor %}
 
-        </div>
+    </div>
 
-    </article>
+    <p class="hp-center" data-aos="fade-up">
+        <a href="{% url 'projects' %}" class="hp-btn">See all {{ project_count }} projects <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+    </p>
 
 </div>
-
-{% empty %}
-
-<p class="text-center text-muted">Projects are coming soon.</p>
-
-{% endfor %}
-
-</div>
-
-<div class="text-center mt-5" data-aos="fade-up">
-    <a href="{% url 'projects' %}" class="btn btn-outline-gold btn-lg">
-        See All Projects
-        <i class="fas fa-arrow-right"></i>
-    </a>
-</div>
-
-</div>
-
 </section>
 
 
@@ -360,57 +362,43 @@ Home | Rana Umar Developer
         PROCESS
 ==================================-->
 
-<section class="home-section">
-
+<section class="hp-section" id="process">
 <div class="container">
 
-<div class="section-heading text-center" data-aos="fade-up">
-    <span class="section-badge">
-        <i class="fas fa-route"></i>
-        HOW IT WORKS
-    </span>
-    <h2>From Idea To <span>Launch</span></h2>
-    <p>A simple, transparent process, so you always know what's happening with your project.</p>
-</div>
+    <header class="hp-head" data-aos="fade-up">
+        <p class="hp-eyebrow"><i class="fas fa-route" aria-hidden="true"></i> HOW IT WORKS</p>
+        <h2>From idea to <span>launch</span></h2>
+        <p>A simple, transparent process, so you always know what's happening with your project.</p>
+    </header>
 
-<div class="row g-4 mt-4">
-
-    <div class="col-lg-3 col-md-6" data-aos="fade-up">
-        <div class="step-card">
-            <span class="step-number">01</span>
-            <h4>Free Discussion</h4>
+    <ol class="hp-process" id="hpProcess">
+        <li data-aos="fade-up">
+            <span class="hp-step-icon"><i class="fas fa-comments" aria-hidden="true"></i></span>
+            <span class="hp-step-num">01</span>
+            <h3>Free Discussion</h3>
             <p>Tell me about your business and goals. We agree on features, timeline and budget.</p>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="step-card">
-            <span class="step-number">02</span>
-            <h4>Design</h4>
+        </li>
+        <li data-aos="fade-up" data-aos-delay="100">
+            <span class="hp-step-icon"><i class="fas fa-pen-ruler" aria-hidden="true"></i></span>
+            <span class="hp-step-num">02</span>
+            <h3>Design</h3>
             <p>I design the look and layout, and you give feedback before any code is written.</p>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="step-card">
-            <span class="step-number">03</span>
-            <h4>Development</h4>
+        </li>
+        <li data-aos="fade-up" data-aos-delay="200">
+            <span class="hp-step-icon"><i class="fas fa-code" aria-hidden="true"></i></span>
+            <span class="hp-step-num">03</span>
+            <h3>Development</h3>
             <p>I build your website with regular progress updates so you can see it come to life.</p>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="step-card">
-            <span class="step-number">04</span>
-            <h4>Launch &amp; Support</h4>
+        </li>
+        <li data-aos="fade-up" data-aos-delay="300">
+            <span class="hp-step-icon"><i class="fas fa-rocket" aria-hidden="true"></i></span>
+            <span class="hp-step-num">04</span>
+            <h3>Launch &amp; Support</h3>
             <p>Your site goes live, and I help you with questions and small fixes after launch.</p>
-        </div>
-    </div>
+        </li>
+    </ol>
 
 </div>
-
-</div>
-
 </section>
 
 
@@ -419,168 +407,136 @@ Home | Rana Umar Developer
         WHY WORK WITH ME
 ==================================-->
 
-<section class="home-section home-section-alt">
-
+<section class="hp-section hp-alt" id="why">
 <div class="container">
+    <div class="hp-why">
 
-<div class="row align-items-center g-5">
-
-    <div class="col-lg-5" data-aos="fade-right">
-        <span class="section-badge">
-            <i class="fas fa-handshake"></i>
-            WHY WORK WITH ME
-        </span>
-        <h2 class="why-title">A Developer Who Cares About <span>Your Results</span></h2>
-        <p class="why-text">
-            You get one person who designs, builds and supports your
-            website: clear communication, honest advice and work you
-            can be proud to show your customers.
-        </p>
-        <a href="{% url 'contact' %}" class="btn btn-gold btn-lg mt-3">
-            Get a Free Quote
-            <i class="fas fa-arrow-right"></i>
-        </a>
-    </div>
-
-    <div class="col-lg-7">
-        <div class="row g-4">
-
-            <div class="col-sm-6" data-aos="fade-up">
-                <div class="benefit">
-                    <i class="fas fa-mobile-screen-button"></i>
-                    <h5>Mobile-First</h5>
-                    <p>Looks and works great on every phone, tablet and laptop.</p>
-                </div>
+        <div class="hp-why-copy" data-aos="fade-right">
+            <p class="hp-eyebrow"><i class="fas fa-handshake" aria-hidden="true"></i> WHY WORK WITH ME</p>
+            <h2>A developer who cares about <span>your results</span></h2>
+            <p>
+                You get one person who designs, builds and supports your website:
+                clear communication, honest advice and work you can be proud to show your customers.
+            </p>
+            <div class="hp-why-actions">
+                <a href="{% url 'contact' %}" class="hp-btn hp-btn-primary">Get a free quote <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                <a href="{% url 'about' %}" class="hp-btn">More about me</a>
             </div>
-
-            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="benefit">
-                    <i class="fas fa-bolt"></i>
-                    <h5>Fast Loading</h5>
-                    <p>Optimised pages so visitors don't leave before they see you.</p>
-                </div>
-            </div>
-
-            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="200">
-                <div class="benefit">
-                    <i class="fas fa-comments"></i>
-                    <h5>Clear Communication</h5>
-                    <p>Updates on WhatsApp or email, in English or Urdu.</p>
-                </div>
-            </div>
-
-            <div class="col-sm-6" data-aos="fade-up" data-aos-delay="300">
-                <div class="benefit">
-                    <i class="fas fa-sliders"></i>
-                    <h5>Easy To Manage</h5>
-                    <p>An admin panel so you can update content without calling a developer.</p>
-                </div>
-            </div>
-
         </div>
+
+        <div class="hp-why-grid">
+            <div class="hp-benefit hp-spot" data-aos="fade-up">
+                <span class="hp-benefit-icon"><i class="fas fa-mobile-screen-button" aria-hidden="true"></i></span>
+                <h3>Mobile-first</h3>
+                <p>Looks and works great on every phone, tablet and laptop.</p>
+            </div>
+            <div class="hp-benefit hp-spot" data-aos="fade-up" data-aos-delay="100">
+                <span class="hp-benefit-icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+                <h3>Fast loading</h3>
+                <p>Optimised pages so visitors don't leave before they see you.</p>
+            </div>
+            <div class="hp-benefit hp-spot" data-aos="fade-up" data-aos-delay="200">
+                <span class="hp-benefit-icon"><i class="fas fa-language" aria-hidden="true"></i></span>
+                <h3>Clear communication</h3>
+                <p>Updates on WhatsApp or email, in English or Urdu.</p>
+            </div>
+            <div class="hp-benefit hp-spot" data-aos="fade-up" data-aos-delay="300">
+                <span class="hp-benefit-icon"><i class="fas fa-sliders" aria-hidden="true"></i></span>
+                <h3>Easy to manage</h3>
+                <p>An admin panel so you can update content without calling a developer.</p>
+            </div>
+        </div>
+
     </div>
-
 </div>
-
-</div>
-
 </section>
 
 
 
 {% if testimonials %}
-
 <!--=================================
         TESTIMONIALS
 ==================================-->
 
-<section class="home-section">
-
+<section class="hp-section" id="reviews">
 <div class="container">
 
-<div class="section-heading text-center" data-aos="fade-up">
-    <span class="section-badge">
-        <i class="fas fa-quote-left"></i>
-        CLIENT FEEDBACK
-    </span>
-    <h2>What Clients <span>Say</span></h2>
+    <header class="hp-head" data-aos="fade-up">
+        <p class="hp-eyebrow"><i class="fas fa-quote-left" aria-hidden="true"></i> CLIENT FEEDBACK</p>
+        <h2>What Clients <span>Say</span></h2>
+    </header>
+
 </div>
 
-<div class="row g-4 mt-4 justify-content-center">
-
-    {% for testimonial in testimonials %}
-
-    <div class="col-lg-4 col-md-6" data-aos="fade-up">
-        <figure class="testimonial-card">
-            <div class="testimonial-stars" aria-label="{{ testimonial.rating }} out of 5 stars">
-                {% for i in "12345" %}
-                <i class="fa{% if forloop.counter <= testimonial.rating %}s{% else %}r{% endif %} fa-star"></i>
-                {% endfor %}
-            </div>
-            <blockquote>{{ testimonial.message }}</blockquote>
-            <figcaption>
-                <span class="testimonial-avatar">{{ testimonial.name|first|upper }}</span>
-                <span>
-                    <strong>{{ testimonial.name }}</strong>
-                    {% if testimonial.role %}<small>{{ testimonial.role }}</small>{% endif %}
-                </span>
-            </figcaption>
-        </figure>
+    <div class="hp-reviews{% if testimonials|length > 2 %} is-scrolling{% endif %}" data-aos="fade-up">
+        <div class="hp-reviews-track">
+            {% for testimonial in testimonials %}
+            <figure class="hp-review">
+                <div class="hp-stars" aria-label="{{ testimonial.rating }} out of 5 stars">
+                    {% for i in "12345" %}<i class="fa{% if forloop.counter <= testimonial.rating %}s{% else %}r{% endif %} fa-star" aria-hidden="true"></i>{% endfor %}
+                </div>
+                <blockquote>{{ testimonial.message }}</blockquote>
+                <figcaption>
+                    <span class="hp-avatar">{{ testimonial.name|first|upper }}</span>
+                    <span><strong>{{ testimonial.name }}</strong>{% if testimonial.role %}<small>{{ testimonial.role }}</small>{% endif %}</span>
+                </figcaption>
+            </figure>
+            {% endfor %}
+            {% if testimonials|length > 2 %}
+            {# Second copy so the loop is seamless; hidden from screen readers #}
+            {% for testimonial in testimonials %}
+            <figure class="hp-review" aria-hidden="true">
+                <div class="hp-stars">
+                    {% for i in "12345" %}<i class="fa{% if forloop.counter <= testimonial.rating %}s{% else %}r{% endif %} fa-star"></i>{% endfor %}
+                </div>
+                <blockquote>{{ testimonial.message }}</blockquote>
+                <figcaption>
+                    <span class="hp-avatar">{{ testimonial.name|first|upper }}</span>
+                    <span><strong>{{ testimonial.name }}</strong>{% if testimonial.role %}<small>{{ testimonial.role }}</small>{% endif %}</span>
+                </figcaption>
+            </figure>
+            {% endfor %}
+            {% endif %}
+        </div>
     </div>
 
-    {% endfor %}
-
+<div class="container">
+    <p class="hp-center" data-aos="fade-up">
+        <a href="{% url 'leave_review' %}" class="hp-btn"><i class="fas fa-star" aria-hidden="true"></i> Worked with me? Leave a review</a>
+    </p>
 </div>
-
-<p class="text-center mt-5 mb-0">
-    <a href="{% url 'leave_review' %}" class="btn btn-outline-gold">
-        <i class="fas fa-star"></i>
-        Worked with me? Leave a review
-    </a>
-</p>
-
-</div>
-
 </section>
-
 {% endif %}
 
 
 
 {% if latest_posts %}
-
 <!--=================================
         LATEST ARTICLES
 ==================================-->
 
-<section class="home-section home-section-alt">
-
+<section class="hp-section hp-alt" id="articles">
 <div class="container">
 
-<div class="section-heading text-center" data-aos="fade-up">
-    <span class="section-badge">
-        <i class="fas fa-pen-nib"></i>
-        FROM THE BLOG
-    </span>
-    <h2>Latest <span>Articles</span></h2>
-</div>
+    <header class="hp-head" data-aos="fade-up">
+        <p class="hp-eyebrow"><i class="fas fa-pen-nib" aria-hidden="true"></i> FROM THE BLOG</p>
+        <h2>Latest <span>articles</span></h2>
+    </header>
 
-<div class="row g-4 mt-4">
-    {% for post in latest_posts %}
-    <div class="col-lg-4 col-md-6" data-aos="fade-up">
-        {% include "partials/post_card.html" %}
+    <div class="row g-4">
+        {% for post in latest_posts %}
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{% widthratio forloop.counter0 1 100 %}">
+            {% include "partials/post_card.html" %}
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 
-<p class="text-center mt-5 mb-0">
-    <a href="{% url 'blog' %}" class="btn btn-outline-gold">All Articles <i class="fas fa-arrow-right"></i></a>
-</p>
+    <p class="hp-center" data-aos="fade-up">
+        <a href="{% url 'blog' %}" class="hp-btn">All articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+    </p>
 
 </div>
-
 </section>
-
 {% endif %}
 
 
@@ -589,91 +545,44 @@ Home | Rana Umar Developer
         FAQ
 ==================================-->
 
-<section class="home-section home-section-alt">
-
+<section class="hp-section" id="faq">
 <div class="container">
+    <div class="hp-faq-wrap">
 
-<div class="section-heading text-center" data-aos="fade-up">
-    <span class="section-badge">
-        <i class="fas fa-circle-question"></i>
-        FAQ
-    </span>
-    <h2>Questions <span>Clients Ask</span></h2>
-</div>
+        <header class="hp-head hp-head-left" data-aos="fade-right">
+            <p class="hp-eyebrow"><i class="fas fa-circle-question" aria-hidden="true"></i> FAQ</p>
+            <h2>Questions <span>clients ask</span></h2>
+            <p>Can't find your answer? Ask the chat assistant or send me a message.</p>
+            <a href="{% url 'contact' %}" class="hp-btn">Ask me directly <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </header>
 
-<div class="faq-list mt-4" data-aos="fade-up">
+        <div class="hp-faq" data-aos="fade-up">
+            <details class="hp-faq-item" open>
+                <summary>How much does a website cost?</summary>
+                <p>It depends on what you need: pages, features and design. Use the <a href="{% url 'estimate' %}">price estimator</a> for an instant range, and I'll send a clear quote with no hidden charges.</p>
+            </details>
+            <details class="hp-faq-item">
+                <summary>How long will my website take?</summary>
+                <p>A simple business website is much quicker than a custom web app. After our first discussion I'll give you a realistic timeline and keep you updated throughout.</p>
+            </details>
+            <details class="hp-faq-item">
+                <summary>Will my website work on mobile phones?</summary>
+                <p>Yes. Every site I build is fully responsive and tested on phones, tablets and desktops.</p>
+            </details>
+            <details class="hp-faq-item">
+                <summary>Can I update the website myself?</summary>
+                <p>Yes. For dynamic sites I include an easy admin panel, so you can change text, images and products yourself.</p>
+            </details>
+            <details class="hp-faq-item">
+                <summary>Do you help after the website is launched?</summary>
+                <p>Yes. I help you get the site live and I'm available for questions, fixes and future updates.</p>
+            </details>
+        </div>
 
-    <details class="faq-item" open>
-        <summary>How much does a website cost?</summary>
-        <p>It depends on what you need: pages, features and design. Share your idea and I'll send you a clear quote with no hidden charges.</p>
-    </details>
-
-    <details class="faq-item">
-        <summary>How long will my website take?</summary>
-        <p>A simple business website is much quicker than a custom web app. After our first discussion I'll give you a realistic timeline and keep you updated throughout.</p>
-    </details>
-
-    <details class="faq-item">
-        <summary>Will my website work on mobile phones?</summary>
-        <p>Yes. Every site I build is fully responsive and tested on phones, tablets and desktops.</p>
-    </details>
-
-    <details class="faq-item">
-        <summary>Can I update the website myself?</summary>
-        <p>Yes. For dynamic sites I include an easy admin panel, so you can change text, images and products yourself.</p>
-    </details>
-
-    <details class="faq-item">
-        <summary>Do you help after the website is launched?</summary>
-        <p>Yes. I help you get the site live and I'm available for questions, fixes and future updates.</p>
-    </details>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<!--=================================
-        FINAL CTA
-==================================-->
-
-<section class="home-section">
-
-<div class="container">
-
-<div class="final-cta text-center" data-aos="zoom-in">
-
-    <h2>Ready To Get <span>More Customers Online?</span></h2>
-
-    <p>
-        Tell me about your project. The first consultation is free
-        and there's no obligation.
-    </p>
-
-    <div class="final-cta-buttons">
-        <a href="{% url 'contact' %}" class="btn btn-gold btn-lg">
-            Start Your Project
-            <i class="fas fa-arrow-right"></i>
-        </a>
-        <a href="https://wa.me/923238144826?text=Hi%20Rana%2C%20I%20want%20to%20discuss%20a%20website%20project." target="_blank" rel="noopener" class="btn btn-outline-gold btn-lg">
-            <i class="fab fa-whatsapp"></i>
-            Chat on WhatsApp
-        </a>
     </div>
-
-    <p class="final-cta-estimate">
-        Not sure about the budget?
-        <a href="{% url 'estimate' %}">Get an instant price estimate <i class="fas fa-arrow-right"></i></a>
-    </p>
-
 </div>
-
-</div>
-
 </section>
 
+<script src="{% static 'js/home.js' %}" defer></script>
 
 {% endblock %}

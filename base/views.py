@@ -25,6 +25,8 @@ def home(request):
         "project_count": Project.objects.count(),
         "testimonials": Testimonial.objects.filter(is_published=True)[:6],
         "latest_posts": Post.objects.filter(is_published=True)[:3],
+        # "from Rs ..." on the service cards, kept in sync with the estimator
+        "start_prices": {t["id"]: t["base"] for t in ESTIMATOR_PRICES["types"]},
     }
 
 
@@ -54,14 +56,24 @@ def about(request):
 
 def projects(request):
 
-    projects = Project.objects.all().order_by("-created_at")
+    projects = list(Project.objects.all().order_by("-created_at"))
+
+    # Filter tabs with a live count, only for categories that have projects
+    categories = [
+        {"value": value, "label": label, "count": sum(p.category == value for p in projects)}
+        for value, label in Project.CATEGORY_CHOICES
+    ]
+    categories = [c for c in categories if c["count"]]
 
 
     return render(
         request,
         "projects.html",
         {
-            "projects": projects
+            "projects": projects,
+            "categories": categories,
+            "live_count": sum(bool(p.live_demo) for p in projects),
+            "tech_count": len({t.lower() for p in projects for t in p.tech_list}),
         }
     )
 

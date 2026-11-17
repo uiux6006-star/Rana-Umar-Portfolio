@@ -7792,3 +7792,146 @@ section {
         transition: none;
     }
 }
+
+
+/* ---------- Robot: full motion (turn, wave, look around, click to spin) ---------- */
+
+.robot-figure {
+    cursor: pointer;
+    outline: none;
+    border-radius: 30px;
+}
+
+.robot-figure:focus-visible {
+    box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / .6);
+}
+
+/* Whole body turns slowly left and right in 3D */
+.robot-spin {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    animation: robotTurn 9s ease-in-out infinite;
+}
+
+@keyframes robotTurn {
+    0%, 100% { transform: perspective(900px) rotateY(-14deg); }
+    50% { transform: perspective(900px) rotateY(14deg); }
+}
+
+/* Click / Enter: a full 360 spin with a little hop */
+.robot-figure.is-spinning .robot-spin {
+    animation: robotSpin360 1.15s cubic-bezier(.5, 0, .2, 1);
+}
+
+@keyframes robotSpin360 {
+    0% { transform: perspective(900px) rotateY(0) translateY(0); }
+    40% { transform: perspective(900px) rotateY(160deg) translateY(-26px); }
+    100% { transform: perspective(900px) rotateY(360deg) translateY(0); }
+}
+
+/* Forearms bend at the elbow */
+.robot-forearm {
+    position: absolute;
+    inset: 0;
+    transform-origin: 30px 82px;
+}
+
+/* Right arm (viewer's right): raise it high and wave */
+.arm-right {
+    animation: robotRaise 9s cubic-bezier(.45, 0, .25, 1) infinite;
+}
+
+.arm-right .robot-forearm {
+    animation: robotWave 9s ease-in-out infinite;
+}
+
+@keyframes robotRaise {
+    0%, 38% { rotate: 0deg; z-index: 3; }
+    47% { rotate: -150deg; z-index: 6; }
+    80% { rotate: -150deg; z-index: 6; }
+    90%, 100% { rotate: 0deg; z-index: 3; }
+}
+
+@keyframes robotWave {
+    0%, 47% { rotate: 0deg; }
+    51% { rotate: -32deg; }
+    56% { rotate: 22deg; }
+    61% { rotate: -32deg; }
+    66% { rotate: 22deg; }
+    71% { rotate: -32deg; }
+    76% { rotate: 14deg; }
+    82%, 100% { rotate: 0deg; }
+}
+
+/* Left arm: relaxed swing with a soft elbow bend */
+.arm-left {
+    animation: robotSwingArm 4.5s ease-in-out infinite;
+}
+
+.arm-left .robot-forearm {
+    animation: robotSwingForearm 4.5s ease-in-out infinite;
+}
+
+@keyframes robotSwingArm {
+    0%, 100% { rotate: 0deg; }
+    50% { rotate: -14deg; }
+}
+
+@keyframes robotSwingForearm {
+    0%, 100% { rotate: 0deg; }
+    50% { rotate: -16deg; }
+}
+
+/* Head tilts happily while waving (the antenna turns with it) */
+.robot-head {
+    transform-origin: 50% 100%;
+    animation: robotHeadTilt 9s ease-in-out infinite;
+}
+
+.robot-antenna {
+    transform-origin: 4px 158px;
+    animation: robotHeadTilt 9s ease-in-out infinite;
+}
+
+@keyframes robotHeadTilt {
+    0%, 15%, 92%, 100% { rotate: 0deg; }
+    22% { rotate: -5deg; }
+    32% { rotate: 4deg; }
+    50%, 82% { rotate: 6deg; }
+}
+
+/* Eyes look around, then up at you while waving */
+.eye {
+    animation: eyeBlink 5.5s infinite, robotLook 9s ease-in-out infinite;
+}
+
+@keyframes robotLook {
+    0%, 15% { translate: 0 0; }
+    20%, 28% { translate: -7px 0; }
+    33%, 40% { translate: 7px 0; }
+    48%, 82% { translate: 0 -3px; }
+    90%, 100% { translate: 0 0; }
+}
+
+/* Mouth turns into a smile while waving */
+.mouth {
+    animation: robotSmile 9s ease-in-out infinite;
+}
+
+@keyframes robotSmile {
+    0%, 44%, 88%, 100% {
+        width: 23px;
+        height: 2px;
+        border-radius: 2px;
+        background: rgb(var(--glow-rgb));
+        border-bottom: 0 solid transparent;
+    }
+    50%, 82% {
+        width: 26px;
+        height: 9px;
+        border-radius: 0 0 14px 14px;
+        background: transparent;
+        border-bottom: 3px solid rgb(var(--glow-rgb));
+    }
+}

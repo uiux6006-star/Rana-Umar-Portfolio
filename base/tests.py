@@ -12,6 +12,13 @@ class PageTests(TestCase):
             response = self.client.get(reverse(name))
             self.assertEqual(response.status_code, 200, name)
 
+    def test_home_service_prices_come_from_the_estimator(self):
+        from .views import ESTIMATOR_PRICES
+        response = self.client.get(reverse("home"))
+        for t in ESTIMATOR_PRICES["types"]:
+            self.assertContains(response, f"Rs {t['base']:,}")
+        self.assertContains(response, 'id="hpProcess"')
+
     def test_site_chrome_is_on_every_page(self):
         for name in ["home", "about", "projects", "contact"]:
             response = self.client.get(reverse(name))
@@ -29,6 +36,17 @@ class PageTests(TestCase):
         expected = f"{Project.objects.count():02d}+"
         response = self.client.get(reverse("about"))
         self.assertContains(response, expected)
+
+    def test_projects_page_filters_and_cards(self):
+        Project.objects.create(title="Shop X", description="d", image="projects/x.jpg",
+                               category="django", technologies="Django", live_demo="https://example.com")
+        response = self.client.get(reverse("projects"))
+        html = response.content.decode()
+        self.assertEqual(html.count("<h1"), 1)
+        self.assertEqual(html.count('class="pj-card'), Project.objects.count())
+        django_count = Project.objects.filter(category="django").count()
+        self.assertContains(response, f'data-filter="django" aria-pressed="false">\n                    Django <span>{django_count}</span>')
+        self.assertEqual(response.context["live_count"], Project.objects.exclude(live_demo="").count())
 
     def test_about_page_has_one_h1(self):
         html = self.client.get(reverse("about")).content.decode()
@@ -244,6 +262,46 @@ class DashboardTests(TestCase):
         lead = ContactMessage.objects.create(name="Ali", email="a@example.com", subject="Shop", message="m")
         response = self.client.get(reverse("admin:base_contactmessage_change", args=[lead.pk]))
         self.assertContains(response, "mailto:a@example.com")
+
+
+class AdminLoginTests(TestCase):
+
+    def setUp(self):
+        from django.contrib.auth import get_user_model
+        get_user_model().objects.create_superuser("boss", "boss@example.com", "Str0ng-pass-123")
+        self.url = reverse("admin:login")
+
+    def test_login_page_renders(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Admin <span>Dashboard</span> Login", html=False)
+        self.assertContains(response, 'name="remember_me"')
+        self.assertContains(response, reverse("admin_password_reset"))
+
+    def test_correct_login_goes_to_dashboard(self):
+        response = self.client.post(self.url, {"username": "boss", "password": "Str0ng-pass-123", "next": "/admin/", "remember_me": "1"})
+        self.assertRedirects(response, "/admin/")
+        self.assertFalse(self.client.session.get_expire_at_browser_close())
+
+    def test_without_remember_me_session_ends_with_browser(self):
+        self.client.post(self.url, {"username": "boss", "password": "Str0ng-pass-123", "next": "/admin/"})
+        self.assertTrue(self.client.session.get_expire_at_browser_close())
+
+    def test_wrong_password_shows_error_and_keeps_username(self):
+        response = self.client.post(self.url, {"username": "boss", "password": "wrong", "next": "/admin/"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "lg-alert")
+        self.assertContains(response, 'value="boss"')
+
+    def test_forgot_password_emails_a_reset_link(self):
+        response = self.client.post(reverse("admin_password_reset"), {"email": "boss@example.com"})
+        self.assertRedirects(response, reverse("password_reset_done"))
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("/reset/", mail.outbox[0].body)
+
+    def test_forgot_password_does_not_reveal_unknown_emails(self):
+        response = self.client.post(reverse("admin_password_reset"), {"email": "nobody@example.com"})
+        self.assertRedirects(response, reverse("password_reset_done"))
+        self.assertEqual(len(mail.outbox), 0)
 
 
 class ChatbotTests(TestCase):

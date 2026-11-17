@@ -1,5 +1,3 @@
-
-
 {% extends "base.html" %}
 {% load static %}
 
@@ -11,1047 +9,378 @@ About Me | Rana Umar Developer
 {% block og_title %}About Rana Umar | Full Stack Developer{% endblock %}
 {% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/pic2.jpg' %}{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
 
 {% block content %}
 
 
-
-<!--==============================
-        ABOUT PAGE HEADER
-===============================-->
-
-<section class="about-page-header">
-
-<div class="container text-center">
-
-
-<span class="header-badge">
-
-<i class="fas fa-user"></i>
-
-ABOUT ME
-
-</span>
-
-
-
-<h1>
-
-Discover My <span>Journey</span>
-
-</h1>
-
-
-
-<p>
-
-A passionate developer focused on creating modern,
-responsive and user-friendly digital experiences
-with clean code, creative design and innovative solutions.
-
-</p>
-
-
-<div class="header-line"></div>
-
-
-</div>
-
-</section>
-
-<!--==============================
-        ABOUT PAGE HEADER END
-===============================-->
-
-
-<!-- ================= ABOUT SECTION START ================= -->
-
-<section class="about-section">
-
-<div class="container">
-
-<div class="row align-items-center g-5">
-
-
-<!-- LEFT PROFILE IMAGE -->
-
-<div class="col-lg-5 text-center">
-
-<div class="profile-box">
-
-<img src="{% static 'images/pic2.jpg' %}"
-
-alt="Rana Umar Profile"
-
-class="img-fluid profile-image">
-
-</div>
-
-</div>
-
-
-
-<!-- RIGHT CONTENT -->
-
-<div class="col-lg-7">
-
-
-<span class="about-badge">
-
-<i class="fas fa-user-tie"></i>
-
-WHO AM I?
-
-</span>
-
-
-
-<h2 class="about-title">
-
-Full Stack Developer
-
-<br>
-
-<span>
-UI/UX Designer & Python Developer
-</span>
-
-</h2>
-
-
-
-<p>
-
-I am <strong class="gold-text">Rana Umar</strong>,
-a passionate developer focused on creating modern,
-responsive and user-friendly digital experiences using
-HTML, CSS, Bootstrap, JavaScript, Python and Django.
-
-</p>
-
-
-
-<p>
-
-I enjoy learning new technologies, solving real-world
-problems and building professional applications that
-help businesses grow online.
-
-</p>
-
-
-
-
-<!-- INFORMATION -->
-
-<div class="about-info">
-
-
-<div class="info-box">
-
-<i class="fas fa-user"></i>
-
-<div>
-
-<h6>Name</h6>
-
-<p>Rana Umar</p>
-
-</div>
-
-</div>
-
-
-
-<div class="info-box">
-
-<i class="fas fa-globe"></i>
-
-<div>
-
-<h6>Nationality</h6>
-
-<p>Pakistani</p>
-
-</div>
-
-</div>
-
-
-
-<div class="info-box">
-
-<i class="fas fa-language"></i>
-
-<div>
-
-<h6>Languages</h6>
-
-<p>English, Urdu</p>
-
-</div>
-
-</div>
-
-
-
-<div class="info-box">
-
-<i class="fas fa-envelope"></i>
-
-<div>
-
-<h6>Email</h6>
-
-<p>uiux6006@gmail.com</p>
-
-</div>
-
-</div>
-
-
-
-<div class="info-box">
-
-<i class="fas fa-briefcase"></i>
-
-<div>
-
-<h6>Freelance</h6>
-
-<p>Available</p>
-
-</div>
-
-</div>
-
-
-
-<div class="info-box">
-
-<i class="fas fa-code"></i>
-
-<div>
-
-<h6>Experience</h6>
-
-<p>Python & Web Development</p>
-
-</div>
-
-</div>
-
-
-</div>
-
-
-
-
-<a href="{% static 'cv/Rana_Umar_CV.pdf' %}"
-
-class="btn btn-gold mt-4"
-
-download>
-
-<i class="fas fa-download"></i>
-
-Download CV
-
-</a>
-
-
-
-</div>
-
-
-</div>
-
-</div>
-
+<!--=================================
+        ABOUT HERO
+==================================-->
+
+<section class="ab-hero no-aos" aria-labelledby="abTitle">
+
+    <div class="hero-bg" aria-hidden="true">
+        <div class="hero-grid"></div>
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-2"></div>
+    </div>
+
+    <div class="container">
+
+        <div class="ab-hero-grid">
+
+            <!-- Copy -->
+            <div class="ab-hero-copy">
+
+                <p class="hp-eyebrow" data-aos="fade-up">
+                    <i class="fas fa-user-astronaut"></i> ABOUT ME
+                </p>
+
+                <h1 id="abTitle" class="ab-title" data-aos="fade-up" data-aos-delay="80">
+                    I'm <span class="ab-name">Rana Umar</span>.<br>
+                    I build websites that <em>work&nbsp;for&nbsp;you.</em>
+                </h1>
+
+                <p class="ab-lead" data-aos="fade-up" data-aos-delay="160">
+                    A full stack developer from Faisalabad, Pakistan. I design and build
+                    fast, modern websites and Django web apps that help small businesses
+                    and brands look professional and win more customers online.
+                </p>
+
+                <ul class="ab-facts" data-aos="fade-up" data-aos-delay="220">
+                    <li><i class="fas fa-location-dot"></i> Faisalabad, PK</li>
+                    <li><i class="fas fa-language"></i> English &amp; Urdu</li>
+                    <li><i class="fas fa-clock"></i> <span id="abClock">--:--</span> local</li>
+                </ul>
+
+                <div class="ab-actions" data-aos="fade-up" data-aos-delay="280">
+                    <a href="{% url 'contact' %}" class="hp-btn hp-btn-primary">
+                        Start a project <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% static 'cv/Rana_Umar_CV.pdf' %}" class="hp-btn" download>
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
+                </div>
+
+            </div>
+
+
+            <!-- Portrait -->
+            <div class="ab-portrait-wrap" data-aos="zoom-in" data-aos-delay="150">
+
+                <span class="ab-ring" aria-hidden="true"></span>
+                <span class="ab-ring ab-ring-2" aria-hidden="true"></span>
+
+                <figure class="ab-portrait" data-tilt>
+                    <img src="{% static 'images/pic2.jpg' %}"
+                         alt="Rana Umar at his desk with code on the screens behind him"
+                         width="900" height="675">
+                    <figcaption>
+                        <span>RANA UMAR</span>
+                        <small>FULL STACK DEVELOPER</small>
+                    </figcaption>
+                </figure>
+
+                <div class="ab-float ab-float-1">
+                    <span class="sf-dot"></span>
+                    <div>
+                        <strong>Available</strong>
+                        <small>for freelance work</small>
+                    </div>
+                </div>
+
+                <div class="ab-float ab-float-2">
+                    <i class="fab fa-python"></i>
+                    <div>
+                        <strong>Python &amp; Django</strong>
+                        <small>backend specialist</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
 
-<!-- ================= ABOUT SECTION END ================= -->
-
-<!-- ================= EDUCATION SECTION START ================= -->
-
-<section class="education-section">
-
-<div class="container">
-
-
-<div class="section-heading text-center">
-
-
-<span class="section-badge">
-
-<i class="fas fa-graduation-cap"></i>
-
-EDUCATION
-
-</span>
-
-
-<h2>
-
-My Learning <span>Journey</span>
-
-</h2>
-
-
-<p>
-
-Academic background and continuous learning
-journey towards becoming a professional developer.
-
-</p>
-
-
-</div>
-
-
-
-
-<div class="row g-4 mt-5">
-
-
-
-<!-- EDUCATION CARD 1 -->
-
-<div class="col-lg-6">
-
-
-<div class="education-card">
-
-
-<div class="education-icon">
-
-<i class="fas fa-university"></i>
-
-</div>
-
-
-
-<div>
-
-
-<h4>
-
-Intermediate (FA - IT)
-
-</h4>
-
-
-<span class="education-year">
-
-2025 - Present
-
-</span>
-
-
-
-<p>
-
-Currently studying Intermediate (FA - Information Technology).
-Building a strong foundation in Computer Science,
-programming concepts and modern technologies.
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- EDUCATION CARD 2 -->
-
-
-<div class="col-lg-6">
-
-
-<div class="education-card">
-
-
-<div class="education-icon">
-
-<i class="fas fa-laptop-code"></i>
-
-</div>
-
-
-
-<div>
-
-
-<h4>
-
-Self Learning & Development
-
-</h4>
-
-
-<span class="education-year">
-
-2025 - Present
-
-</span>
-
-
-
-<p>
-
-Learning Web Development, Python, Django,
-UI/UX Design, Bootstrap and JavaScript through
-practical projects and real-world applications.
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-</section>
-
-<!-- ================= EDUCATION SECTION END ================= -->
-
-<!-- ================= EXPERIENCE SECTION START ================= -->
-
-<section class="experience-section">
-
-<div class="container">
-
-
-<div class="section-heading text-center">
-
-
-<span class="section-badge">
-
-<i class="fas fa-briefcase"></i>
-
-EXPERIENCE
-
-</span>
-
-
-<h2>
-
-My Development <span>Experience</span>
-
-</h2>
-
-
-<p>
-
-My journey of learning and building projects
-with modern technologies.
-
-</p>
-
-
-</div>
-
-
-
-<div class="row g-4 mt-5">
-
-
-<!-- CARD 1 -->
-
-<div class="col-lg-4 col-md-6">
-
-
-<div class="experience-card">
-
-
-<div class="experience-icon">
-
-<i class="fas fa-laptop-code"></i>
-
-</div>
-
-
-<h4>
-
-Frontend Development
-
-</h4>
-
-
-<p>
-
-Creating modern and responsive websites using
-HTML5, CSS3, Bootstrap and JavaScript with
-clean UI and user-friendly designs.
-
-</p>
-
-
-<div class="tech-tags">
-
-<span>HTML</span>
-<span>CSS</span>
-<span>Bootstrap</span>
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-<!-- CARD 2 -->
-
-
-<div class="col-lg-4 col-md-6">
-
-
-<div class="experience-card">
-
-
-<div class="experience-icon">
-
-<i class="fab fa-python"></i>
-
-</div>
-
-
-<h4>
-
-Python Development
-
-</h4>
-
-
-<p>
-
-Building practical applications using Python,
-Object Oriented Programming and File Handling
-concepts.
-
-</p>
-
-
-<div class="tech-tags">
-
-<span>Python</span>
-<span>OOP</span>
-<span>Projects</span>
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- CARD 3 -->
-
-
-<div class="col-lg-4 col-md-6">
-
-
-<div class="experience-card">
-
-
-<div class="experience-icon">
-
-<i class="fas fa-server"></i>
-
-</div>
-
-
-<h4>
-
-Django Backend
-
-</h4>
-
-
-<p>
-
-Developing dynamic web applications using Django,
-database integration and modern backend concepts.
-
-</p>
-
-
-<div class="tech-tags">
-
-<span>Django</span>
-<span>SQLite</span>
-<span>Backend</span>
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-</section>
-
-<!-- ================= EXPERIENCE SECTION END ================= -->
-
-<!-- ================= ACHIEVEMENTS SECTION START ================= -->
-
-
-<section class="achievement-section">
-
-
-<div class="container">
-
-
-<div class="section-heading text-center">
-
-
-<span class="section-badge">
-
-<i class="fas fa-trophy"></i>
-
-ACHIEVEMENTS
-
-</span>
-
-
-<h2>
-
-My <span>Achievements</span>
-
-</h2>
-
-
-</div>
-
-
-
-
-<div class="row g-4 mt-5">
-
-
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="achievement-card">
-
-
-<p class="achievement-number">
-
-{{ project_count|stringformat:"02d" }}+
-
-</p>
-
-
-<p>
-
-Completed Projects
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="achievement-card">
-
-
-<p class="achievement-number">
-
-06+
-
-</p>
-
-
-<p>
-
-Technologies Learned
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="achievement-card">
-
-
-<p class="achievement-number">
-100%
-</p>
-<p>
-Responsive Builds
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="achievement-card">
-
-
-<p class="achievement-number">
-2
-</p>
-<p>
-Languages: English &amp; Urdu
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
+<!--=================================
+        STATS STRIP
+==================================-->
+
+<section class="ab-stats-wrap no-aos" aria-label="At a glance">
+    <div class="container">
+        <ul class="ab-stats">
+            <li data-aos="fade-up">
+                <strong data-count="{{ project_count }}" data-pad="2" data-suffix="+">{{ project_count|stringformat:"02d" }}+</strong>
+                <span>Projects built</span>
+            </li>
+            <li data-aos="fade-up" data-aos-delay="80">
+                <strong data-count="7" data-suffix="+">7+</strong>
+                <span>Technologies</span>
+            </li>
+            <li data-aos="fade-up" data-aos-delay="160">
+                <strong data-count="100" data-suffix="%">100%</strong>
+                <span>Responsive builds</span>
+            </li>
+            <li data-aos="fade-up" data-aos-delay="240">
+                <strong data-count="24" data-suffix="h">24h</strong>
+                <span>Typical reply time</span>
+            </li>
+        </ul>
+    </div>
 </section>
 
 
-<!-- ================= ACHIEVEMENTS SECTION END ================= -->
-
-<!-- ================= WHY HIRE ME START ================= -->
-
-<section class="hire-section">
-
-<div class="container">
-
-
-<div class="section-heading text-center">
-
-
-<span class="section-badge">
-
-<i class="fas fa-handshake"></i>
-
-WHY HIRE ME
-
-</span>
-
-
-
-<h2>
-
-Why Choose <span>Me?</span>
-
-</h2>
-
-
-
-<p>
-
-I focus on creating clean, responsive and modern
-web solutions with attention to detail, performance
-and user experience.
-
-</p>
-
-
-</div>
-
-
-
-
-<div class="row g-4 mt-5">
-
-
-
-<!-- CARD 1 -->
-
-<div class="col-lg-4 col-md-6">
-
-
-<div class="hire-card">
-
-
-<div class="hire-icon">
-
-<i class="fas fa-code"></i>
-
-</div>
-
-
-
-<h4>
-
-Clean Code
-
-</h4>
-
-
-
-<p>
-
-I write organized, readable and maintainable code
-following modern development practices and
-professional standards.
-
-</p>
-
-
-
-<div class="card-line"></div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- CARD 2 -->
-
-<div class="col-lg-4 col-md-6">
-
-
-<div class="hire-card">
-
-
-<div class="hire-icon">
-
-<i class="fas fa-mobile-screen-button"></i>
-
-</div>
-
-
-
-<h4>
-
-Responsive Design
-
-</h4>
-
-
-
-<p>
-
-Every website is designed to work smoothly on
-desktop, tablet and mobile devices with a
-modern responsive layout.
-
-</p>
-
-
-
-<div class="card-line"></div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- CARD 3 -->
-
-<div class="col-lg-4 col-md-6">
-
-
-<div class="hire-card">
-
-
-<div class="hire-icon">
-
-<i class="fas fa-rocket"></i>
-
-</div>
-
-
-
-<h4>
-
-Fast Performance
-
-</h4>
-
-
-
-<p>
-
-I build lightweight and optimized websites focused
-on speed, performance and better user experience.
-
-</p>
-
-
-
-<div class="card-line"></div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-</div>
-
-
-</div>
-
-
+<!--=================================
+        MY STORY
+==================================-->
+
+<section class="hp-section no-aos">
+    <div class="container">
+
+        <div class="ab-story">
+
+            <div class="ab-story-head">
+                <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-feather-pointed"></i> MY STORY</p>
+                <h2 class="ab-h2" data-aos="fade-up" data-aos-delay="80">
+                    Curious by nature, <span>builder by choice.</span>
+                </h2>
+            </div>
+
+            <div class="ab-story-body">
+
+                <p class="ab-big" data-aos="fade-up">
+                    I started with a simple question: <em>how do websites actually work?</em>
+                    That curiosity turned into late nights with HTML and CSS, then JavaScript,
+                    then Python and Django, and now into real products for real businesses.
+                </p>
+
+                <p data-aos="fade-up" data-aos-delay="80">
+                    Today I build everything from clean business websites to online stores
+                    and custom web apps. I care about the details people feel but rarely
+                    notice: pages that load fast, layouts that work on every phone, and code
+                    that is easy to grow later.
+                </p>
+
+                <p data-aos="fade-up" data-aos-delay="120">
+                    Alongside client work I'm studying Intermediate (FA - IT), so I'm always
+                    learning, and I bring that energy to every project.
+                </p>
+
+                <blockquote class="ab-quote" data-aos="fade-up" data-aos-delay="160">
+                    <i class="fas fa-quote-left" aria-hidden="true"></i>
+                    Good design gets attention. Good code keeps it.
+                    I aim to deliver both.
+                    <cite>Rana Umar</cite>
+                </blockquote>
+
+                <dl class="ab-info" data-aos="fade-up" data-aos-delay="200">
+                    <div><dt>Name</dt><dd>Rana Umar</dd></div>
+                    <div><dt>Based in</dt><dd>Faisalabad, Pakistan</dd></div>
+                    <div><dt>Focus</dt><dd>Websites &amp; Django apps</dd></div>
+                    <div><dt>Languages</dt><dd>English, Urdu</dd></div>
+                    <div><dt>Email</dt><dd><a href="mailto:uiux6006@gmail.com">uiux6006@gmail.com</a></dd></div>
+                    <div><dt>Freelance</dt><dd class="ab-ok"><span class="sf-dot"></span> Available</dd></div>
+                </dl>
+
+            </div>
+
+        </div>
+
+    </div>
 </section>
 
-<!-- ================= WHY HIRE ME END ================= -->
-<!-- ================= PREMIUM CTA START ================= -->
 
-<section class="portfolio-cta">
+<!--=================================
+        TOOLKIT
+==================================-->
 
+<section class="hp-section hp-alt no-aos">
+    <div class="container">
 
-<div class="container">
+        <div class="hp-head">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-toolbox"></i> TOOLKIT</p>
+            <h2 data-aos="fade-up" data-aos-delay="80">The tools I <span>build with</span></h2>
+            <p data-aos="fade-up" data-aos-delay="140">A focused, modern stack, chosen for speed, reliability and easy growth.</p>
+        </div>
 
+        <div class="ab-tools">
 
-<div class="cta-box text-center">
+            <article class="ab-tool hp-spot" data-aos="fade-up">
+                <div class="hp-tile-icon"><i class="fas fa-palette"></i></div>
+                <h3>Frontend</h3>
+                <p>Responsive, polished interfaces that look sharp on every screen.</p>
+                <ul class="ab-stack">
+                    <li><i class="fab fa-html5"></i> HTML5</li>
+                    <li><i class="fab fa-css3-alt"></i> CSS3</li>
+                    <li><i class="fab fa-js"></i> JavaScript</li>
+                    <li><i class="fab fa-bootstrap"></i> Bootstrap</li>
+                </ul>
+            </article>
 
+            <article class="ab-tool ab-tool-feature hp-spot" data-aos="fade-up" data-aos-delay="80">
+                <div class="hp-tile-icon"><i class="fas fa-server"></i></div>
+                <h3>Backend</h3>
+                <p>Secure, database-driven apps with admin panels you can manage yourself.</p>
+                <ul class="ab-stack">
+                    <li><i class="fab fa-python"></i> Python</li>
+                    <li><i class="fas fa-leaf"></i> Django</li>
+                    <li><i class="fas fa-database"></i> SQLite</li>
+                    <li><i class="fas fa-cubes"></i> OOP</li>
+                </ul>
+                <div class="ab-code" aria-hidden="true">
+                    <span><b>def</b> <i>build</i>(idea):</span>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;site = Django(idea)</span>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;<b>return</b> site.launch()</span>
+                </div>
+            </article>
 
-<span class="cta-badge">
+            <article class="ab-tool hp-spot" data-aos="fade-up" data-aos-delay="160">
+                <div class="hp-tile-icon"><i class="fas fa-pen-ruler"></i></div>
+                <h3>Design &amp; workflow</h3>
+                <p>From first sketch to live site, with clean versioned code.</p>
+                <ul class="ab-stack">
+                    <li><i class="fas fa-object-group"></i> UI / UX</li>
+                    <li><i class="fab fa-git-alt"></i> Git</li>
+                    <li><i class="fab fa-github"></i> GitHub</li>
+                    <li><i class="fas fa-mobile-screen"></i> Mobile-first</li>
+                </ul>
+            </article>
 
-<i class="fas fa-rocket"></i>
+        </div>
 
-LET'S WORK TOGETHER
-
-</span>
-
-
-
-
-<h2>
-
-Let's Build Something <span>Amazing</span> Together
-
-</h2>
-
-
-
-<p>
-
-I'm available for freelance projects and long-term collaborations, and
-web development opportunities. Let's create modern,
-powerful and professional digital experiences.
-
-</p>
-
-
-
-
-<div class="cta-buttons">
-
-
-<a href="{% url 'contact' %}"
-
-class="btn btn-gold">
-
-<i class="fas fa-paper-plane"></i>
-
-Contact Me
-
-</a>
-
-
-
-<a href="{% url 'projects' %}"
-
-class="btn btn-outline-gold">
-
-<i class="fas fa-code"></i>
-
-View Projects
-
-</a>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
+    </div>
 </section>
 
-<!-- ================= PREMIUM CTA END ================= -->
+
+<!--=================================
+        JOURNEY TIMELINE
+==================================-->
+
+<section class="hp-section no-aos">
+    <div class="container">
+
+        <div class="hp-head">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-route"></i> JOURNEY</p>
+            <h2 data-aos="fade-up" data-aos-delay="80">How I <span>got here</span></h2>
+            <p data-aos="fade-up" data-aos-delay="140">Education, self-learning and the projects that shaped how I work.</p>
+        </div>
+
+        <ol class="ab-timeline" id="abTimeline">
+
+            <li data-aos="fade-up">
+                <span class="ab-node"><i class="fas fa-seedling"></i></span>
+                <div class="ab-card hp-spot">
+                    <span class="ab-when">2025 · START</span>
+                    <h3>Frontend foundations</h3>
+                    <p>Learned HTML5, CSS3, Bootstrap and JavaScript by building responsive layouts and small sites from scratch.</p>
+                    <div class="hp-chips"><span>HTML</span><span>CSS</span><span>Bootstrap</span><span>JS</span></div>
+                </div>
+            </li>
+
+            <li data-aos="fade-up">
+                <span class="ab-node"><i class="fas fa-university"></i></span>
+                <div class="ab-card hp-spot">
+                    <span class="ab-when">2025 · PRESENT</span>
+                    <h3>Intermediate (FA - IT)</h3>
+                    <p>Studying Information Technology, building a strong base in computer science and programming concepts.</p>
+                    <div class="hp-chips"><span>Education</span><span>Computer Science</span></div>
+                </div>
+            </li>
+
+            <li data-aos="fade-up">
+                <span class="ab-node"><i class="fab fa-python"></i></span>
+                <div class="ab-card hp-spot">
+                    <span class="ab-when">PYTHON</span>
+                    <h3>Python &amp; problem solving</h3>
+                    <p>Built practical applications with Python, object oriented programming and file handling.</p>
+                    <div class="hp-chips"><span>Python</span><span>OOP</span><span>Projects</span></div>
+                </div>
+            </li>
+
+            <li data-aos="fade-up">
+                <span class="ab-node"><i class="fas fa-server"></i></span>
+                <div class="ab-card hp-spot">
+                    <span class="ab-when">DJANGO</span>
+                    <h3>Full stack with Django</h3>
+                    <p>Moved to dynamic web apps: databases, admin panels, forms, email and deployment.</p>
+                    <div class="hp-chips"><span>Django</span><span>SQLite</span><span>Backend</span></div>
+                </div>
+            </li>
+
+            <li data-aos="fade-up">
+                <span class="ab-node ab-node-now"><i class="fas fa-rocket"></i></span>
+                <div class="ab-card ab-card-now hp-spot">
+                    <span class="ab-when"><span class="sf-dot"></span> NOW</span>
+                    <h3>Building for clients</h3>
+                    <p>Delivering business websites, online stores and custom web apps, and taking on new projects.</p>
+                    <a href="{% url 'projects' %}" class="ab-link">See the work <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </li>
+
+        </ol>
+
+    </div>
+</section>
+
+
+<!--=================================
+        VALUES
+==================================-->
+
+<section class="hp-section hp-alt no-aos">
+    <div class="container">
+
+        <div class="hp-head">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-gem"></i> HOW I WORK</p>
+            <h2 data-aos="fade-up" data-aos-delay="80">What you can <span>count on</span></h2>
+        </div>
+
+        <div class="ab-values">
+
+            <article class="ab-value hp-spot" data-aos="fade-up">
+                <span class="ab-value-num">01</span>
+                <div class="hp-benefit-icon"><i class="fas fa-code"></i></div>
+                <h3>Clean code</h3>
+                <p>Organised, readable and maintainable, so your site is easy to update and grow.</p>
+            </article>
+
+            <article class="ab-value hp-spot" data-aos="fade-up" data-aos-delay="80">
+                <span class="ab-value-num">02</span>
+                <div class="hp-benefit-icon"><i class="fas fa-mobile-screen-button"></i></div>
+                <h3>Responsive design</h3>
+                <p>Every page is built to look and work great on phones, tablets and desktops.</p>
+            </article>
+
+            <article class="ab-value hp-spot" data-aos="fade-up" data-aos-delay="160">
+                <span class="ab-value-num">03</span>
+                <div class="hp-benefit-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Fast performance</h3>
+                <p>Lightweight, optimised builds that load quickly and keep visitors around.</p>
+            </article>
+
+            <article class="ab-value hp-spot" data-aos="fade-up" data-aos-delay="240">
+                <span class="ab-value-num">04</span>
+                <div class="hp-benefit-icon"><i class="fas fa-comments"></i></div>
+                <h3>Clear communication</h3>
+                <p>Regular updates and honest timelines, in English or Urdu, from start to launch.</p>
+            </article>
+
+        </div>
+
+    </div>
+</section>
+
+
+<script src="{% static 'js/home.js' %}" defer></script>
+<script src="{% static 'js/about.js' %}" defer></script>
+
 {% endblock %}

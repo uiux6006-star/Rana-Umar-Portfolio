@@ -1,0 +1,799 @@
+/* =====================================================
+        ADMIN LOGIN - "RUD Blue"
+   Colours taken from the blue RUD logo: deep navy,
+   electric blue and an icy cyan glow.
+===================================================== */
+
+:root {
+    --lg-bg: #030816;
+    --lg-bg-2: #071230;
+    --lg-surface: rgb(8 18 44 / .72);
+    --lg-line: rgb(110 160 255 / .18);
+    --lg-line-strong: rgb(110 160 255 / .34);
+    --lg-blue: #2f7bff;
+    --lg-blue-2: #5aa2ff;
+    --lg-cyan: #6fe3ff;
+    --lg-ice: #cfe6ff;
+    --lg-text: #eef4ff;
+    --lg-muted: #9db0d6;
+    --lg-dim: #6c7fa6;
+    --lg-error: #ff7d8a;
+    --lg-grad: linear-gradient(135deg, #1e5eff 0%, #3d8bff 45%, #6fe3ff 100%);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body.lg {
+    min-height: 100vh;
+    background: radial-gradient(1200px 800px at 30% 20%, var(--lg-bg-2), var(--lg-bg) 70%);
+    color: var(--lg-text);
+    font-family: "Manrope", "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* ---------- Background ---------- */
+
+.lg-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.lg-grid {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(rgb(90 140 255 / .06) 1px, transparent 1px) 0 0 / 64px 64px,
+        linear-gradient(90deg, rgb(90 140 255 / .06) 1px, transparent 1px) 0 0 / 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 40%, transparent 100%);
+}
+
+.lg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: lgDrift 20s ease-in-out infinite alternate;
+}
+
+.lg-glow-1 {
+    top: -220px;
+    left: -160px;
+    width: 640px;
+    height: 640px;
+    background: rgb(47 123 255 / .32);
+}
+
+.lg-glow-2 {
+    right: -200px;
+    bottom: -260px;
+    width: 700px;
+    height: 700px;
+    background: rgb(111 227 255 / .16);
+    animation-duration: 26s;
+}
+
+@keyframes lgDrift {
+    to { transform: translate(60px, 40px) scale(1.12); }
+}
+
+/* A slow light beam sweeping across */
+.lg-beam {
+    position: absolute;
+    top: -40%;
+    left: -30%;
+    width: 30%;
+    height: 180%;
+    background: linear-gradient(90deg, transparent, rgb(111 227 255 / .07), transparent);
+    transform: rotate(18deg);
+    animation: lgBeam 14s ease-in-out infinite;
+}
+
+@keyframes lgBeam {
+    0% { left: -40%; }
+    60%, 100% { left: 130%; }
+}
+
+#lgStars {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ---------- Layout ---------- */
+
+.lg-shell {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    grid-template-areas:
+        "brand card"
+        "features features"
+        "foot foot";
+    gap: 34px 48px;
+    max-width: 1240px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 46px 28px 30px;
+    align-items: center;
+}
+
+/* ---------- Brand side ---------- */
+
+.lg-brand {
+    grid-area: brand;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: lgUp .9s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.lg-crest {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lg-crown {
+    width: 64px;
+    margin-bottom: -6px;
+    filter: drop-shadow(0 0 14px rgb(111 227 255 / .7));
+}
+
+.lg-crown path,
+.lg-crown rect,
+.lg-crown circle {
+    fill: var(--lg-ice);
+}
+
+.lg-monogram {
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(64px, 8vw, 104px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.02em;
+    background: linear-gradient(180deg, #ffffff 0%, var(--lg-ice) 35%, var(--lg-blue-2) 70%, #1e4fd8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 22px rgb(47 123 255 / .55)) drop-shadow(0 6px 0 rgb(10 30 90 / .6));
+}
+
+.lg-name {
+    margin: 16px 0 6px;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: clamp(26px, 3.2vw, 40px);
+    font-weight: 700;
+    letter-spacing: .14em;
+    color: var(--lg-text);
+    text-shadow: 0 0 24px rgb(47 123 255 / .45);
+}
+
+.lg-role {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 28px;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 15px;
+    letter-spacing: .5em;
+    color: var(--lg-cyan);
+}
+
+.lg-role span {
+    width: 46px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--lg-cyan));
+}
+
+.lg-role span:last-child {
+    background: linear-gradient(90deg, var(--lg-cyan), transparent);
+}
+
+.lg-art {
+    position: relative;
+    width: min(560px, 100%);
+    margin: 0;
+    padding: 10px;
+    border: 1px solid var(--lg-line-strong);
+    border-radius: 26px;
+    background: rgb(6 14 36 / .6);
+    box-shadow: 0 40px 90px rgb(0 0 0 / .55), 0 0 70px rgb(47 123 255 / .25);
+    animation: lgFloat 7s ease-in-out infinite;
+}
+
+/* Animated light running around the frame */
+.lg-art::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 26px;
+    padding: 1px;
+    background: conic-gradient(from var(--lg-angle, 0deg), transparent 0 70%, var(--lg-cyan) 85%, transparent 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: lgSpinBorder 6s linear infinite;
+}
+
+@property --lg-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes lgSpinBorder {
+    to { --lg-angle: 360deg; }
+}
+
+.lg-art img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+}
+
+.lg-art figcaption {
+    position: absolute;
+    left: 50%;
+    bottom: -16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 16px;
+    border: 1px solid var(--lg-line-strong);
+    border-radius: 999px;
+    background: #071433;
+    color: var(--lg-ice);
+    font-family: "DM Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: .08em;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    box-shadow: 0 10px 30px rgb(0 0 0 / .4);
+}
+
+.lg-live {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 10px #34d399;
+}
+
+@keyframes lgFloat {
+    50% { transform: translateY(-10px); }
+}
+
+/* ---------- Login card ---------- */
+
+.lg-card-wrap {
+    grid-area: card;
+    animation: lgUp .9s cubic-bezier(.2, .8, .2, 1) .15s both;
+}
+
+.lg-card {
+    position: relative;
+    padding: 40px 38px 30px;
+    border: 1px solid var(--lg-line-strong);
+    border-radius: 28px;
+    background:
+        radial-gradient(420px 220px at 50% -10%, rgb(47 123 255 / .22), transparent 70%),
+        var(--lg-surface);
+    -webkit-backdrop-filter: blur(22px) saturate(1.3);
+    backdrop-filter: blur(22px) saturate(1.3);
+    box-shadow:
+        0 1px 0 rgb(255 255 255 / .06) inset,
+        0 40px 100px rgb(0 0 0 / .55),
+        0 0 0 1px rgb(47 123 255 / .08),
+        0 0 80px rgb(47 123 255 / .18);
+}
+
+/* Glowing outline like the mockup's gold frame */
+.lg-card::after {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgb(111 227 255 / .14);
+    border-radius: 22px;
+    pointer-events: none;
+}
+
+.lg-card-crown {
+    position: absolute;
+    top: -26px;
+    left: 50%;
+    width: 52px;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 12px rgb(111 227 255 / .8));
+}
+
+.lg-card-crown path,
+.lg-card-crown rect {
+    fill: var(--lg-ice);
+}
+
+.lg-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    color: var(--lg-cyan);
+    font-size: 12px;
+}
+
+.lg-divider span {
+    width: 70px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--lg-line-strong));
+}
+
+.lg-divider span:last-child {
+    background: linear-gradient(90deg, var(--lg-line-strong), transparent);
+}
+
+.lg-card h1 {
+    margin: 0 0 6px;
+    font-size: clamp(26px, 2.6vw, 32px);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    text-align: center;
+}
+
+.lg-card h1 span {
+    background: var(--lg-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.lg-sub {
+    margin: 0 0 26px;
+    color: var(--lg-muted);
+    font-size: 14px;
+    text-align: center;
+}
+
+.lg-alert {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border: 1px solid rgb(255 125 138 / .4);
+    border-radius: 12px;
+    background: rgb(255 125 138 / .1);
+    color: #ffd1d6;
+    font-size: 13.5px;
+    line-height: 1.5;
+    animation: lgShake .45s ease;
+}
+
+.lg-alert-info {
+    border-color: var(--lg-line-strong);
+    background: rgb(47 123 255 / .1);
+    color: var(--lg-ice);
+    animation: none;
+}
+
+@keyframes lgShake {
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+/* Inputs */
+
+.lg-label {
+    display: block;
+    margin: 0 0 8px;
+    color: var(--lg-ice);
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.lg-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+    border: 1px solid var(--lg-line);
+    border-radius: 14px;
+    background: rgb(3 10 28 / .75);
+    transition: border-color .25s, box-shadow .25s;
+}
+
+.lg-input:focus-within {
+    border-color: var(--lg-blue-2);
+    box-shadow: 0 0 0 4px rgb(47 123 255 / .18), 0 0 24px rgb(47 123 255 / .25);
+}
+
+.lg-input.has-error {
+    border-color: var(--lg-error);
+}
+
+.lg-input > i {
+    width: 46px;
+    color: var(--lg-dim);
+    font-size: 15px;
+    text-align: center;
+    transition: color .25s;
+}
+
+.lg-input:focus-within > i {
+    color: var(--lg-cyan);
+}
+
+.lg-input input {
+    flex: 1;
+    min-width: 0;
+    height: 52px;
+    padding: 0 14px 0 0;
+    border: 0;
+    background: transparent;
+    color: var(--lg-text);
+    font: inherit;
+    font-size: 15px;
+    outline: none;
+}
+
+.lg-input input::placeholder {
+    color: var(--lg-dim);
+}
+
+/* Keep autofill from turning the field yellow/white */
+.lg-input input:-webkit-autofill {
+    -webkit-text-fill-color: var(--lg-text);
+    -webkit-box-shadow: 0 0 0 100px #061230 inset;
+    caret-color: var(--lg-text);
+}
+
+.lg-eye {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 52px;
+    border: 0;
+    background: transparent;
+    color: var(--lg-dim);
+    font-size: 15px;
+    cursor: pointer;
+    transition: color .2s;
+}
+
+.lg-eye:hover,
+.lg-eye:focus-visible {
+    color: var(--lg-cyan);
+    outline: none;
+}
+
+.lg-field-error,
+.lg-caps {
+    display: block;
+    margin: -10px 0 14px;
+    color: var(--lg-error);
+    font-size: 12.5px;
+}
+
+.lg-caps {
+    color: #ffd27a;
+}
+
+.lg-caps[hidden] {
+    display: none;
+}
+
+/* Remember / forgot */
+
+.lg-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 2px 0 22px;
+    font-size: 13.5px;
+}
+
+.lg-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--lg-muted);
+    cursor: pointer;
+    user-select: none;
+}
+
+.lg-check input {
+    position: absolute;
+    opacity: 0;
+}
+
+.lg-check span {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--lg-line-strong);
+    border-radius: 5px;
+    transition: background-color .2s, border-color .2s;
+}
+
+.lg-check input:checked + span {
+    border-color: var(--lg-blue-2);
+    background: var(--lg-grad);
+}
+
+.lg-check input:checked + span::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.lg-check input:focus-visible + span {
+    outline: 2px solid var(--lg-cyan);
+    outline-offset: 2px;
+}
+
+.lg-forgot {
+    color: var(--lg-blue-2);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.lg-forgot:hover {
+    color: var(--lg-cyan);
+    text-decoration: underline;
+}
+
+/* Submit */
+
+.lg-submit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 54px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 14px;
+    background: var(--lg-grad);
+    background-size: 160% 100%;
+    color: #fff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: .01em;
+    cursor: pointer;
+    box-shadow: 0 14px 34px rgb(30 94 255 / .45), 0 1px 0 rgb(255 255 255 / .25) inset;
+    transition: transform .25s, box-shadow .25s, background-position .5s;
+}
+
+.lg-submit::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -60%;
+    width: 40%;
+    background: linear-gradient(100deg, transparent, rgb(255 255 255 / .45), transparent);
+    transform: skewX(-20deg);
+    transition: left .8s ease;
+}
+
+.lg-submit:hover {
+    transform: translateY(-2px);
+    background-position: 100% 0;
+    box-shadow: 0 20px 44px rgb(30 94 255 / .6), 0 0 30px rgb(111 227 255 / .35);
+}
+
+.lg-submit:hover::before {
+    left: 130%;
+}
+
+.lg-submit:focus-visible {
+    outline: 2px solid var(--lg-cyan);
+    outline-offset: 3px;
+}
+
+.lg-submit.is-loading {
+    pointer-events: none;
+    opacity: .85;
+}
+
+.lg-submit.is-loading i {
+    animation: lgSpin .8s linear infinite;
+}
+
+@keyframes lgSpin {
+    to { transform: rotate(360deg); }
+}
+
+.lg-secure {
+    margin: 18px 0 6px;
+    color: var(--lg-dim);
+    font-size: 12.5px;
+    text-align: center;
+}
+
+.lg-secure i {
+    margin-right: 6px;
+    color: var(--lg-blue-2);
+}
+
+.lg-back {
+    display: block;
+    color: var(--lg-muted);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+
+.lg-back:hover {
+    color: var(--lg-cyan);
+}
+
+/* ---------- Feature tiles ---------- */
+
+.lg-features {
+    grid-area: features;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 14px;
+    animation: lgUp .9s cubic-bezier(.2, .8, .2, 1) .3s both;
+}
+
+.lg-feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 10px;
+    border: 1px solid var(--lg-line);
+    border-radius: 18px;
+    background: rgb(6 14 36 / .6);
+    color: var(--lg-ice);
+    font-size: 13.5px;
+    font-weight: 700;
+    text-align: center;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+}
+
+.lg-feature i {
+    color: var(--lg-cyan);
+    font-size: 22px;
+    filter: drop-shadow(0 0 10px rgb(111 227 255 / .6));
+}
+
+.lg-feature:hover {
+    transform: translateY(-4px);
+    border-color: var(--lg-line-strong);
+    box-shadow: 0 16px 34px rgb(0 0 0 / .35), 0 0 24px rgb(47 123 255 / .2);
+}
+
+/* ---------- Footer ---------- */
+
+.lg-foot {
+    grid-area: foot;
+    position: relative;
+    padding-top: 16px;
+    text-align: center;
+}
+
+.lg-foot::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--lg-blue-2), transparent);
+    box-shadow: 0 0 14px var(--lg-blue);
+}
+
+.lg-foot p {
+    margin: 0 0 4px;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 14px;
+    letter-spacing: .5em;
+    color: var(--lg-ice);
+}
+
+.lg-foot small {
+    font-family: "DM Mono", monospace;
+    font-size: 11px;
+    letter-spacing: .4em;
+    color: var(--lg-dim);
+}
+
+.lg-foot b {
+    color: var(--lg-cyan);
+    font-weight: 400;
+}
+
+@keyframes lgUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 991px) {
+    .lg-shell {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "brand"
+            "card"
+            "features"
+            "foot";
+        padding-top: 34px;
+    }
+
+    .lg-art {
+        width: min(460px, 100%);
+    }
+
+    .lg-card-wrap {
+        width: min(480px, 100%);
+        margin: 10px auto 0;
+    }
+
+    .lg-features {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575px) {
+    .lg-shell {
+        padding: 26px 16px 24px;
+        gap: 28px;
+    }
+
+    /* Login first on phones: hide the big artwork */
+    .lg-art {
+        display: none;
+    }
+
+    .lg-role {
+        margin-bottom: 6px;
+    }
+
+    .lg-card {
+        padding: 34px 22px 24px;
+        border-radius: 22px;
+    }
+
+    .lg-features {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lg-foot p {
+        letter-spacing: .3em;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lg-glow, .lg-beam, .lg-art, .lg-art::before,
+    .lg-brand, .lg-card-wrap, .lg-features, .lg-alert {
+        animation: none;
+    }
+}
