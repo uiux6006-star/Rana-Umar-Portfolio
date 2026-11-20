@@ -109,11 +109,55 @@ def project_detail(request, slug):
 
 # ================= SERVICES =================
 
+# What each package includes on the Services page. Prices, pages and days
+# come from ESTIMATOR_PRICES so every page shows the same numbers.
+SERVICE_DETAILS = {
+    "landing": {
+        "pitch": "One focused page that turns visitors into enquiries, fast.",
+        "includes": ["Single high-converting page", "Contact form & WhatsApp button", "Mobile-first design", "Fast loading"],
+    },
+    "business": {
+        "pitch": "A professional website that builds trust and brings in enquiries.",
+        "includes": ["Home, About, Services, Contact & more", "Responsive on every device", "Contact form with email alerts", "Google Maps & social links"],
+        "popular": True,
+    },
+    "ecommerce": {
+        "pitch": "Sell online with a store your customers enjoy using.",
+        "includes": ["Product catalogue & categories", "Cart, checkout & order emails", "Admin panel to manage stock", "JazzCash, Easypaisa & card (add-on)"],
+    },
+    "webapp": {
+        "pitch": "Management systems built around how your business really works.",
+        "includes": ["Built with Python & Django", "Secure logins & user roles", "Dashboards & reports", "Admin panel for your team"],
+    },
+}
+
+ADDON_ICONS = {
+    "admin": "fa-sliders", "blog": "fa-pen-nib", "payment": "fa-credit-card",
+    "booking": "fa-calendar-check", "seo": "fa-magnifying-glass-chart",
+    "multilang": "fa-language", "whatsapp": "fa-whatsapp", "hosting": "fa-globe",
+}
+
+
 def services(request):
+
+    packages = [
+        {**t, **SERVICE_DETAILS.get(t["id"], {})}
+        for t in ESTIMATOR_PRICES["types"]
+    ]
+
+    addons = [
+        {**f, "icon": ADDON_ICONS.get(f["id"], "fa-plus"), "brand": f["id"] == "whatsapp"}
+        for f in ESTIMATOR_PRICES["features"]
+    ]
 
     return render(
         request,
-        "services.html"
+        "services.html",
+        {
+            "packages": packages,
+            "addons": addons,
+            "hero_package": next((p for p in packages if p.get("popular")), packages[0]),
+        }
     )
 
 
@@ -201,11 +245,18 @@ ESTIMATOR_PRICES = {
 
 def estimate(request):
 
+    # ?type=ecommerce pre-selects that package (used by the Services page)
+    type_ids = [t["id"] for t in ESTIMATOR_PRICES["types"]]
+    selected = request.GET.get("type")
+    if selected not in type_ids:
+        selected = type_ids[1]
+
     return render(
         request,
         "estimate.html",
         {
             "prices": ESTIMATOR_PRICES,
+            "selected_type": selected,
         }
     )
 
@@ -246,13 +297,31 @@ def leave_review(request):
 
 def blog(request):
 
-    posts = Post.objects.filter(is_published=True)
+    published = Post.objects.filter(is_published=True)
 
+    # Topic chips: every tag used on a published post, most used first
+    counts = {}
+    for tags in published.values_list("tags", flat=True):
+        for name in {t.strip() for t in tags.split(",") if t.strip()}:
+            key = name.lower()
+            label, n = counts.get(key, (name, 0))
+            # Prefer the properly capitalised spelling ("SEO" over "seo")
+            if label.islower() and not name.islower():
+                label = name
+            counts[key] = (label, n + 1)
+    all_tags = sorted(counts.values(), key=lambda item: (-item[1], item[0].lower()))
+
+    posts = published
     tag = request.GET.get("tag", "").strip()
     if tag:
         posts = posts.filter(tags__icontains=tag)
 
     page = Paginator(posts, 9).get_page(request.GET.get("page"))
+
+    # The newest post gets the big card on the first, unfiltered page
+    items = list(page.object_list)
+    featured = items[0] if page.number == 1 and not tag and items else None
+    rest = items[1:] if featured else items
 
     return render(
         request,
@@ -260,6 +329,10 @@ def blog(request):
         {
             "page": page,
             "tag": tag,
+            "featured": featured,
+            "posts": rest,
+            "all_tags": [{"name": name, "count": n} for name, n in all_tags],
+            "post_count": published.count(),
         }
     )
 

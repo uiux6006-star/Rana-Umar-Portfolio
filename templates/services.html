@@ -8,967 +8,334 @@ Services | Rana Umar Developer
 {% block meta_description %}Business websites, online stores, custom web apps, landing pages and website redesigns, built with Python and Django by Rana Umar.{% endblock %}
 {% block og_title %}Web Development Services | Rana Umar{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/services.css' %}">
+{% endblock %}
+
 
 {% block content %}
 
 
-<!-- ================= SERVICE HEADER START ================= -->
+<!--=================================
+        SERVICES HERO
+==================================-->
 
-<section class="services-page-header">
+<section class="sv-hero no-aos" aria-labelledby="svTitle">
 
-<div class="container text-center">
+    <div class="hero-bg" aria-hidden="true">
+        <div class="hero-grid"></div>
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-2"></div>
+    </div>
+
+    <div class="container">
+
+        <div class="sv-hero-grid">
+
+            <div class="sv-hero-copy">
+
+                <p class="hp-eyebrow" data-aos="fade-up">
+                    <i class="fas fa-briefcase"></i> SERVICES &amp; PRICING
+                </p>
+
+                <h1 id="svTitle" class="sv-title" data-aos="fade-up" data-aos-delay="80">
+                    Websites that<br>
+                    <span>win you customers.</span>
+                </h1>
+
+                <p class="sv-lead" data-aos="fade-up" data-aos-delay="160">
+                    From a single landing page to a full online store or custom web app.
+                    Clear prices upfront, honest timelines, and you work directly with
+                    the developer building your site.
+                </p>
+
+                <ul class="sv-promises" data-aos="fade-up" data-aos-delay="220">
+                    <li><i class="fas fa-circle-check"></i> Free consultation</li>
+                    <li><i class="fas fa-circle-check"></i> No hidden charges</li>
+                    <li><i class="fas fa-circle-check"></i> 1:1 with the developer</li>
+                </ul>
+
+                <div class="sv-actions" data-aos="fade-up" data-aos-delay="280">
+                    <a href="{% url 'estimate' %}" class="hp-btn hp-btn-primary">
+                        <i class="fas fa-calculator"></i> Get an instant estimate
+                    </a>
+                    <a href="#packages" class="hp-btn">
+                        See packages <i class="fas fa-arrow-down"></i>
+                    </a>
+                </div>
+
+            </div>
 
 
-<span class="header-badge">
+            <!-- Quote card mock-up -->
+            <div class="sv-quote-wrap" data-aos="zoom-in" data-aos-delay="150" aria-hidden="true">
 
-<i class="fas fa-layer-group"></i>
+                <div class="sv-quote" data-tilt>
 
-MY SERVICES
+                    <div class="sv-quote-head">
+                        <span class="sv-quote-icon"><i class="fas {{ hero_package.icon }}"></i></span>
+                        <div>
+                            <small>YOUR PROJECT</small>
+                            <strong>{{ hero_package.label }}</strong>
+                        </div>
+                        <span class="sv-quote-tag">Most popular</span>
+                    </div>
 
-</span>
+                    <ul class="sv-quote-lines">
+                        {% for item in hero_package.includes %}
+                        <li style="--i:{{ forloop.counter0 }}"><i class="fas fa-check"></i> {{ item }}</li>
+                        {% endfor %}
+                    </ul>
 
+                    <div class="sv-quote-meta">
+                        <span><i class="fas fa-file-lines"></i> ~{{ hero_package.pages }} pages</span>
+                        <span><i class="fas fa-clock"></i> ~{{ hero_package.days }} days</span>
+                    </div>
 
+                    <div class="sv-quote-total">
+                        <span>Starting from</span>
+                        <strong>Rs {{ hero_package.base|floatformat:"0g" }}</strong>
+                    </div>
 
-<h1>
+                    <span class="sv-quote-btn">Send me a quote <i class="fas fa-arrow-right"></i></span>
 
-Professional <span>Digital Solutions</span>
+                </div>
 
-</h1>
+                <div class="sv-chip sv-chip-1"><i class="fab fa-whatsapp"></i> Replies within 24h</div>
+                <div class="sv-chip sv-chip-2"><i class="fas fa-mobile-screen"></i> Mobile-first</div>
 
+            </div>
 
+        </div>
 
-<p>
-
-I create modern websites, powerful web applications
-and creative digital solutions with clean design,
-responsive layouts and professional development.
-
-</p>
-
-
-
-<div class="header-line"></div>
-
-
-</div>
+    </div>
 
 </section>
 
 
-<!-- ================= SERVICE HEADER END ================= -->
-
-
-
-
-
-<!-- ================= SERVICE INTRO START ================= -->
-
-<section class="service-intro">
-
-
-<div class="container">
-
-
-<div class="row align-items-center g-5">
-
-
-
-<!-- CONTENT -->
-
-<div class="col-lg-6">
-
-
-<span class="section-badge">
-
-<i class="fas fa-code"></i>
-
-MY EXPERTISE
-
-</span>
-
-
-
-<h2>
-
-Professional <span>Web Solutions</span>
-
-</h2>
-
-
-
-<p>
-
-I help businesses and individuals build modern,
-responsive and user-friendly websites using the
-latest technologies and creative design approaches.
-
-</p>
-
-
-
-<p>
-
-My focus is creating clean interfaces, optimized
-performance and smooth user experiences that
-deliver real value.
-
-</p>
-
-
-
-<div class="service-points">
-
-
-<div>
-
-<i class="fas fa-check"></i>
-
-Responsive Website Design
-
-</div>
-
-
-<div>
-
-<i class="fas fa-check"></i>
-
-Python & Django Development
-
-</div>
-
-
-<div>
-
-<i class="fas fa-check"></i>
-
-Modern UI/UX Solutions
-
-</div>
-
-
-</div>
-
-
-
-
-<a href="{% url 'contact' %}"
-
-class="btn btn-gold mt-4">
-
-<i class="fas fa-paper-plane"></i>
-
-Hire Me
-
-</a>
-
-
-
-</div>
-
-
-
-
-
-<!-- IMAGE -->
-
-<div class="col-lg-6 text-center">
-
-
-<div class="service-image-box">
-
-
-<img src="{% static 'images/pic1.jpg' %}"
-
-alt="Rana Umar Profile"
-
-class="img-fluid service-profile-image">
-
-
-</div>
-
-
-</div>
-
-
-
-
-</div>
-
-
-</div>
-
-
+<!--=================================
+        PACKAGES
+==================================-->
+
+<section class="hp-section no-aos" id="packages">
+    <div class="container">
+
+        <div class="hp-head">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-layer-group"></i> PACKAGES</p>
+            <h2 data-aos="fade-up" data-aos-delay="80">Pick what fits <span>your business</span></h2>
+            <p data-aos="fade-up" data-aos-delay="140">Starting prices in PKR. Your exact price depends on pages, design and features, and you'll always get a clear quote first.</p>
+        </div>
+
+        <div class="sv-packages">
+
+            {% for p in packages %}
+            <article class="sv-pack hp-spot{% if p.popular %} is-popular{% endif %}" data-aos="fade-up" data-aos-delay="{% cycle '0' '80' '160' '240' %}">
+
+                {% if p.popular %}<span class="sv-badge"><i class="fas fa-star"></i> Most popular</span>{% endif %}
+
+                <span class="hp-tile-icon"><i class="fas {{ p.icon }}"></i></span>
+
+                <h3>{{ p.label }}</h3>
+                <p class="sv-pitch">{{ p.pitch }}</p>
+
+                <div class="sv-price">
+                    <small>from</small>
+                    <strong>Rs {{ p.base|floatformat:"0g" }}</strong>
+                </div>
+
+                <p class="sv-meta">
+                    <span><i class="fas fa-file-lines"></i> ~{{ p.pages }} page{{ p.pages|pluralize }}</span>
+                    <span><i class="fas fa-clock"></i> ~{{ p.days }} days</span>
+                </p>
+
+                <ul class="hp-ticks">
+                    {% for item in p.includes %}<li>{{ item }}</li>{% endfor %}
+                </ul>
+
+                <div class="sv-pack-actions">
+                    <a href="{% url 'estimate' %}?type={{ p.id }}" class="hp-btn{% if p.popular %} hp-btn-primary{% endif %}">
+                        Get exact price <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'contact' %}?type={{ p.id }}&amp;subject={{ p.label|urlencode }}#contact-form" class="sv-ask">
+                        or ask about it
+                    </a>
+                </div>
+
+            </article>
+            {% endfor %}
+
+        </div>
+
+        <!-- Redesign strip -->
+        <a href="{% url 'contact' %}?type=redesign&amp;subject={{ 'Website redesign'|urlencode }}#contact-form" class="sv-redesign hp-spot" data-aos="fade-up">
+            <span class="hp-tile-icon"><i class="fas fa-wand-magic-sparkles"></i></span>
+            <div>
+                <h3>Already have a website?</h3>
+                <p>I can redesign an old or slow site with a modern look, better speed and a smooth mobile experience.</p>
+            </div>
+            <span class="sv-redesign-go">Get a free review <i class="fas fa-arrow-right"></i></span>
+        </a>
+
+    </div>
 </section>
 
 
-<!-- ================= SERVICE INTRO END ================= -->
-
-
-<!-- ================= PREMIUM SERVICES START ================= -->
-
-
-<section class="services-cards">
-
-
-<div class="container">
-
-
-<div class="section-heading text-center">
-
-
-<span class="section-badge">
-
-<i class="fas fa-star"></i>
-
-MY EXPERTISE
-
-</span>
-
-
-
-<h2>
-
-Services <span>I Provide</span>
-
-</h2>
-
-
-
-<p>
-
-Professional solutions to build modern,
-powerful and user-focused digital experiences.
-
-</p>
-
-
-</div>
-
-
-
-
-<div class="row g-4 mt-5">
-
-
-
-<!-- SERVICE 1 -->
-
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="service-box">
-
-
-<div class="service-icon">
-
-<i class="fas fa-code"></i>
-
-</div>
-
-
-
-<h4>
-
-Web Development
-
-</h4>
-
-
-
-<p>
-
-Creating modern, responsive and professional
-websites using HTML, CSS, Bootstrap and
-JavaScript.
-
-</p>
-
-
-
-<div class="service-line"></div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- SERVICE 2 -->
-
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="service-box">
-
-
-<div class="service-icon">
-
-<i class="fas fa-palette"></i>
-
-</div>
-
-
-
-<h4>
-
-UI/UX Design
-
-</h4>
-
-
-
-<p>
-
-Designing clean and user-friendly interfaces
-using Figma and modern design principles.
-
-</p>
-
-
-
-<div class="service-line"></div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- SERVICE 3 -->
-
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="service-box">
-
-
-<div class="service-icon">
-
-<i class="fab fa-python"></i>
-
-</div>
-
-
-
-<h4>
-
-Python Development
-
-</h4>
-
-
-
-<p>
-
-Building Python applications using OOP,
-file handling and problem-solving concepts.
-
-</p>
-
-
-
-<div class="service-line"></div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- SERVICE 4 -->
-
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="service-box">
-
-
-<div class="service-icon">
-
-<i class="fas fa-server"></i>
-
-</div>
-
-
-
-<h4>
-
-Django Backend
-
-</h4>
-
-
-
-<p>
-
-Developing dynamic web applications with
-Django, databases and secure backend systems.
-
-</p>
-
-
-
-<div class="service-line"></div>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
+<!--=================================
+        ADD-ONS
+==================================-->
+
+<section class="hp-section hp-alt no-aos">
+    <div class="container">
+
+        <div class="hp-head">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-puzzle-piece"></i> ADD-ONS</p>
+            <h2 data-aos="fade-up" data-aos-delay="80">Power up <span>any package</span></h2>
+            <p data-aos="fade-up" data-aos-delay="140">Add only what you need. Every add-on is priced upfront in the estimator.</p>
+        </div>
+
+        <div class="sv-addons">
+            {% for a in addons %}
+            <div class="sv-addon hp-spot" data-aos="fade-up" data-aos-delay="{% cycle '0' '60' '120' '180' %}">
+                <span class="sv-addon-icon"><i class="{% if a.brand %}fab{% else %}fas{% endif %} {{ a.icon }}"></i></span>
+                <div>
+                    <h3>{{ a.label }}</h3>
+                    <p>+ Rs {{ a.price|floatformat:"0g" }} <span>· ~{{ a.days }} day{{ a.days|pluralize }}</span></p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <p class="hp-center" data-aos="fade-up">
+            <a href="{% url 'estimate' %}" class="hp-btn">Build your price in the estimator <i class="fas fa-arrow-right"></i></a>
+        </p>
+
+    </div>
 </section>
 
 
-<!-- ================= PREMIUM SERVICES END ================= -->
-
-<!-- ================= PREMIUM PROCESS START ================= -->
-
-<section class="process-section">
-
-
-<div class="container">
-
-
-<div class="section-heading text-center">
-
-
-<span class="section-badge">
-
-<i class="fas fa-gears"></i>
-
-MY PROCESS
-
-</span>
-
-
-
-<h2>
-
-How I <span>Work</span>
-
-</h2>
-
-
-
-<p>
-
-A simple and professional workflow to transform
-ideas into successful digital solutions.
-
-</p>
-
-
-</div>
-
-
-
-
-<div class="row g-4 mt-5">
-
-
-
-<!-- STEP 1 -->
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="process-card">
-
-
-<div class="process-number">
-
-01
-
-</div>
-
-
-
-<div class="process-icon">
-
-<i class="fas fa-lightbulb"></i>
-
-</div>
-
-
-
-<h4>
-
-Planning
-
-</h4>
-
-
-
-<p>
-
-Understanding project requirements and
-creating the right strategy before development.
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- STEP 2 -->
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="process-card">
-
-
-<div class="process-number">
-
-02
-
-</div>
-
-
-
-<div class="process-icon">
-
-<i class="fas fa-pencil-ruler"></i>
-
-</div>
-
-
-
-<h4>
-
-Design
-
-</h4>
-
-
-
-<p>
-
-Creating modern layouts with clean UI
-and user-friendly experiences.
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<!-- STEP 3 -->
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="process-card">
-
-
-<div class="process-number">
-
-03
-
-</div>
-
-
-
-<div class="process-icon">
-
-<i class="fas fa-code"></i>
-
-</div>
-
-
-
-<h4>
-
-Development
-
-</h4>
-
-
-
-<p>
-
-Writing clean code and developing
-responsive web applications.
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<!-- STEP 4 -->
-
-<div class="col-lg-3 col-md-6">
-
-
-<div class="process-card">
-
-
-<div class="process-number">
-
-04
-
-</div>
-
-
-
-<div class="process-icon">
-
-<i class="fas fa-rocket"></i>
-
-</div>
-
-
-
-<h4>
-
-Deployment
-
-</h4>
-
-
-
-<p>
-
-Launching projects and ensuring
-smooth performance and quality.
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
+<!--=================================
+        PROCESS
+==================================-->
+
+<section class="hp-section no-aos">
+    <div class="container">
+
+        <div class="hp-head">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-route"></i> HOW IT WORKS</p>
+            <h2 data-aos="fade-up" data-aos-delay="80">From idea to <span>launch</span></h2>
+            <p data-aos="fade-up" data-aos-delay="140">A simple, transparent process, so you always know what's happening next.</p>
+        </div>
+
+        <ol class="hp-process" id="hpProcess">
+            <li data-aos="fade-up">
+                <span class="hp-step-icon"><i class="fas fa-comments" aria-hidden="true"></i></span>
+                <span class="hp-step-num">01</span>
+                <h3>Free Discussion</h3>
+                <p>Tell me about your business and goals. We agree on features, timeline and budget.</p>
+            </li>
+            <li data-aos="fade-up" data-aos-delay="100">
+                <span class="hp-step-icon"><i class="fas fa-pen-ruler" aria-hidden="true"></i></span>
+                <span class="hp-step-num">02</span>
+                <h3>Design</h3>
+                <p>I design the look and layout, and you give feedback before any code is written.</p>
+            </li>
+            <li data-aos="fade-up" data-aos-delay="200">
+                <span class="hp-step-icon"><i class="fas fa-code" aria-hidden="true"></i></span>
+                <span class="hp-step-num">03</span>
+                <h3>Development</h3>
+                <p>I build your website with regular progress updates so you can see it come to life.</p>
+            </li>
+            <li data-aos="fade-up" data-aos-delay="300">
+                <span class="hp-step-icon"><i class="fas fa-rocket" aria-hidden="true"></i></span>
+                <span class="hp-step-num">04</span>
+                <h3>Launch &amp; Support</h3>
+                <p>Your site goes live, and I help you with questions and small fixes after launch.</p>
+            </li>
+        </ol>
+
+    </div>
 </section>
 
 
-<!-- ================= PREMIUM PROCESS END ================= -->
-
-
-
-
-
-<!-- ================= PREMIUM WHY CHOOSE START ================= -->
-
-<section class="why-services">
-
-
-<div class="container">
-
-
-
-<div class="why-box text-center">
-
-
-
-<span class="section-badge">
-
-<i class="fas fa-award"></i>
-
-WHY CHOOSE ME
-
-</span>
-
-
-
-
-<h2>
-
-Why Choose My <span>Services?</span>
-
-</h2>
-
-
-
-<p>
-
-I focus on quality development, clean coding,
-modern design and delivering professional
-solutions that help businesses grow online.
-
-</p>
-
-
-
-
-
-<div class="row g-4 mt-5">
-
-
-
-<!-- STAT 1 -->
-
-<div class="col-md-4">
-
-
-<div class="service-stat">
-
-
-<div class="stat-icon">
-
-<i class="fas fa-mobile-screen-button"></i>
-
-</div>
-
-
-
-<h3>
-
-100%
-
-</h3>
-
-
-
-<h5>
-
-Responsive Design
-
-</h5>
-
-
-
-<p>
-
-Modern layouts that work perfectly
-on all devices.
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- STAT 2 -->
-
-<div class="col-md-4">
-
-
-<div class="service-stat">
-
-
-<div class="stat-icon">
-
-<i class="fas fa-headset"></i>
-</div>
-<h3>
-Free
-</h3>
-<h5>
-Consultation
-</h5>
-<p>
-Discuss your idea and get a clear
-quote before you commit.
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<!-- STAT 3 -->
-
-<div class="col-md-4">
-
-
-<div class="service-stat">
-
-
-<div class="stat-icon">
-
-<i class="fas fa-heart"></i>
-
-</div>
-
-
-
-<h3>
-1:1
-</h3>
-<h5>
-Direct Communication
-</h5>
-<p>
-You talk directly to the person
-building your website.
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
+<!--=================================
+        EVERY PROJECT INCLUDES
+==================================-->
+
+<section class="hp-section hp-alt no-aos">
+    <div class="container">
+
+        <div class="sv-included">
+
+            <div class="sv-included-copy">
+                <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-gem"></i> ALWAYS INCLUDED</p>
+                <h2 class="sv-h2" data-aos="fade-up" data-aos-delay="80">Quality that comes <span>standard</span></h2>
+                <p data-aos="fade-up" data-aos-delay="140">Whatever you choose, these are never extras.</p>
+                <div class="hp-why-actions" data-aos="fade-up" data-aos-delay="200">
+                    <a href="{% url 'projects' %}" class="hp-btn">See my work <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <ul class="sv-included-grid">
+                <li data-aos="fade-up"><i class="fas fa-mobile-screen-button"></i><div><h3>Fully responsive</h3><p>Tested on phones, tablets and desktops.</p></div></li>
+                <li data-aos="fade-up" data-aos-delay="60"><i class="fas fa-bolt"></i><div><h3>Fast loading</h3><p>Lightweight pages that keep visitors around.</p></div></li>
+                <li data-aos="fade-up" data-aos-delay="120"><i class="fas fa-code"></i><div><h3>Clean code</h3><p>Easy to update and grow later.</p></div></li>
+                <li data-aos="fade-up" data-aos-delay="180"><i class="fas fa-file-invoice"></i><div><h3>Clear quote</h3><p>Agreed price upfront, no hidden charges.</p></div></li>
+                <li data-aos="fade-up" data-aos-delay="240"><i class="fas fa-user-check"></i><div><h3>Direct contact</h3><p>You talk to the person building your site.</p></div></li>
+                <li data-aos="fade-up" data-aos-delay="300"><i class="fas fa-life-ring"></i><div><h3>Help after launch</h3><p>Questions, fixes and future updates.</p></div></li>
+            </ul>
+
+        </div>
+
+    </div>
 </section>
 
 
-<!-- ================= PREMIUM WHY CHOOSE END ================= -->
+<!--=================================
+        FAQ
+==================================-->
 
-<!-- ================= PREMIUM CTA START ================= -->
+<section class="hp-section no-aos">
+    <div class="container">
 
-<section class="project-cta">
+        <div class="hp-faq-wrap">
 
+            <div class="hp-head hp-head-left" data-aos="fade-up">
+                <p class="hp-eyebrow"><i class="fas fa-circle-question" aria-hidden="true"></i> FAQ</p>
+                <h2>Questions <span>answered</span></h2>
+                <p>Can't find what you're looking for? Message me and I'll reply within a day.</p>
+                <a href="{% url 'contact' %}" class="hp-btn">Ask a question <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
 
-<div class="container">
+            <div data-aos="fade-up" data-aos-delay="100">
+                <details class="hp-faq-item" open>
+                    <summary>How much does a website cost?</summary>
+                    <p>It depends on what you need: pages, features and design. Use the <a href="{% url 'estimate' %}">price estimator</a> for an instant range, and I'll send a clear quote with no hidden charges.</p>
+                </details>
+                <details class="hp-faq-item">
+                    <summary>How long will my website take?</summary>
+                    <p>A simple business website is much quicker than a custom web app. After our first discussion I'll give you a realistic timeline and keep you updated throughout.</p>
+                </details>
+                <details class="hp-faq-item">
+                    <summary>Can I update the website myself?</summary>
+                    <p>Yes. For dynamic sites I include an easy admin panel, so you can change text, images and products yourself.</p>
+                </details>
+                <details class="hp-faq-item">
+                    <summary>Can I accept online payments?</summary>
+                    <p>Yes. Online stores can take JazzCash, Easypaisa and card payments. It's listed as an add-on, so you only pay for it if you need it.</p>
+                </details>
+                <details class="hp-faq-item">
+                    <summary>Do you help after the website is launched?</summary>
+                    <p>Yes. I help you get the site live and I'm available for questions, fixes and future updates.</p>
+                </details>
+            </div>
 
+        </div>
 
-<div class="cta-content text-center">
-
-
-
-<span class="section-badge">
-
-<i class="fas fa-rocket"></i>
-
-LET'S CREATE TOGETHER
-
-</span>
-
-
-
-
-<h2>
-
-Have A <span>Project</span> In Mind?
-
-</h2>
-
-
-
-
-<p>
-
-Let's work together and build something amazing.
-I create modern websites, powerful applications
-and digital solutions that bring ideas to life.
-
-</p>
-
-
-
-
-<div class="cta-actions">
-
-
-<a href="{% url 'contact' %}"
-
-class="btn btn-gold btn-lg">
-
-<i class="fas fa-paper-plane"></i>
-
-Contact Me
-
-</a>
-
-
-
-<a href="{% url 'projects' %}"
-
-class="btn btn-outline-gold btn-lg">
-
-<i class="fas fa-eye"></i>
-
-View Projects
-
-</a>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
+    </div>
 </section>
 
 
-<!-- ================= PREMIUM CTA END ================= -->
+<script src="{% static 'js/home.js' %}" defer></script>
 
-    {% endblock %}
+{% endblock %}

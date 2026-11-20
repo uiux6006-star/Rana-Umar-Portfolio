@@ -62,7 +62,7 @@ You'll get an exact quote once we talk about the details.
         <div class="estimator-options estimator-types">
             {% for type in prices.types %}
             <label class="estimator-option">
-                <input type="radio" name="type" value="{{ type.id }}" {% if forloop.counter == 2 %}checked{% endif %}>
+                <input type="radio" name="type" value="{{ type.id }}" {% if type.id == selected_type %}checked{% endif %}>
                 <span class="estimator-option-body">
                     <i class="fas {{ type.icon }}"></i>
                     <strong>{{ type.label }}</strong>

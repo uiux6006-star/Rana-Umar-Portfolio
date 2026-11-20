@@ -19,6 +19,25 @@ class PageTests(TestCase):
             self.assertContains(response, f"Rs {t['base']:,}")
         self.assertContains(response, 'id="hpProcess"')
 
+    def test_services_prices_come_from_the_estimator(self):
+        from .views import ESTIMATOR_PRICES
+        response = self.client.get(reverse("services"))
+        html = response.content.decode()
+        self.assertEqual(html.count("<h1"), 1)
+        for t in ESTIMATOR_PRICES["types"]:
+            self.assertContains(response, f"Rs {t['base']:,}")
+            self.assertContains(response, f"?type={t['id']}")
+        for f in ESTIMATOR_PRICES["features"]:
+            self.assertContains(response, f"+ Rs {f['price']:,}")
+
+    def test_estimator_preselects_type_from_url(self):
+        response = self.client.get(reverse("estimate"), {"type": "ecommerce"})
+        self.assertEqual(response.context["selected_type"], "ecommerce")
+        self.assertContains(response, 'value="ecommerce" checked')
+        # Unknown values fall back to the default package
+        response = self.client.get(reverse("estimate"), {"type": "<script>"})
+        self.assertEqual(response.context["selected_type"], "business")
+
     def test_site_chrome_is_on_every_page(self):
         for name in ["home", "about", "projects", "contact"]:
             response = self.client.get(reverse(name))
@@ -213,6 +232,30 @@ class BlogTests(TestCase):
         response = self.client.get(reverse("blog"), {"tag": "SEO"})
         self.assertContains(response, "About SEO")
         self.assertNotContains(response, "About Django")
+
+    def test_newest_post_is_featured_and_topics_are_counted(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        now = timezone.now()
+        Post.objects.create(title="Older one", excerpt="e", body="b", is_published=True,
+                            tags="Django, SEO", published_at=now - timedelta(days=2))
+        Post.objects.create(title="Newest one", excerpt="e", body="b", is_published=True,
+                            tags="seo", published_at=now)
+
+        response = self.client.get(reverse("blog"))
+        self.assertEqual(response.context["featured"].title, "Newest one")
+        self.assertEqual([p.title for p in response.context["posts"]], ["Older one"])
+        # Tags are counted case-insensitively, most used first
+        self.assertEqual(response.context["all_tags"], [{"name": "SEO", "count": 2}, {"name": "Django", "count": 1}])
+        self.assertEqual(self.client.get(reverse("blog")).content.decode().count("<h1"), 1)
+
+        # A tag filter shows a plain grid, no featured card
+        filtered = self.client.get(reverse("blog"), {"tag": "Django"})
+        self.assertIsNone(filtered.context["featured"])
+
+    def test_empty_blog_shows_coming_soon(self):
+        response = self.client.get(reverse("blog"))
+        self.assertContains(response, "The first articles are on the way")
 
     def test_duplicate_titles_get_unique_slugs(self):
         a = Post.objects.create(title="Same", excerpt="e", body="b")
