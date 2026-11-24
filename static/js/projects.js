@@ -19,8 +19,14 @@
     let filter = "all";
     let timer = null;
 
+    const inFilter = (card) => {
+        if (filter === "all") return true;
+        if (filter.startsWith("kind:")) return card.dataset.kind === filter.slice(5);
+        return card.dataset.category === filter;
+    };
+
     const matches = (card, query) =>
-        (filter === "all" || card.dataset.category === filter) &&
+        inFilter(card) &&
         (!query || query.split(/\s+/).every((word) => card.dataset.search.includes(word)));
 
     const apply = () => {
@@ -58,8 +64,10 @@
 
         // Keep the filter in the URL so it can be shared (?category=django)
         const url = new URL(window.location);
-        if (filter === "all") url.searchParams.delete("category");
-        else url.searchParams.set("category", filter);
+        url.searchParams.delete("category");
+        url.searchParams.delete("kind");
+        if (filter.startsWith("kind:")) url.searchParams.set("kind", filter.slice(5));
+        else if (filter !== "all") url.searchParams.set("category", filter);
         history.replaceState(null, "", url);
 
         apply();
@@ -94,7 +102,10 @@
     }
 
     // Start from ?category=... if the link had one
-    const initial = new URLSearchParams(window.location.search).get("category");
-    if (initial) setFilter(initial);
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("q") && search) search.value = params.get("q");
+    if (params.get("kind")) setFilter("kind:" + params.get("kind"));
+    else if (params.get("category")) setFilter(params.get("category"));
+    else if (params.get("q")) apply();
 
 })();

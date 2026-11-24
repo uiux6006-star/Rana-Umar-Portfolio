@@ -1,4 +1,4 @@
-{% load static %}
+{% load static assets %}
 
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark" data-site-theme="{{ site_theme.slug|default:'original' }}">
@@ -134,8 +134,9 @@ Rana Umar | Full Stack Developer
 
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
+    <link rel="stylesheet" href="{% vstatic 'css/style.css' %}">
+    <link rel="stylesheet" href="{% vstatic 'css/chatbot.css' %}">
+    <link rel="stylesheet" href="{% vstatic 'css/terminal.css' %}">
 
 
     <!-- Active theme from Appearance > Theme Customizer.
@@ -250,6 +251,14 @@ Rana Umar | Full Stack Developer
 
         <div class="sn-actions">
 
+            <button class="sn-icon-btn sn-term"
+                    type="button"
+                    data-open-terminal
+                    aria-label="Open the developer terminal"
+                    title="Developer terminal (press `)">
+                <span aria-hidden="true">&gt;_</span>
+            </button>
+
             <button class="theme-toggle sn-icon-btn"
                     type="button"
                     id="themeToggle"
@@ -300,6 +309,10 @@ Rana Umar | Full Stack Developer
             Get a free price estimate
             <i class="fas fa-arrow-right" aria-hidden="true"></i>
         </a>
+
+        <button type="button" class="sn-menu-term" data-open-terminal>
+            <span aria-hidden="true">&gt;_</span> Open the developer terminal
+        </button>
 
         <div class="sn-menu-foot">
             <a href="mailto:uiux6006@gmail.com">uiux6006@gmail.com</a>
@@ -462,6 +475,12 @@ Rana Umar | Full Stack Developer
 {% include "partials/chatbot.html" %}
 
 
+<!-- Developer terminal (opens with the >_ button or the ` key) -->
+<div class="t-overlay" id="rudTerminal" role="dialog" aria-modal="true" aria-label="Developer terminal" hidden>
+    {% include "partials/terminal_box.html" with overlay=True tid="Overlay" %}
+</div>
+
+
 <!-- ================= FLOATING WHATSAPP ================= -->
 
 <div class="wa" id="waWidget">
@@ -494,9 +513,13 @@ Rana Umar | Full Stack Developer
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
 
-<script src="{% static 'js/script.js' %}"></script>
+<script src="{% vstatic 'js/script.js' %}"></script>
 
-<script src="{% static 'js/chatbot.js' %}" defer></script>
+<script src="{% vstatic 'js/chatbot.js' %}" defer></script>
+
+<script src="{% vstatic 'js/terminal.js' %}" defer></script>
+
+<script src="{% vstatic 'js/easter.js' %}" defer></script>
 
 
 </body>

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static assets %}
 
 {% block title %}
 Projects | Rana Umar Developer
@@ -9,8 +9,8 @@ Projects | Rana Umar Developer
 {% block og_title %}Projects by Rana Umar | Full Stack Developer{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-<link rel="stylesheet" href="{% static 'css/projects.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/home.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/projects.css' %}">
 {% endblock %}
 
 
@@ -109,6 +109,12 @@ Projects | Rana Umar Developer
                     {{ c.label }} <span>{{ c.count }}</span>
                 </button>
                 {% endfor %}
+                {% if kinds %}<i class="pj-divider" aria-hidden="true"></i>{% endif %}
+                {% for k in kinds %}
+                <button type="button" class="pj-filter" data-filter="kind:{{ k.value }}" aria-pressed="false">
+                    {{ k.label }} <span>{{ k.count }}</span>
+                </button>
+                {% endfor %}
             </div>
 
             <label class="pj-search">
@@ -133,7 +139,8 @@ Projects | Rana Umar Developer
             {% for project in projects %}
             <article class="pj-card hp-spot"
                      data-category="{{ project.category }}"
-                     data-search="{{ project.title|lower }} {{ project.technologies|lower }} {{ project.category }} {{ project.client|lower }}"
+                     data-kind="{{ project.kind }}"
+                     data-search="{{ project.title|lower }} {{ project.technologies|lower }} {{ project.category }} {{ project.get_kind_display|lower }} {{ project.client|lower }}"
                      data-aos="fade-up"
                      data-aos-delay="{% cycle '0' '80' '160' %}">
 
@@ -209,7 +216,7 @@ Projects | Rana Umar Developer
 </section>
 
 
-<script src="{% static 'js/home.js' %}" defer></script>
-<script src="{% static 'js/projects.js' %}" defer></script>
+<script src="{% vstatic 'js/home.js' %}" defer></script>
+<script src="{% vstatic 'js/projects.js' %}" defer></script>
 
 {% endblock %}

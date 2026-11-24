@@ -1,0 +1,326 @@
+/* =====================================================
+        RUD TERMINAL (inline + overlay) and Easter eggs
+   Theme variables only, so it follows every theme.
+===================================================== */
+
+.t-box {
+    --t-bg: color-mix(in srgb, var(--bg) 88%, #000);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgb(var(--accent-rgb) / .3);
+    border-radius: 20px;
+    background: var(--t-bg);
+    box-shadow: 0 40px 90px var(--shadow-color), 0 0 0 1px rgb(var(--fg-rgb) / .04) inset, 0 0 70px rgb(var(--glow-rgb) / .1);
+    font-family: var(--font-mono);
+    color: var(--text);
+    text-align: left;
+}
+
+html[data-bs-theme="light"] .t-box {
+    --t-bg: #0b1324;
+    --text: #e6edf8;
+    --text-dim: #8b9ab4;
+    --text-muted: #a3b1c8;
+    color: #e6edf8;
+}
+
+.t-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 44px;
+    padding: 0 16px;
+    border-bottom: 1px solid rgb(var(--fg-rgb) / .12);
+    background: rgb(255 255 255 / .03);
+}
+
+.t-dots {
+    display: flex;
+    gap: 7px;
+}
+
+.t-dots i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #ff5f57;
+}
+
+.t-dots i:nth-child(2) { background: #febc2e; }
+.t-dots i:nth-child(3) { background: #28c840; }
+
+.t-title-bar {
+    flex: 1;
+    color: var(--text-dim);
+    font-size: 12.5px;
+    text-align: center;
+}
+
+.t-hint {
+    color: var(--text-dim);
+    font-size: 11px;
+    letter-spacing: .06em;
+}
+
+.t-close {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgb(var(--fg-rgb) / .15);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color .2s, border-color .2s;
+}
+
+.t-close:hover,
+.t-close:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.t-screen {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 18px 20px 14px;
+    font-size: 14px;
+    line-height: 1.65;
+    cursor: text;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--accent-rgb) / .4) transparent;
+}
+
+.t-line {
+    min-height: 1.65em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    animation: tIn .18s ease-out;
+}
+
+@keyframes tIn {
+    from { opacity: 0; transform: translateY(3px); }
+}
+
+.t-line a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: rgb(var(--accent-rgb) / .4);
+    text-underline-offset: 3px;
+}
+
+.t-line a:hover {
+    text-decoration-color: currentColor;
+}
+
+.t-echo { margin-top: 6px; }
+.t-prompt { color: var(--accent); white-space: nowrap; }
+.t-cmd { color: var(--accent); }
+.t-dim, .t-line.t-dim { color: var(--text-dim); }
+.t-title { color: var(--text); font-weight: 500; }
+.t-line.t-title { margin-top: 6px; }
+.t-warn { color: #fbbf24; }
+.t-ok { color: #34d399; }
+
+.t-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.t-form .t-prompt {
+    margin: 0;
+    font-size: 14px;
+}
+
+.t-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+    caret-color: var(--accent);
+}
+
+.t-chips {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px 12px;
+    overflow-x: auto;
+    border-top: 1px solid rgb(var(--fg-rgb) / .1);
+    scrollbar-width: none;
+}
+
+.t-chips::-webkit-scrollbar { display: none; }
+
+.t-chips button {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid rgb(var(--fg-rgb) / .15);
+    border-radius: 9px;
+    background: rgb(255 255 255 / .03);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: color .2s, border-color .2s, background-color .2s;
+}
+
+.t-chips button:hover,
+.t-chips button:focus-visible {
+    border-color: var(--accent);
+    background: rgb(var(--accent-rgb) / .1);
+    color: var(--accent);
+}
+
+.t-box :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.t-input:focus-visible { outline: none; }
+
+/* ---------- Overlay ---------- */
+
+.t-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgb(2 6 14 / .55);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity .22s ease;
+}
+
+.t-overlay.is-open { opacity: 1; }
+
+.t-overlay .t-box {
+    width: min(820px, 100%);
+    height: min(560px, calc(100dvh - 40px));
+    transform: translateY(14px) scale(.98);
+    transition: transform .3s cubic-bezier(.2, .8, .2, 1);
+}
+
+.t-overlay.is-open .t-box { transform: none; }
+
+body.t-open { overflow: hidden; }
+
+/* Nav button (matches the theme toggle next to it) */
+.sn-term {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgb(var(--fg-rgb) / .04);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -.04em;
+    cursor: pointer;
+    transition: border-color .3s, color .3s;
+}
+
+.sn-term:hover,
+.sn-term:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Small phones: the menu has its own terminal button */
+@media (max-width: 380px) {
+    .sn-term { display: none; }
+}
+
+.sn-menu-term {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 10px;
+    border: 1px dashed rgb(var(--accent-rgb) / .45);
+    border-radius: max(12px, min(var(--radius-btn), 999px));
+    background: transparent;
+    color: var(--text);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.sn-menu-term span {
+    color: var(--accent);
+    font-family: var(--font-mono);
+}
+
+/* ---------- Konami / developer mode toast ---------- */
+
+.rud-egg {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    z-index: 3100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: calc(100% - 32px);
+    padding: 14px 20px;
+    border: 1px solid rgb(var(--accent-rgb) / .5);
+    border-radius: 16px;
+    background: rgb(var(--surface-rgb) / .95);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 24px 60px var(--shadow-color), 0 0 50px rgb(var(--glow-rgb) / .25);
+    color: var(--text);
+    font-size: 14.5px;
+    transform: translate(-50%, 140%);
+    transition: transform .45s cubic-bezier(.2, .9, .2, 1.1);
+}
+
+.rud-egg.is-on { transform: translate(-50%, 0); }
+.rud-egg i { color: var(--accent); font-size: 20px; }
+
+html.rud-devmode body {
+    --grid-line: rgb(var(--accent-rgb) / .12);
+}
+
+html.rud-devmode .sn-logo img {
+    animation: rudSpin 1.2s cubic-bezier(.3, 1.4, .5, 1);
+}
+
+@keyframes rudSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---------- Responsive + motion ---------- */
+
+@media (max-width: 575px) {
+    .t-overlay { padding: 10px; align-items: end; }
+    .t-overlay .t-box { height: min(78dvh, 560px); border-radius: 18px; }
+    .t-screen { padding: 14px; font-size: 13px; }
+    .t-form .t-prompt, .t-input { font-size: 16px; } /* 16px stops iOS zooming in */
+    .t-form .t-prompt { font-size: 13px; }
+    .t-hint { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .t-line { animation: none; }
+    .t-overlay, .t-overlay .t-box, .rud-egg { transition: none; }
+    html.rud-devmode .sn-logo img { animation: none; }
+}

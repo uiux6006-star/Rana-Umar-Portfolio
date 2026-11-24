@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static assets %}
 
 {% block title %}
 Services | Rana Umar Developer
@@ -9,8 +9,8 @@ Services | Rana Umar Developer
 {% block og_title %}Web Development Services | Rana Umar{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-<link rel="stylesheet" href="{% static 'css/services.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/home.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/services.css' %}">
 {% endblock %}
 
 
@@ -111,6 +111,47 @@ Services | Rana Umar Developer
 
     </div>
 
+</section>
+
+
+<!--=================================
+        WHAT I DO (six services)
+==================================-->
+
+<section class="hp-section hp-alt no-aos" id="what-i-do">
+    <div class="container">
+
+        <div class="hp-head">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-code"></i> WHAT I DO</p>
+            <h2 data-aos="fade-up" data-aos-delay="80">Services for <span>businesses &amp; brands</span></h2>
+            <p data-aos="fade-up" data-aos-delay="140">For clients in Pakistan and abroad. Pick a service to see related work or start a request.</p>
+        </div>
+
+        <div class="sv-services">
+            {% for s in service_list %}
+            <article class="sv-service hp-spot" data-aos="fade-up" data-aos-delay="{% cycle '0' '80' '160' %}">
+                <span class="hp-tile-icon"><i class="fas {{ s.icon }}" aria-hidden="true"></i></span>
+                <h3>{{ s.name }}</h3>
+                <p>{{ s.text }}</p>
+                <ul class="hp-ticks">
+                    {% for d in s.deliverables %}<li>{{ d }}</li>{% endfor %}
+                </ul>
+                <div class="hp-chips">{% for t in s.tech %}<span>{{ t }}</span>{% endfor %}</div>
+                <div class="sv-service-links">
+                    {% if s.estimate %}
+                    <a href="{% url 'estimate' %}?type={{ s.estimate }}" class="sv-req">Request a project <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    {% else %}
+                    <a href="{% url 'contact' %}?type={{ s.contact_type }}&amp;subject={{ s.name|urlencode }}#contact-form" class="sv-req">Request a project <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    {% endif %}
+                    {% if s.projects %}
+                    <a href="{% url 'projects' %}?{{ s.projects }}" class="sv-rel">Related projects</a>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+    </div>
 </section>
 
 
@@ -336,6 +377,6 @@ Services | Rana Umar Developer
 </section>
 
 
-<script src="{% static 'js/home.js' %}" defer></script>
+<script src="{% vstatic 'js/home.js' %}" defer></script>
 
 {% endblock %}

@@ -430,3 +430,164 @@ class SeoTests(TestCase):
         self.assertContains(response, 'property="og:image"')
         self.assertContains(response, "images/pic2.jpg")
         self.assertContains(response, 'rel="canonical"')
+
+
+class DeveloperHubTests(TestCase):
+    """Terminal, GitHub centre, Skills Universe, CV centre and case studies."""
+
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()
+
+    # ---------- Profile data ----------
+
+    def test_profile_data_is_consistent_and_honest(self):
+        from . import profile
+        ids = {s["id"] for s in profile.SKILLS}
+        for s in profile.SKILLS:
+            self.assertIn(s["level"], profile.LEVELS, s["id"])
+            self.assertIn(s["group"], {g["id"] for g in profile.SKILL_GROUPS})
+            for r in s["related"]:
+                self.assertIn(r, ids, f"{s['id']} links to unknown skill {r}")
+            self.assertNotRegex(" ".join([s["about"], *s["builds"]]), r"\d+\s*%", "no fake percentages")
+        for step in profile.JOURNEY:
+            for sid in step["skills"]:
+                self.assertIn(sid, ids)
+
+    # ---------- Terminal ----------
+
+    def test_terminal_data(self):
+        Project.objects.create(title="Shop T", description="d", image="projects/x.jpg",
+                               category="django", technologies="Django, Python", kind="webapp")
+        data = self.client.get(reverse("terminal_data")).json()
+        self.assertEqual(len(data["projects"]), Project.objects.count())
+        self.assertEqual(data["contact"]["github"], "https://github.com/uiux6006-star")
+        self.assertTrue(data["cv"].endswith("Rana_Umar_CV.pdf"))
+        self.assertEqual(data["experience"][0]["role"], "Freelance Full Stack Developer")
+        levels = {i["level"] for g in data["skills"] for i in g["items"]}
+        self.assertTrue(levels <= {"Building Projects", "Working With", "Learning"})
+
+    def test_terminal_is_on_every_page(self):
+        for name in ["home", "about", "projects", "services", "contact", "blog"]:
+            with self.subTest(page=name):
+                response = self.client.get(reverse(name))
+                self.assertContains(response, 'id="rudTerminal"')
+                self.assertContains(response, "data-open-terminal")
+                self.assertContains(response, "js/terminal.js")
+        # The home page also has an inline terminal
+        self.assertEqual(self.client.get(reverse("home")).content.decode().count("data-terminal="), 2)
+
+    # ---------- GitHub ----------
+
+    def _fake_github(self, path):
+        if path.startswith("/users/uiux6006-star/repos"):
+            return [
+                {"name": "portfolio", "html_url": "https://github.com/x/portfolio", "language": "Python",
+                 "fork": False, "pushed_at": "2026-11-20T10:00:00Z", "stargazers_count": 2},
+                {"name": "site", "html_url": "https://github.com/x/site", "language": "HTML",
+                 "fork": False, "pushed_at": "2026-11-01T10:00:00Z"},
+                {"name": "forked", "html_url": "https://github.com/x/forked", "language": "Go",
+                 "fork": True, "pushed_at": "2026-11-22T10:00:00Z"},
+            ]
+        if path.startswith("/users/uiux6006-star/events"):
+            from datetime import datetime, timezone
+            today = datetime.now(timezone.utc).strftime("%Y-%m-%dT10:00:00Z")
+            return [{"type": "PushEvent", "created_at": today, "payload": {"commits": [{}, {}, {}]}},
+                    {"type": "CreateEvent", "created_at": "2001-01-01T00:00:00Z"}]
+        return {"login": "uiux6006-star", "public_repos": 3, "followers": 4, "following": 1,
+                "html_url": "https://github.com/uiux6006-star", "avatar_url": "https://a/x.png"}
+
+    def test_github_data_live(self):
+        from unittest import mock
+        with mock.patch("base.devhub._get", side_effect=self._fake_github):
+            data = self.client.get(reverse("github_data")).json()
+        self.assertTrue(data["ok"])
+        self.assertEqual([r["name"] for r in data["repos"]], ["portfolio", "site"])  # no forks, newest first
+        self.assertEqual({lang["name"] for lang in data["languages"]}, {"Python", "HTML"})
+        self.assertEqual(len(data["activity"]), 84)
+        self.assertEqual(data["activity_total"], 3)  # old event ignored, a push counts its commits
+
+        # Cached: GitHub is not called again
+        with mock.patch("base.devhub._get", side_effect=AssertionError("should use the cache")):
+            self.assertTrue(self.client.get(reverse("github_data")).json()["ok"])
+
+    def test_github_failure_falls_back_without_fake_data(self):
+        import urllib.error
+        from unittest import mock
+        with mock.patch("base.devhub._get", side_effect=urllib.error.URLError("offline")):
+            data = self.client.get(reverse("github_data")).json()
+        self.assertFalse(data["ok"])
+        self.assertNotIn("repos", data)
+        self.assertEqual(data["profile_url"], "https://github.com/uiux6006-star")
+
+    def test_home_has_github_centre_and_new_hero(self):
+        response = self.client.get(reverse("home"))
+        self.assertContains(response, 'id="ghHub"')
+        self.assertContains(response, "FUTURE PYTHON DEVELOPER")
+        self.assertContains(response, "Explore My Projects")
+        self.assertContains(response, "Hire Me")
+        self.assertContains(response, "cv/Rana_Umar_CV.pdf")
+
+    # ---------- About ----------
+
+    def test_about_has_universe_journey_and_cv(self):
+        from . import profile
+        response = self.client.get(reverse("about"))
+        self.assertContains(response, 'id="suData"')
+        self.assertEqual(len(response.context["universe"]), len(profile.SKILLS))
+        self.assertEqual(len(response.context["journey"]), len(profile.JOURNEY))
+        self.assertContains(response, "Govt. Crescent College, Faisalabad")
+        self.assertContains(response, "View CV")
+        self.assertNotContains(response, "2025 · START")  # no invented dates
+        # A skill only lists projects that really use it
+        django = next(s for s in response.context["universe"] if s["id"] == "django")
+        for p in django["projects"]:
+            project = Project.objects.get(title=p["title"])
+            self.assertTrue(any("django" in t.lower() for t in project.tech_list))
+
+    # ---------- Projects + case study ----------
+
+    def test_project_kind_filters_only_show_used_types(self):
+        Project.objects.update(kind="")
+        Project.objects.create(title="Biz", description="d", image="projects/x.jpg",
+                               category="frontend", technologies="HTML", kind="business")
+        html = self.client.get(reverse("projects")).content.decode()
+        self.assertIn('data-filter="kind:business"', html)
+        self.assertNotIn('data-filter="kind:ecommerce"', html)
+        self.assertIn('data-kind="business"', html)
+
+    def test_case_study_page(self):
+        older = Project.objects.create(title="Older one", description="d", image="projects/x.jpg",
+                                       category="django", technologies="Django, SQLite, Bootstrap")
+        newer = Project.objects.create(title="Newer one", description="d", image="projects/y.jpg",
+                                       category="frontend", technologies="HTML", features="Fast\n- Responsive\n\n",
+                                       live_demo="https://example.com/")
+        response = self.client.get(older.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content.decode().count("<h1"), 1)
+        self.assertEqual(response.context["prev_project"], newer)
+        stack = {g["label"]: g["items"] for g in response.context["stack"]}
+        self.assertEqual(stack["Backend"], ["Django"])
+        self.assertEqual(stack["Data & storage"], ["SQLite"])
+        self.assertEqual(stack["Frontend"], ["Bootstrap"])
+
+        response = self.client.get(newer.get_absolute_url())
+        self.assertEqual(newer.feature_list, ["Fast", "Responsive"])
+        self.assertContains(response, "Key features")
+        self.assertContains(response, 'data-src="https://example.com/"')  # live preview loads only on request
+
+    # ---------- Services ----------
+
+    def test_css_and_js_links_are_versioned_for_cache_busting(self):
+        import re
+        html = self.client.get(reverse("about")).content.decode()
+        self.assertRegex(html, r'/static/css/style\.css\?v=\d+')
+        self.assertRegex(html, r'/static/js/about\.js\?v=\d+')
+        self.assertFalse(re.search(r'/static/(css|js)/[\w.-]+\.(css|js)"', html), "an unversioned CSS/JS link is left")
+
+    def test_services_lists_six_services_with_working_links(self):
+        from . import profile
+        response = self.client.get(reverse("services"))
+        for s in profile.SERVICES:
+            self.assertContains(response, s["name"])
+        self.assertContains(response, "/projects/?kind=business")

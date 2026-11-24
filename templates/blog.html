@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static assets %}
 
 {% block title %}
 {% if tag %}{{ tag }} articles{% else %}Blog{% endif %} | Rana Umar Developer
@@ -9,8 +9,8 @@
 {% block og_title %}Blog | Rana Umar{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/home.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/blog.css' %}">
 {% endblock %}
 
 
@@ -223,6 +223,6 @@
 </section>
 
 
-<script src="{% static 'js/home.js' %}" defer></script>
+<script src="{% vstatic 'js/home.js' %}" defer></script>
 
 {% endblock %}

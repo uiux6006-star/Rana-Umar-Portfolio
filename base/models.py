@@ -104,6 +104,22 @@ class Project(models.Model):
         choices=CATEGORY_CHOICES
     )
 
+    KIND_CHOICES = [
+        ('business', 'Business Website'),
+        ('ecommerce', 'E-commerce'),
+        ('webapp', 'Web Application'),
+        ('system', 'Management System'),
+        ('experience', 'Interactive Experience'),
+    ]
+
+    kind = models.CharField(
+        "project type",
+        max_length=20,
+        choices=KIND_CHOICES,
+        blank=True,
+        help_text="What kind of project this is. Used by the filters on the Projects page."
+    )
+
     technologies = models.CharField(
         max_length=255,
         help_text="Comma separated, e.g. Python, Django, Bootstrap"
@@ -150,6 +166,16 @@ class Project(models.Model):
         help_text="What changed after launch? Numbers work best."
     )
 
+    features = models.TextField(
+        blank=True,
+        help_text="Key features, one per line."
+    )
+
+    challenges = models.TextField(
+        blank=True,
+        help_text="What was hard to build, and how you solved it."
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True
     )
@@ -167,6 +193,10 @@ class Project(models.Model):
     @property
     def has_case_study(self):
         return bool(self.problem or self.solution or self.result)
+
+    @property
+    def feature_list(self):
+        return [line.strip(" -•\t") for line in self.features.splitlines() if line.strip(" -•\t")]
 
     @property
     def tech_list(self):

@@ -2,7 +2,7 @@
 
 {% extends "base.html" %}
 
-{% load static %}
+{% load static assets %}
 
 {% block title %}
 Home | Rana Umar Developer
@@ -10,7 +10,8 @@ Home | Rana Umar Developer
 
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/home.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/devhub.css' %}">
 {% endblock %}
 
 
@@ -47,7 +48,7 @@ Home | Rana Umar Developer
 </span>
 
 <h5 class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
-    HELLO, I'M
+    HELLO, I'M · <span class="hero-brand">RANA UMAR DEVELOPER</span>
 </h5>
 
 <h1 class="hero-title" data-aos="fade-up" data-aos-delay="150">
@@ -55,27 +56,39 @@ Home | Rana Umar Developer
 </h1>
 
 <h2 class="hero-role" data-aos="fade-up" data-aos-delay="200">
-    <span class="typing-text">Full Stack Developer</span><span class="typing-caret"></span>
+    <span class="typing-text">Web Developer</span><span class="typing-caret"></span>
 </h2>
 
+<p class="hero-roles" data-aos="fade-up" data-aos-delay="220">
+    <span>WEB DEVELOPER</span>
+    <i aria-hidden="true"></i>
+    <span class="is-next">FUTURE PYTHON DEVELOPER</span>
+</p>
+
 <p class="hero-text" data-aos="fade-up" data-aos-delay="250">
-    I build <strong>fast, modern websites that turn visitors into customers</strong>,
-    from business sites and online stores to custom web apps
-    built with Python &amp; Django.
+    I design and build <strong>fast, modern websites that turn visitors into customers</strong>,
+    from business sites to custom web apps with Python &amp; Django,
+    for clients in Pakistan and abroad.
 </p>
 
 <div class="hero-buttons" data-aos="fade-up" data-aos-delay="300">
 
-    <a href="{% url 'contact' %}" class="btn btn-gold btn-lg">
-        Start Your Project
+    <a href="{% url 'projects' %}" class="btn btn-gold btn-lg">
+        Explore My Projects
         <i class="fas fa-arrow-right"></i>
     </a>
 
-    <a href="#featured" class="btn btn-outline-gold btn-lg">
-        <i class="fas fa-eye"></i>
-        View My Work
+    <a href="{% url 'contact' %}" class="btn btn-outline-gold btn-lg">
+        <i class="fas fa-handshake"></i>
+        Hire Me
     </a>
 
+</div>
+
+<div class="hero-links" data-aos="fade-up" data-aos-delay="330">
+    <a href="{% static 'cv/Rana_Umar_CV.pdf' %}" download><i class="fas fa-download" aria-hidden="true"></i> Download CV</a>
+    <a href="https://github.com/uiux6006-star" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
+    <button type="button" data-open-terminal><span aria-hidden="true">&gt;_</span> Open terminal</button>
 </div>
 
 <div class="hero-stats" data-aos="fade-up" data-aos-delay="350">
@@ -359,6 +372,120 @@ Home | Rana Umar Developer
 
 
 <!--=================================
+        DEVELOPER TERMINAL
+==================================-->
+
+<section class="hp-section dh-terminal-section" id="terminal">
+<div class="container">
+
+    <div class="dh-split">
+
+        <div class="dh-copy">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-terminal" aria-hidden="true"></i> RUD TERMINAL</p>
+            <h2 class="dh-h2" data-aos="fade-up" data-aos-delay="80">Explore my profile <span>like a developer</span></h2>
+            <p data-aos="fade-up" data-aos-delay="140">
+                A real, working terminal. Type a command and press Enter, or tap one below.
+                Use <kbd>↑</kbd> <kbd>↓</kbd> for history and <kbd>Tab</kbd> to autocomplete.
+                Press <kbd>`</kbd> on any page to open it again.
+            </p>
+            <ul class="dh-cmds" data-aos="fade-up" data-aos-delay="200">
+                <li><code>about</code> who I am</li>
+                <li><code>skills</code> what I work with</li>
+                <li><code>projects</code> what I've built</li>
+                <li><code>contact</code> let's talk</li>
+            </ul>
+        </div>
+
+        <div class="dh-term" data-aos="fade-up" data-aos-delay="120">
+            {% include "partials/terminal_box.html" with tid="Home" %}
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+
+<!--=================================
+        GITHUB ACTIVITY (live, from /github/data/)
+==================================-->
+
+<section class="hp-section hp-alt" id="github">
+<div class="container">
+
+    <header class="hp-head" data-aos="fade-up">
+        <p class="hp-eyebrow"><i class="fab fa-github" aria-hidden="true"></i> GITHUB</p>
+        <h2>Code I'm <span>shipping</span></h2>
+        <p>My public repositories and recent activity, pulled from GitHub.</p>
+    </header>
+
+    <div class="gh" id="ghHub" data-src="{% url 'github_data' %}" aria-busy="true">
+
+        <!-- Profile -->
+        <aside class="gh-profile" data-aos="fade-up">
+            <div class="gh-avatar"><i class="fab fa-github" aria-hidden="true"></i></div>
+            <h3>@uiux6006-star</h3>
+            <p class="gh-bio" data-gh="bio">Web developer · Python &amp; Django</p>
+            <dl class="gh-stats">
+                <div><dt>Repositories</dt><dd data-gh="repos">—</dd></div>
+                <div><dt>Followers</dt><dd data-gh="followers">—</dd></div>
+                <div><dt>Following</dt><dd data-gh="following">—</dd></div>
+            </dl>
+            <div class="gh-langs" data-gh="langs" hidden>
+                <p class="gh-label">TOP LANGUAGES <small>(by repository)</small></p>
+                <div class="gh-langbar" aria-hidden="true"></div>
+                <ul></ul>
+            </div>
+            <a href="https://github.com/uiux6006-star" class="hp-btn hp-btn-primary" target="_blank" rel="noopener">
+                <i class="fab fa-github" aria-hidden="true"></i> Follow on GitHub
+            </a>
+        </aside>
+
+        <div class="gh-main">
+
+            <!-- Activity -->
+            <div class="gh-activity" data-aos="fade-up" data-aos-delay="80">
+                <div class="gh-activity-head">
+                    <p class="gh-label">PUBLIC ACTIVITY · LAST 12 WEEKS</p>
+                    <span class="gh-live" data-gh="status"><span class="gh-pulse"></span> Loading from GitHub…</span>
+                </div>
+                <div class="gh-grid" data-gh="grid" role="img" aria-label="GitHub activity chart"></div>
+                <div class="gh-activity-foot">
+                    <p class="gh-note" data-gh="note">Counts public pushes and events from the GitHub API.</p>
+                    <span class="gh-scale" aria-hidden="true">
+                        <span>Less</span><i class="gh-cell"></i><i class="gh-cell l1"></i><i class="gh-cell l2"></i><i class="gh-cell l3"></i><i class="gh-cell l4"></i><span>More</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Repositories -->
+            <div class="gh-repos" data-gh="list">
+                {% for i in "123456" %}
+                <div class="gh-repo is-skeleton" aria-hidden="true"><span></span><span></span><span></span></div>
+                {% endfor %}
+            </div>
+
+            <!-- Shown only if GitHub can't be reached -->
+            <div class="gh-fallback" data-gh="fallback" hidden>
+                <i class="fab fa-github" aria-hidden="true"></i>
+                <div>
+                    <h3>GitHub is taking a break</h3>
+                    <p>Live repository data couldn't be loaded right now. You can still browse everything on my profile.</p>
+                </div>
+                <a href="https://github.com/uiux6006-star" class="hp-btn" target="_blank" rel="noopener">Open GitHub <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+
+<!--=================================
         PROCESS
 ==================================-->
 
@@ -583,6 +710,7 @@ Home | Rana Umar Developer
 </div>
 </section>
 
-<script src="{% static 'js/home.js' %}" defer></script>
+<script src="{% vstatic 'js/home.js' %}" defer></script>
+<script src="{% vstatic 'js/github.js' %}" defer></script>
 
 {% endblock %}

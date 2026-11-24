@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static assets %}
 
 {% block title %}
 About Me | Rana Umar Developer
@@ -10,8 +10,9 @@ About Me | Rana Umar Developer
 {% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/pic2.jpg' %}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-<link rel="stylesheet" href="{% static 'css/about.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/home.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/about.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/universe.css' %}">
 {% endblock %}
 
 
@@ -54,7 +55,7 @@ About Me | Rana Umar Developer
 
                 <ul class="ab-facts" data-aos="fade-up" data-aos-delay="220">
                     <li><i class="fas fa-location-dot"></i> Faisalabad, PK</li>
-                    <li><i class="fas fa-language"></i> English &amp; Urdu</li>
+                    <li><i class="fas fa-language"></i> {{ languages|join:", " }}</li>
                     <li><i class="fas fa-clock"></i> <span id="abClock">--:--</span> local</li>
                 </ul>
 
@@ -186,7 +187,7 @@ About Me | Rana Umar Developer
                     <div><dt>Name</dt><dd>Rana Umar</dd></div>
                     <div><dt>Based in</dt><dd>Faisalabad, Pakistan</dd></div>
                     <div><dt>Focus</dt><dd>Websites &amp; Django apps</dd></div>
-                    <div><dt>Languages</dt><dd>English, Urdu</dd></div>
+                    <div><dt>Languages</dt><dd>{{ languages|join:", " }}</dd></div>
                     <div><dt>Email</dt><dd><a href="mailto:uiux6006@gmail.com">uiux6006@gmail.com</a></dd></div>
                     <div><dt>Freelance</dt><dd class="ab-ok"><span class="sf-dot"></span> Available</dd></div>
                 </dl>
@@ -200,62 +201,67 @@ About Me | Rana Umar Developer
 
 
 <!--=================================
-        TOOLKIT
+        SKILLS UNIVERSE
 ==================================-->
 
-<section class="hp-section hp-alt no-aos">
+<section class="hp-section hp-alt no-aos" id="skills">
     <div class="container">
 
         <div class="hp-head">
-            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-toolbox"></i> TOOLKIT</p>
-            <h2 data-aos="fade-up" data-aos-delay="80">The tools I <span>build with</span></h2>
-            <p data-aos="fade-up" data-aos-delay="140">A focused, modern stack, chosen for speed, reliability and easy growth.</p>
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-atom"></i> SKILLS UNIVERSE</p>
+            <h2 data-aos="fade-up" data-aos-delay="80">Everything I <span>work with</span></h2>
+            <p data-aos="fade-up" data-aos-delay="140">Pick a skill to see what I build with it, the real projects that use it and how it connects to the rest.</p>
         </div>
 
-        <div class="ab-tools">
+        <div class="su" id="skillsUniverse" data-aos="fade-up">
 
-            <article class="ab-tool hp-spot" data-aos="fade-up">
-                <div class="hp-tile-icon"><i class="fas fa-palette"></i></div>
-                <h3>Frontend</h3>
-                <p>Responsive, polished interfaces that look sharp on every screen.</p>
-                <ul class="ab-stack">
-                    <li><i class="fab fa-html5"></i> HTML5</li>
-                    <li><i class="fab fa-css3-alt"></i> CSS3</li>
-                    <li><i class="fab fa-js"></i> JavaScript</li>
-                    <li><i class="fab fa-bootstrap"></i> Bootstrap</li>
-                </ul>
-            </article>
+            <div class="su-stage">
 
-            <article class="ab-tool ab-tool-feature hp-spot" data-aos="fade-up" data-aos-delay="80">
-                <div class="hp-tile-icon"><i class="fas fa-server"></i></div>
-                <h3>Backend</h3>
-                <p>Secure, database-driven apps with admin panels you can manage yourself.</p>
-                <ul class="ab-stack">
-                    <li><i class="fab fa-python"></i> Python</li>
-                    <li><i class="fas fa-leaf"></i> Django</li>
-                    <li><i class="fas fa-database"></i> SQLite</li>
-                    <li><i class="fas fa-cubes"></i> OOP</li>
-                </ul>
-                <div class="ab-code" aria-hidden="true">
-                    <span><b>def</b> <i>build</i>(idea):</span>
-                    <span>&nbsp;&nbsp;&nbsp;&nbsp;site = Django(idea)</span>
-                    <span>&nbsp;&nbsp;&nbsp;&nbsp;<b>return</b> site.launch()</span>
+                <div class="su-toolbar" role="group" aria-label="Filter skills by area">
+                    <button type="button" class="su-filter is-active" data-group="all" aria-pressed="true">All</button>
+                    {% for g in skill_groups %}
+                    <button type="button" class="su-filter" data-group="{{ g.id }}" aria-pressed="false"><i class="fas {{ g.icon }}" aria-hidden="true"></i> {{ g.label }}</button>
+                    {% endfor %}
                 </div>
-            </article>
 
-            <article class="ab-tool hp-spot" data-aos="fade-up" data-aos-delay="160">
-                <div class="hp-tile-icon"><i class="fas fa-pen-ruler"></i></div>
-                <h3>Design &amp; workflow</h3>
-                <p>From first sketch to live site, with clean versioned code.</p>
-                <ul class="ab-stack">
-                    <li><i class="fas fa-object-group"></i> UI / UX</li>
-                    <li><i class="fab fa-git-alt"></i> Git</li>
-                    <li><i class="fab fa-github"></i> GitHub</li>
-                    <li><i class="fas fa-mobile-screen"></i> Mobile-first</li>
+                <div class="su-map" id="suMap">
+                    <svg class="su-lines" aria-hidden="true"></svg>
+                    <div class="su-core" aria-hidden="true"><span>RUD</span><small>{{ universe|length }} skills</small></div>
+                    {% for s in universe %}
+                    <button type="button" class="su-node" data-id="{{ s.id }}" data-group="{{ s.group }}"
+                            data-level="{{ s.level }}" aria-pressed="false">
+                        <i class="{{ s.icon }}" aria-hidden="true"></i>
+                        <span>{{ s.name }}</span>
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <ul class="su-legend" aria-label="Skill levels">
+                    {% for level in skill_levels %}
+                    <li data-level="{{ level }}"><i aria-hidden="true"></i> {{ level }}</li>
+                    {% endfor %}
                 </ul>
-            </article>
+
+            </div>
+
+            <!-- Detail panel (filled by about.js) -->
+            <aside class="su-panel" id="suPanel" aria-live="polite">
+                <div class="su-panel-empty">
+                    <i class="fas fa-hand-pointer" aria-hidden="true"></i>
+                    <h3>Choose a skill</h3>
+                    <p>Tap any node in the universe to explore it.</p>
+                </div>
+            </aside>
 
         </div>
+
+        {{ universe|json_script:"suData" }}
+
+        <noscript>
+            <ul class="su-noscript">
+                {% for s in universe %}<li><strong>{{ s.name }}</strong> — {{ s.level }}. {{ s.about }}</li>{% endfor %}
+            </ul>
+        </noscript>
 
     </div>
 </section>
@@ -265,68 +271,122 @@ About Me | Rana Umar Developer
         JOURNEY TIMELINE
 ==================================-->
 
-<section class="hp-section no-aos">
+<section class="hp-section no-aos" id="journey">
     <div class="container">
 
         <div class="hp-head">
-            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-route"></i> JOURNEY</p>
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-route"></i> DEVELOPER JOURNEY</p>
             <h2 data-aos="fade-up" data-aos-delay="80">How I <span>got here</span></h2>
-            <p data-aos="fade-up" data-aos-delay="140">Education, self-learning and the projects that shaped how I work.</p>
+            <p data-aos="fade-up" data-aos-delay="140">One skill at a time, each one built on the last. Open a milestone for the details.</p>
         </div>
 
         <ol class="ab-timeline" id="abTimeline">
 
+            {% for step in journey %}
             <li data-aos="fade-up">
-                <span class="ab-node"><i class="fas fa-seedling"></i></span>
-                <div class="ab-card hp-spot">
-                    <span class="ab-when">2025 · START</span>
-                    <h3>Frontend foundations</h3>
-                    <p>Learned HTML5, CSS3, Bootstrap and JavaScript by building responsive layouts and small sites from scratch.</p>
-                    <div class="hp-chips"><span>HTML</span><span>CSS</span><span>Bootstrap</span><span>JS</span></div>
-                </div>
+                <span class="ab-node{% if step.next %} ab-node-now{% endif %}"><i class="{{ step.icon }}"></i></span>
+                <details class="ab-card hp-spot{% if step.next or step.when %} ab-card-now{% endif %}"{% if forloop.first %} open{% endif %}>
+                    <summary>
+                        <span class="ab-when">
+                            {% if step.next %}NEXT{% elif step.when %}<span class="sf-dot"></span> {{ step.when }}{% else %}STEP {{ forloop.counter|stringformat:"02d" }}{% endif %}
+                        </span>
+                        <h3>{{ step.title }}</h3>
+                        <span class="ab-toggle" aria-hidden="true"><i class="fas fa-plus"></i></span>
+                    </summary>
+                    <div class="ab-card-body">
+                        <p>{{ step.text }}</p>
+                        <div class="hp-chips">{% for n in step.skill_names %}<span>{{ n }}</span>{% endfor %}</div>
+                        {% if step.projects %}
+                        <p class="ab-linked">Built with it:
+                            {% for p in step.projects %}<a href="{% url 'project_detail' p.slug %}">{{ p.title }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+                        </p>
+                        {% endif %}
+                    </div>
+                </details>
             </li>
-
-            <li data-aos="fade-up">
-                <span class="ab-node"><i class="fas fa-university"></i></span>
-                <div class="ab-card hp-spot">
-                    <span class="ab-when">2025 · PRESENT</span>
-                    <h3>Intermediate (FA - IT)</h3>
-                    <p>Studying Information Technology, building a strong base in computer science and programming concepts.</p>
-                    <div class="hp-chips"><span>Education</span><span>Computer Science</span></div>
-                </div>
-            </li>
-
-            <li data-aos="fade-up">
-                <span class="ab-node"><i class="fab fa-python"></i></span>
-                <div class="ab-card hp-spot">
-                    <span class="ab-when">PYTHON</span>
-                    <h3>Python &amp; problem solving</h3>
-                    <p>Built practical applications with Python, object oriented programming and file handling.</p>
-                    <div class="hp-chips"><span>Python</span><span>OOP</span><span>Projects</span></div>
-                </div>
-            </li>
-
-            <li data-aos="fade-up">
-                <span class="ab-node"><i class="fas fa-server"></i></span>
-                <div class="ab-card hp-spot">
-                    <span class="ab-when">DJANGO</span>
-                    <h3>Full stack with Django</h3>
-                    <p>Moved to dynamic web apps: databases, admin panels, forms, email and deployment.</p>
-                    <div class="hp-chips"><span>Django</span><span>SQLite</span><span>Backend</span></div>
-                </div>
-            </li>
-
-            <li data-aos="fade-up">
-                <span class="ab-node ab-node-now"><i class="fas fa-rocket"></i></span>
-                <div class="ab-card ab-card-now hp-spot">
-                    <span class="ab-when"><span class="sf-dot"></span> NOW</span>
-                    <h3>Building for clients</h3>
-                    <p>Delivering business websites, online stores and custom web apps, and taking on new projects.</p>
-                    <a href="{% url 'projects' %}" class="ab-link">See the work <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </li>
+            {% endfor %}
 
         </ol>
+
+    </div>
+</section>
+
+
+<!--=================================
+        CV CENTRE
+==================================-->
+
+<section class="hp-section hp-alt no-aos" id="cv">
+    <div class="container">
+
+        <div class="cv">
+
+            <div class="cv-intro">
+                <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-file-lines"></i> CV &amp; RESUME</p>
+                <h2 class="ab-h2" data-aos="fade-up" data-aos-delay="80">My CV, <span>at a glance</span></h2>
+                <p class="cv-summary" data-aos="fade-up" data-aos-delay="140">{{ cv.summary }}</p>
+                <div class="ab-actions" data-aos="fade-up" data-aos-delay="200">
+                    <a href="{% static cv.path %}" class="hp-btn hp-btn-primary" download>
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
+                    <a href="{% static cv.path %}" class="hp-btn" target="_blank" rel="noopener">
+                        <i class="fas fa-eye"></i> View CV
+                    </a>
+                </div>
+                <ul class="cv-contact" data-aos="fade-up" data-aos-delay="240">
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:uiux6006@gmail.com">uiux6006@gmail.com</a></li>
+                    <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923238144826" target="_blank" rel="noopener">WhatsApp</a></li>
+                    <li><i class="fab fa-github"></i> <a href="https://github.com/uiux6006-star" target="_blank" rel="noopener">github.com/uiux6006-star</a></li>
+                    <li><i class="fab fa-linkedin-in"></i> <a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank" rel="noopener">LinkedIn</a></li>
+                </ul>
+            </div>
+
+            <div class="cv-sheet" data-aos="fade-up" data-aos-delay="100">
+
+                <div class="cv-block">
+                    <h3><i class="fas fa-briefcase"></i> Experience</h3>
+                    {% for e in cv.experience %}
+                    <div class="cv-item">
+                        <div class="cv-item-head"><strong>{{ e.role }}</strong><span>{{ e.when }}</span></div>
+                        <p class="cv-where">{{ e.where }}</p>
+                        <ul>{% for pt in e.points %}<li>{{ pt }}</li>{% endfor %}</ul>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="cv-block">
+                    <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                    {% for e in cv.education %}
+                    <div class="cv-item">
+                        <div class="cv-item-head"><strong>{{ e.title }}</strong><span>{{ e.when }}</span></div>
+                        <p class="cv-where">{{ e.where }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="cv-block">
+                    <h3><i class="fas fa-layer-group"></i> Technical skills</h3>
+                    {% for g in cv.skills %}
+                    <p class="cv-skills"><strong>{{ g.label }}</strong> {{ g.items|join:" · " }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="cv-two">
+                    <div class="cv-block">
+                        <h3><i class="fas fa-certificate"></i> Courses</h3>
+                        <ul class="cv-list">{% for c in cv.courses %}<li>{{ c }}</li>{% endfor %}</ul>
+                    </div>
+                    <div class="cv-block">
+                        <h3><i class="fas fa-language"></i> Languages</h3>
+                        <ul class="cv-list">{% for l in cv.languages %}<li>{{ l }}</li>{% endfor %}</ul>
+                    </div>
+                </div>
+
+                <a href="{% url 'projects' %}" class="ab-link">See all {{ project_count }} projects <i class="fas fa-arrow-right"></i></a>
+
+            </div>
+
+        </div>
 
     </div>
 </section>
@@ -380,7 +440,7 @@ About Me | Rana Umar Developer
 </section>
 
 
-<script src="{% static 'js/home.js' %}" defer></script>
-<script src="{% static 'js/about.js' %}" defer></script>
+<script src="{% vstatic 'js/home.js' %}" defer></script>
+<script src="{% vstatic 'js/about.js' %}" defer></script>
 
 {% endblock %}

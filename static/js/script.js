@@ -271,10 +271,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const typingText = document.querySelector(".typing-text");
 
     const words = [
-        "Full Stack Developer",
+        "Web Developer",
         "Website Designer",
         "Django Developer",
-        "Python Developer"
+        "Future Python Developer"
     ];
 
     let wordIndex = 0;

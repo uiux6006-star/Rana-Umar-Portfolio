@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static assets %}
 
 {% block title %}
 Contact | Rana Umar Developer
@@ -9,7 +9,7 @@ Contact | Rana Umar Developer
 {% block og_title %}Contact Rana Umar | Get a Free Website Quote{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/contact.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -29,12 +29,11 @@ Contact | Rana Umar Developer
 
                 <p class="ct-eyebrow"><span class="ct-live"></span> AVAILABLE FOR NEW PROJECTS</p>
 
-                <h1 class="ct-title" aria-label="Let's build something remarkable together.">
+                <h1 class="ct-title" aria-label="Let's build something great.">
                     <span class="ct-word" style="--i:0">Let's</span>
                     <span class="ct-word" style="--i:1">build</span>
                     <span class="ct-word" style="--i:2">something</span>
-                    <span class="ct-word ct-shine" style="--i:3">remarkable</span>
-                    <span class="ct-word" style="--i:4">together.</span>
+                    <span class="ct-word ct-shine" style="--i:3">great.</span>
                 </h1>
 
                 <p class="ct-lead">
@@ -350,6 +349,6 @@ Contact | Rana Umar Developer
 
 <canvas class="ct-confetti" id="ctConfetti" aria-hidden="true"></canvas>
 
-<script src="{% static 'js/contact.js' %}" defer></script>
+<script src="{% vstatic 'js/contact.js' %}" defer></script>
 
 {% endblock %}

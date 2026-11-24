@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.http import require_GET
 
+from . import profile
 from .emails import notify_new_contact, notify_new_review
 from .forms import ContactForm, TestimonialForm
 from .models import ContactMessage, Post, Project, Testimonial
@@ -42,11 +43,56 @@ def home(request):
 
 def about(request):
 
+    projects = list(Project.objects.order_by("-created_at"))
+    skills = profile.skill_by_id()
+
+    def mini(p):
+        return {"title": p.title, "url": p.get_absolute_url()}
+
+    # Skills Universe: every skill with its real projects and connections
+    universe = [
+        {
+            **{k: s[k] for k in ("id", "name", "group", "icon", "level", "about", "builds", "related")},
+            "projects": [mini(p) for p in profile.projects_for_skill(s, projects)[:4]],
+        }
+        for s in profile.SKILLS
+    ]
+
+    journey = []
+    for step in profile.JOURNEY:
+        linked = []
+        for sid in step["skills"]:
+            for p in profile.projects_for_skill(skills[sid], projects):
+                if p not in linked:
+                    linked.append(p)
+        journey.append({
+            **step,
+            "skill_names": [skills[s]["name"] for s in step["skills"]],
+            "projects": linked[:3],
+        })
+
     return render(
         request,
         "about.html",
         {
-            "project_count": Project.objects.count(),
+            "project_count": len(projects),
+            "skill_groups": profile.SKILL_GROUPS,
+            "skill_levels": profile.LEVELS,
+            "universe": universe,
+            "journey": journey,
+            "cv": {
+                "summary": profile.SUMMARY,
+                "experience": profile.EXPERIENCE,
+                "education": profile.EDUCATION,
+                "courses": profile.COURSES,
+                "languages": profile.LANGUAGES,
+                "skills": [
+                    {"label": g["label"], "items": [s["name"] for s in profile.SKILLS if s["group"] == g["id"]]}
+                    for g in profile.SKILL_GROUPS
+                ],
+                "path": profile.CV_PATH,
+            },
+            "languages": profile.LANGUAGES,
         }
     )
 
@@ -65,6 +111,16 @@ def projects(request):
     ]
     categories = [c for c in categories if c["count"]]
 
+    kind_labels = {
+        "business": "Business Websites", "ecommerce": "E-commerce", "webapp": "Web Applications",
+        "system": "Management Systems", "experience": "Interactive Experiences",
+    }
+    kinds = [
+        {"value": value, "label": kind_labels.get(value, label), "count": sum(p.kind == value for p in projects)}
+        for value, label in Project.KIND_CHOICES
+    ]
+    kinds = [k for k in kinds if k["count"]]
+
 
     return render(
         request,
@@ -72,6 +128,7 @@ def projects(request):
         {
             "projects": projects,
             "categories": categories,
+            "kinds": kinds,
             "live_count": sum(bool(p.live_demo) for p in projects),
             "tech_count": len({t.lower() for p in projects for t in p.tech_list}),
         }
@@ -95,15 +152,52 @@ def project_detail(request, slug):
         id=project.id
     )[:3]
 
+    # Previous / next in the same order as the Projects page
+    ordered = list(Project.objects.order_by("-created_at").only("id", "title", "slug", "image"))
+    index = next((i for i, p in enumerate(ordered) if p.id == project.id), 0)
+    prev_project = ordered[index - 1] if index > 0 else None
+    next_project = ordered[index + 1] if index + 1 < len(ordered) else None
+
 
     return render(
         request,
         "project_detail.html",
         {
             "project": project,
-            "related_projects": related_projects
+            "related_projects": related_projects,
+            "prev_project": prev_project,
+            "next_project": next_project,
+            "stack": split_stack(project.tech_list),
         }
     )
+
+
+# Sorts a project's technologies into groups for the case study sidebar.
+STACK_GROUPS = [
+    ("Frontend", {"html", "html5", "css", "css3", "javascript", "bootstrap", "gsap", "scrolltrigger", "lenis",
+                  "three.js", "webgl", "canvas api", "view transitions api", "leaflet", "intl api", "bigint",
+                  "responsive design", "ui/ux design"}),
+    ("Backend", {"python", "django", "oop", "classes", "console app"}),
+    ("Security", {"web crypto api", "content security policy"}),
+    ("APIs & services", {"open-meteo api", "geolocation"}),
+    ("Data & storage", {"sqlite", "localstorage", "file handling"}),
+]
+
+
+def split_stack(techs):
+    groups = {name: [] for name, _ in STACK_GROUPS}
+    other = []
+    for tech in techs:
+        for name, words in STACK_GROUPS:
+            if tech.lower() in words:
+                groups[name].append(tech)
+                break
+        else:
+            other.append(tech)
+    result = [{"label": name, "items": items} for name, items in groups.items() if items]
+    if other:
+        result.append({"label": "Other", "items": other})
+    return result
 
 
 
@@ -156,6 +250,7 @@ def services(request):
         {
             "packages": packages,
             "addons": addons,
+            "service_list": profile.SERVICES,
             "hero_package": next((p for p in packages if p.get("popular")), packages[0]),
         }
     )

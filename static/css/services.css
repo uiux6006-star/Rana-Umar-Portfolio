@@ -505,6 +505,107 @@
 }
 
 
+/* ---------- Project planner hero (estimate page) ---------- */
+
+.pl-hero {
+    padding-bottom: 60px;
+    text-align: center;
+}
+
+.pl-hero-inner {
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.pl-hero .sv-lead { margin-inline: auto; }
+.pl-hero .sv-promises { justify-content: center; margin-bottom: 0; }
+
+
+/* ---------- What I do ---------- */
+
+.sv-services {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.sv-service {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: rgb(var(--surface-rgb) / .82);
+    transition: translate .4s cubic-bezier(.2, .8, .2, 1), border-color .3s, box-shadow .3s;
+}
+
+.sv-service:hover {
+    translate: 0 -6px;
+    border-color: rgb(var(--accent-rgb) / .45);
+    box-shadow: 0 26px 60px var(--shadow-color);
+}
+
+.sv-service:hover .hp-tile-icon { transform: rotate(-8deg) scale(1.1); }
+
+.sv-service h3 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.sv-service > p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.sv-service .hp-ticks { margin: 4px 0 6px; }
+.sv-service .hp-chips { margin: 0 0 8px; gap: 6px; }
+
+.sv-service-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+
+.sv-req,
+.sv-rel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    font-weight: 800;
+    font-size: 14.5px;
+    text-decoration: none;
+}
+
+.sv-req { color: var(--accent); }
+.sv-req:hover { color: var(--accent); }
+.sv-req i { font-size: 12px; transition: transform .3s; }
+.sv-req:hover i { transform: translateX(4px); }
+
+.sv-rel { color: var(--text-muted); }
+.sv-rel:hover { color: var(--accent); }
+
+@media (max-width: 1199px) {
+    .sv-services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767px) {
+    .sv-services { grid-template-columns: 1fr; }
+    .sv-service { padding: 22px; }
+}
+
+
 /* ---------- Add-ons ---------- */
 
 .sv-addons {

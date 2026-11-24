@@ -1,7 +1,7 @@
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path
 
-from . import chatbot, views
+from . import chatbot, devhub, views
 from .sitemaps import sitemaps
 
 urlpatterns = [
@@ -26,6 +26,9 @@ urlpatterns = [
 
     path('chat/knowledge/', chatbot.knowledge, name='chat_knowledge'),
     path('chat/lead/', chatbot.lead, name='chat_lead'),
+
+    path('github/data/', devhub.github_data, name='github_data'),
+    path('terminal/data/', devhub.terminal_data, name='terminal_data'),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('robots.txt', views.robots_txt, name='robots_txt'),

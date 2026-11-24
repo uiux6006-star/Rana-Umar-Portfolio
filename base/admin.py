@@ -166,6 +166,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
     list_filter = (
         "category",
+        "kind",
         "featured",
     )
 
@@ -192,14 +193,14 @@ class ProjectAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Project", {
             "fields": (
-                "title", "slug", "category", "description",
+                "title", "slug", "category", "kind", "description",
                 "cover_preview", "image",
                 "technologies", "github_link", "live_demo", "featured",
             ),
         }),
         ("Case study", {
             "description": "Optional. Each part only shows on the project page when it's filled in.",
-            "fields": ("client", "duration", "problem", "solution", "result"),
+            "fields": ("client", "duration", "problem", "solution", "features", "challenges", "result"),
         }),
         ("Info", {
             "fields": ("view_on_site_link", "created_at"),

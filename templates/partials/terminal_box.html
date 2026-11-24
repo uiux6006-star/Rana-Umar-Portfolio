@@ -1,0 +1,35 @@
+{# One terminal window. Used inline on the home page and inside the overlay. #}
+<div class="t-box{% if overlay %} t-overlay-box{% endif %}" data-terminal="{% url 'terminal_data' %}">
+
+    <div class="t-bar">
+        <span class="t-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="t-title-bar">visitor@rud: ~</span>
+        {% if overlay %}
+        <span class="t-hint" aria-hidden="true">esc to close</span>
+        <button type="button" class="t-close" data-close-terminal aria-label="Close terminal"><i class="fas fa-xmark"></i></button>
+        {% else %}
+        <span class="t-hint" aria-hidden="true">press ` anywhere</span>
+        {% endif %}
+    </div>
+
+    <div class="t-screen">
+        <div class="t-output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+        <form class="t-form" autocomplete="off">
+            <label class="t-prompt" for="tIn{{ tid }}">visitor@rud:~$</label>
+            <input class="t-input" id="tIn{{ tid }}" type="text"
+                   autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                   enterkeyhint="send" aria-label="Type a terminal command, then press Enter">
+        </form>
+    </div>
+
+    <div class="t-chips" aria-label="Quick commands">
+        <button type="button" data-run="help">help</button>
+        <button type="button" data-run="about">about</button>
+        <button type="button" data-run="skills">skills</button>
+        <button type="button" data-run="projects">projects</button>
+        <button type="button" data-run="experience">experience</button>
+        <button type="button" data-run="contact">contact</button>
+        <button type="button" data-run="clear">clear</button>
+    </div>
+
+</div>

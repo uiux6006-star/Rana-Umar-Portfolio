@@ -222,6 +222,24 @@
     display: none;
 }
 
+.pj-divider {
+    flex: 0 0 auto;
+    align-self: center;
+    width: 1px;
+    height: 24px;
+    margin: 0 6px;
+    background: var(--line);
+}
+
+/* Fade the edge so it's clear the filter row scrolls */
+@media (max-width: 1399px) {
+    .pj-filters {
+        -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+        mask-image: linear-gradient(90deg, #000 88%, transparent);
+        padding-right: 30px;
+    }
+}
+
 .pj-filter {
     display: inline-flex;
     align-items: center;

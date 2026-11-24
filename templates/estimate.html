@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static assets %}
 
 {% block title %}
-Website Price Estimator | Rana Umar Developer
+Project Planner &amp; Price Estimator | Rana Umar Developer
 {% endblock %}
 
 {% block meta_description %}How much does a website cost in Pakistan? Pick your website type and features and get an instant price estimate from Rana Umar.{% endblock %}
@@ -10,32 +10,42 @@ Website Price Estimator | Rana Umar Developer
 {% block og_description %}Choose your website type and features and see an instant price range in PKR.{% endblock %}
 
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% vstatic 'css/home.css' %}">
+<link rel="stylesheet" href="{% vstatic 'css/services.css' %}">
+{% endblock %}
+
+
 {% block content %}
 
 
-<!-- ================= HEADER ================= -->
+<!-- ================= PLANNER HERO ================= -->
 
-<section class="projects-page-header">
+<section class="sv-hero pl-hero no-aos" aria-labelledby="plTitle">
 
-<div class="container text-center">
+    <div class="hero-bg" aria-hidden="true">
+        <div class="hero-grid"></div>
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-2"></div>
+    </div>
 
-<span class="header-badge">
-<i class="fas fa-calculator"></i>
-PRICE ESTIMATOR
-</span>
-
-<h1>
-How Much Will My <span>Website Cost?</span>
-</h1>
-
-<p>
-Pick what you need and see an instant price range. No sign-up, no obligation.
-You'll get an exact quote once we talk about the details.
-</p>
-
-<div class="header-line"></div>
-
-</div>
+    <div class="container">
+        <div class="pl-hero-inner">
+            <p class="hp-eyebrow" data-aos="fade-up"><i class="fas fa-calculator"></i> PROJECT PLANNER</p>
+            <h1 id="plTitle" class="sv-title" data-aos="fade-up" data-aos-delay="80">
+                Plan your project.<br><span>See the price instantly.</span>
+            </h1>
+            <p class="sv-lead" data-aos="fade-up" data-aos-delay="160">
+                Choose your website type, pages and features. You'll see a price range and timeline
+                right away, plus a ready-made message to send me by email or WhatsApp.
+            </p>
+            <ul class="sv-promises" data-aos="fade-up" data-aos-delay="220">
+                <li><i class="fas fa-circle-check"></i> No sign-up</li>
+                <li><i class="fas fa-circle-check"></i> No obligation</li>
+                <li><i class="fas fa-circle-check"></i> Exact quote after we talk</li>
+            </ul>
+        </div>
+    </div>
 
 </section>
 
@@ -182,6 +192,6 @@ You'll get an exact quote once we talk about the details.
 
 {{ prices|json_script:"estimator-prices" }}
 
-<script src="{% static 'js/estimate.js' %}"></script>
+<script src="{% vstatic 'js/estimate.js' %}"></script>
 
 {% endblock %}
