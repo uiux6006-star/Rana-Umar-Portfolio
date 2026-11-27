@@ -1530,6 +1530,56 @@ img[src*="icon-no"] {
 
 
 /* =====================================================
+        VISITORS (analytics)
+===================================================== */
+
+.rd-section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 20px;
+    margin: 8px 2px 14px;
+}
+
+.rd-section-head h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 19px;
+    letter-spacing: -.02em;
+    color: var(--rd-text);
+}
+
+.rd-section-head h2 i { color: var(--rd-accent); }
+
+.rd-section-head p {
+    margin: 0;
+    color: var(--rd-dim);
+    font-size: 13px;
+}
+
+/* 30 slim bars instead of 6 wide ones */
+.rd-bars.rd-bars-dense {
+    grid-template-columns: repeat(30, minmax(0, 1fr));
+    gap: 4px;
+}
+
+.rd-bars-dense .rd-bar { width: 100%; border-radius: 3px 3px 0 0; }
+.rd-bars-dense .rd-bar-label { font-size: 10px; letter-spacing: 0; }
+
+.rd-grid + .rd-section-head,
+.rd-grid + .rd-kpis { margin-top: 28px; }
+
+#visitors ~ .rd-grid { margin-bottom: 28px; }
+
+@media (max-width: 767px) {
+    .rd-bars.rd-bars-dense { gap: 2px; }
+}
+
+
+/* =====================================================
         LOGIN PAGE
 ===================================================== */
 

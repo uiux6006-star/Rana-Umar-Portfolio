@@ -537,6 +537,153 @@
 }
 
 
+/* ---------- From my TikTok ---------- */
+
+.tt-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
+.tt-grid.tt-count-3 { grid-template-columns: repeat(3, minmax(0, 280px)); }
+.tt-grid.tt-count-2 { grid-template-columns: repeat(2, minmax(0, 280px)); }
+.tt-grid.tt-count-1 { grid-template-columns: minmax(0, 300px); }
+
+.tt-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.tt-media {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    background: var(--surface);
+    box-shadow: 0 24px 60px var(--shadow-color);
+    transition: border-color .3s, translate .4s cubic-bezier(.2, .8, .2, 1);
+}
+
+.tt-card:hover .tt-media {
+    translate: 0 -6px;
+    border-color: rgb(var(--accent-rgb) / .5);
+}
+
+.tt-media img,
+.tt-media iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.tt-media img {
+    object-fit: cover;
+    transition: transform .8s cubic-bezier(.2, .8, .2, 1);
+}
+
+.tt-card:hover .tt-media img { transform: scale(1.05); }
+
+.tt-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgb(0 0 0 / .45));
+    pointer-events: none;
+}
+
+.tt-media.is-playing::after { display: none; }
+
+.tt-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 30% 20%, rgb(var(--accent-rgb) / .3), transparent 55%),
+        var(--surface);
+    color: rgb(var(--accent-rgb) / .8);
+    font-size: 46px;
+}
+
+.tt-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 66px;
+    height: 66px;
+    padding: 0 0 0 4px;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(255 255 255 / .92);
+    color: #0b1324;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 14px 34px rgb(0 0 0 / .35), 0 0 0 8px rgb(255 255 255 / .18);
+    transform: translate(-50%, -50%);
+    transition: transform .3s cubic-bezier(.3, 1.5, .5, 1), background-color .3s;
+}
+
+.tt-play:hover,
+.tt-play:focus-visible {
+    background: var(--accent);
+    color: var(--on-accent);
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.tt-play:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+.tt-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgb(0 0 0 / .55);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font-size: 14px;
+}
+
+.tt-title {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: var(--text);
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.45;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.tt-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 32px;
+    color: var(--accent);
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.tt-link i { font-size: 11px; }
+
+
 /* ---------- Responsive + motion ---------- */
 
 @media (max-width: 1199px) {
@@ -544,12 +691,18 @@
 }
 
 @media (max-width: 991px) {
+    .tt-grid,
+    .tt-grid.tt-count-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .dh-split { grid-template-columns: 1fr; gap: 34px; }
     .gh { grid-template-columns: 1fr; }
     .gh-profile { position: static; }
 }
 
 @media (max-width: 575px) {
+    .tt-grid { gap: 12px; }
+    .tt-media { border-radius: 16px; }
+    .tt-play { width: 54px; height: 54px; font-size: 18px; }
+    .tt-title { font-size: 13px; }
     .dh-term .t-box { height: 420px; }
     .gh-repos { grid-template-columns: 1fr; }
     .gh-activity { padding: 20px; }

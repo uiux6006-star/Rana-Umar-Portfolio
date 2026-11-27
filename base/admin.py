@@ -1,10 +1,13 @@
+from django import forms as dj_forms
 from django.contrib import admin, messages
+from django.core.files.base import ContentFile
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.http import urlencode
 from django.utils.timesince import timesince
 
-from .models import ContactMessage, Post, Project, ProjectImage, Testimonial
+from . import profile, tiktok
+from .models import ContactMessage, Post, Project, ProjectImage, Testimonial, TikTokVideo
 
 
 admin.site.site_header = "RANA UMAR"
@@ -312,3 +315,122 @@ class TestimonialAdmin(admin.ModelAdmin):
     @admin.display(description="Review")
     def short_message(self, obj):
         return obj.message if len(obj.message) <= 70 else obj.message[:70] + "…"
+
+
+# ================= TIKTOK VIDEOS =================
+
+class TikTokVideoForm(dj_forms.ModelForm):
+
+    class Meta:
+        model = TikTokVideo
+        fields = ("url", "title", "thumbnail", "order", "is_published")
+
+    def clean_url(self):
+        url = self.cleaned_data["url"].strip()
+        if not tiktok.is_tiktok_url(url):
+            raise dj_forms.ValidationError("Please paste a TikTok link (https://www.tiktok.com/...).")
+        if not tiktok.video_id_from_url(url):
+            url = tiktok.resolve(url)  # short links like vt.tiktok.com/...
+        if not tiktok.video_id_from_url(url):
+            raise dj_forms.ValidationError(
+                "This doesn't look like a video link. Open the video in a browser and copy the address, "
+                "it should contain /video/ followed by numbers."
+            )
+        return url
+
+
+@admin.register(TikTokVideo)
+class TikTokVideoAdmin(admin.ModelAdmin):
+
+    form = TikTokVideoForm
+    list_display = ("preview", "title_or_link", "order", "is_published", "created_at")
+    list_display_links = ("preview", "title_or_link")
+    list_editable = ("order", "is_published")
+    readonly_fields = ("thumbnail_preview",)
+    fields = ("url", "title", "thumbnail_preview", "thumbnail", "order", "is_published")
+
+    change_list_template = "admin/base/tiktokvideo/change_list.html"
+
+    def get_urls(self):
+        from django.urls import path
+        return [
+            path("import-latest/", self.admin_site.admin_view(self.import_latest), name="base_tiktokvideo_import"),
+        ] + super().get_urls()
+
+    def import_latest(self, request):
+        """Adds the newest videos from the TikTok profile that aren't on the site yet."""
+        from django.shortcuts import redirect
+
+        changelist = reverse("admin:base_tiktokvideo_changelist")
+        if request.method != "POST" or not self.has_add_permission(request):
+            return redirect(changelist)
+
+        username = tiktok.username_from_url(profile.TIKTOK_URL)
+        videos = tiktok.creator_videos(username)
+        if not videos:
+            self.message_user(request, "Couldn't reach TikTok right now. Try again later, or add a video by pasting its link.", messages.WARNING)
+            return redirect(changelist)
+
+        existing = set(TikTokVideo.objects.values_list("video_id", flat=True))
+        added = 0
+        for v in videos[:4]:
+            if v["id"] in existing:
+                continue
+            video = TikTokVideo(
+                url=f"https://www.tiktok.com/@{username}/video/{v['id']}",
+                video_id=v["id"],
+                title=v["title"][:200],
+                order=TikTokVideo.objects.count(),
+            )
+            image = tiktok.download_image(v["cover"])
+            if image:
+                video.thumbnail.save(f"{v['id']}.jpg", ContentFile(image), save=False)
+            video.save()
+            added += 1
+
+        if added:
+            self.message_user(request, f"Added {added} new video{'s' if added != 1 else ''} from TikTok.", messages.SUCCESS)
+        else:
+            self.message_user(request, "Your latest TikTok videos are already on the site.", messages.INFO)
+        return redirect(changelist)
+
+    @admin.display(description="")
+    def preview(self, obj):
+        if obj.thumbnail:
+            return format_html('<img src="{}" alt="" style="width:44px;height:58px;object-fit:cover;border-radius:6px">', obj.thumbnail.url)
+        return "—"
+
+    @admin.display(description="Video")
+    def title_or_link(self, obj):
+        return obj.title or obj.url
+
+    @admin.display(description="Current thumbnail")
+    def thumbnail_preview(self, obj):
+        if obj and obj.thumbnail:
+            return format_html('<img src="{}" alt="" style="max-width:160px;border-radius:10px">', obj.thumbnail.url)
+        return "Fetched from TikTok when you save."
+
+    def save_model(self, request, obj, form, change):
+        obj.video_id = tiktok.video_id_from_url(obj.url)
+
+        if not obj.title or not obj.thumbnail:
+            details = tiktok.fetch_details(obj.url, tiktok.username_from_url(profile.TIKTOK_URL))
+            if details is None:
+                self.message_user(
+                    request,
+                    "Saved, but TikTok couldn't be reached to fetch the title and thumbnail. "
+                    "You can type a title and upload a thumbnail yourself.",
+                    messages.WARNING,
+                )
+            else:
+                obj.video_id = details["video_id"] or obj.video_id
+                if not obj.title and details["title"]:
+                    obj.title = details["title"][:200]
+                if not obj.thumbnail:
+                    image = tiktok.download_image(details["thumbnail_url"])
+                    if image:
+                        obj.thumbnail.save(f"{obj.video_id or 'video'}.jpg", ContentFile(image), save=False)
+                    else:
+                        self.message_user(request, "Saved, but the thumbnail couldn't be downloaded. You can upload one yourself.", messages.WARNING)
+
+        super().save_model(request, obj, form, change)

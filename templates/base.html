@@ -102,7 +102,8 @@ Rana Umar | Full Stack Developer
         "address": {"@type": "PostalAddress", "addressCountry": "PK"},
         "sameAs": [
             "https://github.com/uiux6006-star",
-            "https://www.linkedin.com/in/rana-umar-476b19409"
+            "https://www.linkedin.com/in/rana-umar-476b19409"{% if social.tiktok %},
+            "{{ social.tiktok }}"{% endif %}
         ],
         "knowsAbout": ["Python", "Django", "Web Development", "E-commerce", "UI Design"]
     }
@@ -319,6 +320,7 @@ Rana Umar | Full Stack Developer
             <span class="sn-menu-social">
                 <a href="https://github.com/uiux6006-star" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
                 <a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                {% if social.tiktok %}<a href="{{ social.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>{% endif %}
                 <a href="https://wa.me/923238144826" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
             </span>
         </div>
@@ -392,6 +394,7 @@ Rana Umar | Full Stack Developer
                 <div class="sf-social" aria-label="Social links">
                     <a href="https://github.com/uiux6006-star" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     <a href="https://www.linkedin.com/in/rana-umar-476b19409" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    {% if social.tiktok %}<a href="{{ social.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>{% endif %}
                     <a href="https://wa.me/923238144826" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     <a href="mailto:uiux6006@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
                 </div>

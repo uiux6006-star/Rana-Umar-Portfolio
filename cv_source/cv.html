@@ -62,7 +62,7 @@
   .contacts svg { width: 3mm; height: 3mm; fill: var(--gold); flex: none; }
 
   /* ===== Stats ===== */
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); margin: 5.4mm 0 5mm; border: .25mm solid var(--line);
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); margin: 4.4mm 0 4mm; border: .25mm solid var(--line);
            background: linear-gradient(180deg, rgba(212,175,90,.06), rgba(212,175,90,0)); }
   .stat { text-align: center; padding: 2.8mm 2mm; border-right: .25mm solid var(--line); }
   .stat:last-child { border-right: 0; }
@@ -75,7 +75,7 @@
        font-weight: 700; font-size: 12pt; color: var(--text); letter-spacing: .02em; }
   h2 em { font-family: Inter, sans-serif; font-style: normal; font-size: 6.6pt; color: var(--gold); letter-spacing: .15em; font-weight: 600; }
   h2::after { content: ""; flex: 1; height: .25mm; background: linear-gradient(90deg, var(--line), transparent); align-self: center; }
-  section { margin-bottom: 4.2mm; }
+  section { margin-bottom: 3.4mm; }
   .lead { color: #d3cfc6; font-size: 8.3pt; }
   .lead b { color: var(--gold); font-weight: 500; }
 
@@ -110,13 +110,15 @@
   .tags span { font-size: 6.2pt; padding: .3mm 1.6mm; border: .2mm solid var(--line); color: var(--gold); letter-spacing: .04em; }
 
   /* Projects grid */
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8mm; margin-top: 2mm; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6mm; margin-top: 2mm; }
   .card { background: var(--panel); border: .2mm solid rgba(255,255,255,.06); border-left: .6mm solid var(--gold);
-          padding: 1.8mm 2.6mm; }
+          padding: 1.4mm 2.4mm; }
   .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 2mm; }
-  .card strong { font-weight: 600; font-size: 8pt; color: #fff; }
+  .card strong { font-weight: 600; font-size: 7.6pt; color: #fff; }
   .card .live { font-size: 5.8pt; letter-spacing: .14em; color: var(--gold); border: .2mm solid var(--gold-dim); padding: 0 1.2mm; }
-  .card p { color: var(--muted); font-size: 7pt; margin-top: .4mm; line-height: 1.38; }
+  .card p { color: var(--muted); font-size: 6.7pt; margin-top: .4mm; line-height: 1.36; }
+  .more { margin-top: 1.8mm; font-size: 6.8pt; color: var(--muted); }
+  .more b { color: var(--gold); font-weight: 500; }
   .card .stack { font-size: 6.4pt; color: var(--gold); margin-top: .6mm; letter-spacing: .02em; }
 
   /* Right column */
@@ -172,8 +174,8 @@
   </header>
 
   <div class="stats">
-    <div class="stat"><strong class="foil">7+</strong><span>Projects Built</span></div>
-    <div class="stat"><strong class="foil">4</strong><span>Live Websites</span></div>
+    <div class="stat"><strong class="foil">15+</strong><span>Projects Built</span></div>
+    <div class="stat"><strong class="foil">13</strong><span>Live Websites</span></div>
     <div class="stat"><strong class="foil">1</strong><span>Business Client</span></div>
     <div class="stat"><strong class="foil">100%</strong><span>Responsive</span></div>
   </div>
@@ -182,9 +184,9 @@
     <main>
       <section>
         <h2><em>01</em>Profile</h2>
-        <p class="lead">Full Stack Developer who builds <b>fast, premium websites and web apps</b> with Python, Django,
-        JavaScript and Bootstrap. I have delivered a <b>live production website for a gold &amp; silver refinery</b>
-        and I deploy and maintain my own Django projects, focused on clean UI and websites that turn visitors into customers.</p>
+        <p class="lead">Full Stack Developer who builds <b>fast, premium websites and interactive web apps</b> with Python, Django,
+        JavaScript and GSAP. I delivered a <b>live production website for a gold &amp; silver refinery</b>
+        and deploy and maintain my own Django projects, focused on websites that turn visitors into customers.</p>
       </section>
 
       <section>
@@ -195,7 +197,7 @@
             <div class="where">Self-employed · Faisalabad, Pakistan</div>
             <ul class="points">
               <li>Built and launched <b>Umer Gold Lab</b> with live rates and <b>QR product verification</b>.</li>
-              <li>Built and deployed my own Django portfolio with contact leads and admin panel.</li>
+              <li>Built my Django portfolio and <b>11 live front-end projects</b>: dashboards, tools and business sites.</li>
               <li>Own the full process: requirements, UI design, development and deployment.</li>
             </ul>
           </div>
@@ -215,37 +217,53 @@
         </a>
 
         <div class="grid">
+          <a class="card" href="https://lambent-fenglisu-0624f9.netlify.app">
+            <div class="card-head"><strong>ATMOS Weather</strong><span class="live">LIVE</span></div>
+            <p>Live weather for any city, with map and insights.</p>
+            <div class="stack">JS · Open-Meteo API · Leaflet</div>
+          </a>
+          <a class="card" href="https://stellular-seahorse-51958e.netlify.app">
+            <div class="card-head"><strong>ZAAYKA</strong><span class="live">LIVE</span></div>
+            <p>Restaurant site with menu, cart and WhatsApp orders.</p>
+            <div class="stack">GSAP · ScrollTrigger · JS</div>
+          </a>
+          <a class="card" href="https://fabulous-tapioca-5c83dc.netlify.app">
+            <div class="card-head"><strong>VAULTIX</strong><span class="live">LIVE</span></div>
+            <p>Local-only password generator and strength checker.</p>
+            <div class="stack">JS · Web Crypto API · CSP</div>
+          </a>
+          <a class="card" href="https://comfy-marzipan-34324b.netlify.app">
+            <div class="card-head"><strong>NEXCALC</strong><span class="live">LIVE</span></div>
+            <p>Scientific, programmer and unit-converter calculator.</p>
+            <div class="stack">JS · BigInt · Safe parser</div>
+          </a>
+          <a class="card" href="https://peppy-truffle-88a180.netlify.app">
+            <div class="card-head"><strong>CHRONIX</strong><span class="live">LIVE</span></div>
+            <p>Clock, world clock, stopwatch and countdown.</p>
+            <div class="stack">JS · Intl API · LocalStorage</div>
+          </a>
+          <a class="card" href="https://fluffy-sfogliatella-30de62.netlify.app">
+            <div class="card-head"><strong>Dentora Clinic</strong><span class="live">LIVE</span></div>
+            <p>Seven-page dental clinic site with appointment booking.</p>
+            <div class="stack">JS · View Transitions · CSS</div>
+          </a>
+          <a class="card" href="https://stately-mooncake-cda4a5.netlify.app">
+            <div class="card-head"><strong>Universe Explorer</strong><span class="live">LIVE</span></div>
+            <p>Interactive 3D journey from Earth to the Milky Way.</p>
+            <div class="stack">Three.js · WebGL · GSAP</div>
+          </a>
           <a class="card" href="https://umarweb.pythonanywhere.com">
             <div class="card-head"><strong>Portfolio Website</strong><span class="live">LIVE</span></div>
-            <p>Django portfolio with dynamic projects, contact leads and admin.</p>
-            <div class="stack">Django · SQLite · Bootstrap 5 · JS</div>
-          </a>
-          <a class="card" href="https://meek-praline-1fd2ca.netlify.app">
-            <div class="card-head"><strong>Royal Stitch</strong><span class="live">LIVE</span></div>
-            <p>Luxury tailoring website with black &amp; gold theme and animations.</p>
-            <div class="stack">HTML · CSS · Bootstrap · JS</div>
-          </a>
-          <a class="card" href="https://snazzy-cocada-805043.netlify.app">
-            <div class="card-head"><strong>Rana Umar Jewellers</strong><span class="live">LIVE</span></div>
-            <p>Jewellery business website with luxury branding.</p>
-            <div class="stack">HTML · CSS · Bootstrap · JS</div>
+            <p>Django site with terminal, GitHub feed and analytics.</p>
+            <div class="stack">Django · SQLite · JS</div>
           </a>
           <div class="card">
-            <div class="card-head"><strong>Hospital Management</strong></div>
-            <p>Patients, doctors, appointments, billing, pharmacy, reports.</p>
-            <div class="stack">Python · OOP · File Handling</div>
-          </div>
-          <div class="card">
-            <div class="card-head"><strong>E-Commerce Management</strong></div>
-            <p>Customers, inventory, cart, orders and billing.</p>
-            <div class="stack">Python · OOP · File Handling</div>
-          </div>
-          <div class="card">
-            <div class="card-head"><strong>Library Management</strong></div>
-            <p>Books, members, issuing, returns and records.</p>
+            <div class="card-head"><strong>Python Systems</strong></div>
+            <p>Hospital, library and store management apps.</p>
             <div class="stack">Python · OOP · File Handling</div>
           </div>
         </div>
+        <p class="more">Also: Royal Stitch, Rana Umar Jewellers, Eternal Wedding and more on <b>my portfolio</b>.</p>
       </section>
     </main>
 
@@ -255,7 +273,7 @@
         <div class="sk-group"><b>Backend</b>
           <div class="chips"><span class="hi">Python</span><span class="hi">Django</span><span>OOP</span><span>SQLite</span><span>Django Admin</span></div></div>
         <div class="sk-group"><b>Frontend</b>
-          <div class="chips"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Bootstrap 5</span><span>Responsive</span></div></div>
+          <div class="chips"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Bootstrap 5</span><span>GSAP</span><span>Three.js</span><span>Responsive</span></div></div>
         <div class="sk-group"><b>Design &amp; Tools</b>
           <div class="chips"><span>Figma</span><span>Photoshop</span><span>Git</span><span>GitHub</span><span>VS Code</span><span>PythonAnywhere</span></div></div>
       </div>
@@ -304,7 +322,7 @@
       <div class="motto">Keep learning · Keep building</div>
     </div>
     <img src="logo.png" alt="">
-    <div class="upd"><b>OPEN TO WORK</b>Freelance projects &amp; developer roles<br>Updated October 2026</div>
+    <div class="upd"><b>OPEN TO WORK</b>Freelance projects &amp; developer roles<br>Updated November 2026</div>
   </footer>
 </div>
 </body>

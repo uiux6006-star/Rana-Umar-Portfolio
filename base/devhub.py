@@ -187,6 +187,7 @@ def terminal_data(request):
             "whatsapp": f"https://wa.me/{profile.WHATSAPP_NUMBER}",
             "github": profile.GITHUB_URL,
             "linkedin": profile.LINKEDIN_URL,
+            "tiktok": profile.TIKTOK_URL,
             "page": reverse("contact"),
         },
         "cv": static(profile.CV_PATH),

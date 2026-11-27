@@ -1,4 +1,4 @@
-{% load i18n static %}<!DOCTYPE html>
+{% load i18n static assets %}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'vendor/fontawesome-free/css/all.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin-theme/login.css' %}">
+    <link rel="stylesheet" href="{% vstatic 'admin-theme/login.css' %}">
 </head>
 
 <body class="lg">
@@ -37,7 +37,7 @@
                 <rect x="4" y="34" width="56" height="5" rx="2"/>
                 <circle cx="10" cy="9" r="3"/><circle cx="32" cy="4" r="3"/><circle cx="54" cy="9" r="3"/>
             </svg>
-            <span class="lg-monogram">RU</span>
+            <span class="lg-monogram">RUD</span>
         </div>
 
         <p class="lg-name">RANA UMAR</p>
@@ -157,6 +157,6 @@
 
 </main>
 
-<script src="{% static 'admin-theme/login.js' %}" defer></script>
+<script src="{% vstatic 'admin-theme/login.js' %}" defer></script>
 </body>
 </html>

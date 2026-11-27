@@ -120,6 +120,12 @@ Home | Rana Umar Developer
         <i class="fab fa-linkedin-in"></i>
     </a>
 
+    {% if social.tiktok %}
+    <a href="{{ social.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
+        <i class="fab fa-tiktok"></i>
+    </a>
+    {% endif %}
+
     <a href="https://wa.me/923238144826" target="_blank" rel="noopener" aria-label="WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
@@ -485,6 +491,52 @@ Home | Rana Umar Developer
 
 
 
+{% if tiktok_videos %}
+<!--=================================
+        FROM MY TIKTOK (videos chosen in the admin)
+==================================-->
+
+<section class="hp-section tt-section" id="tiktok">
+<div class="container">
+
+    <header class="hp-head" data-aos="fade-up">
+        <p class="hp-eyebrow"><i class="fab fa-tiktok" aria-hidden="true"></i> TIKTOK</p>
+        <h2>From my <span>TikTok</span></h2>
+        <p>Short videos about what I'm building. Tap a video to play it right here.</p>
+    </header>
+
+    <div class="tt-grid tt-count-{{ tiktok_videos|length }}">
+        {% for v in tiktok_videos %}
+        <article class="tt-card" data-aos="fade-up" data-aos-delay="{% cycle '0' '80' '160' '240' %}">
+            <div class="tt-media" data-player="{{ v.player_url }}" data-title="{{ v.title|default:'TikTok video' }}">
+                {% if v.thumbnail %}
+                <img src="{{ v.thumbnail.url }}" alt="" loading="lazy">
+                {% else %}
+                <span class="tt-placeholder" aria-hidden="true"><i class="fab fa-tiktok"></i></span>
+                {% endif %}
+                <button type="button" class="tt-play" aria-label="Play video: {{ v.title|default:'TikTok video' }}">
+                    <i class="fas fa-play" aria-hidden="true"></i>
+                </button>
+                <span class="tt-badge" aria-hidden="true"><i class="fab fa-tiktok"></i></span>
+            </div>
+            {% if v.title %}<p class="tt-title">{{ v.title }}</p>{% endif %}
+            <a href="{{ v.url }}" class="tt-link" target="_blank" rel="noopener">Watch on TikTok <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+        </article>
+        {% endfor %}
+    </div>
+
+    <p class="hp-center" data-aos="fade-up">
+        <a href="{{ social.tiktok }}" class="hp-btn" target="_blank" rel="noopener">
+            <i class="fab fa-tiktok" aria-hidden="true"></i> Follow on TikTok
+        </a>
+    </p>
+
+</div>
+</section>
+{% endif %}
+
+
+
 <!--=================================
         PROCESS
 ==================================-->
@@ -712,5 +764,6 @@ Home | Rana Umar Developer
 
 <script src="{% vstatic 'js/home.js' %}" defer></script>
 <script src="{% vstatic 'js/github.js' %}" defer></script>
+<script src="{% vstatic 'js/tiktok.js' %}" defer></script>
 
 {% endblock %}

@@ -161,6 +161,7 @@
                 out.push(line({ text: "Email     ", cls: "t-dim" }, link(data.contact.email, "mailto:" + data.contact.email)));
                 out.push(line({ text: "WhatsApp  ", cls: "t-dim" }, link("Chat on WhatsApp", data.contact.whatsapp, true)));
                 out.push(line({ text: "LinkedIn  ", cls: "t-dim" }, link("rana-umar", data.contact.linkedin, true)));
+                if (data.contact.tiktok) out.push(line({ text: "TikTok    ", cls: "t-dim" }, link("TikTok", data.contact.tiktok, true)));
                 out.push(line({ text: "Form      ", cls: "t-dim" }, link("/contact", data.contact.page)));
                 break;
 

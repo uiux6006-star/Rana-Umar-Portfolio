@@ -257,6 +257,29 @@ class BlogTests(TestCase):
         response = self.client.get(reverse("blog"))
         self.assertContains(response, "The first articles are on the way")
 
+    def test_article_formatting_is_safe(self):
+        from .templatetags.article import article
+        html = article("Intro <script>alert(1)</script>\n\n## Prices\n- **Rs 15,000** start\n- Two\n\nEnd")
+        self.assertNotIn("<script>", html)
+        self.assertIn("&lt;script&gt;", html)
+        self.assertIn("<h2>Prices</h2>", html)
+        self.assertIn("<ul><li><strong>Rs 15,000</strong> start</li><li>Two</li></ul>", html)
+        self.assertIn("<p>End</p>", html)
+
+    def test_cost_article_is_a_draft_with_current_prices(self):
+        from .views import ESTIMATOR_PRICES
+        post = Post.objects.get(slug="how-much-does-a-website-cost-in-pakistan")
+        self.assertFalse(post.is_published)  # waits for review in the admin
+        for t in ESTIMATOR_PRICES["types"]:
+            self.assertIn(f"Rs {t['base']:,}", post.body, "article prices must match the estimator")
+        for f in ESTIMATOR_PRICES["features"]:
+            self.assertIn(f"+ Rs {f['price']:,}", post.body)
+        self.assertEqual(self.client.get(post.get_absolute_url()).status_code, 404)
+        post.is_published = True
+        post.save()
+        response = self.client.get(post.get_absolute_url())
+        self.assertContains(response, "<h2>Quick answer: starting prices</h2>", html=False)
+
     def test_duplicate_titles_get_unique_slugs(self):
         a = Post.objects.create(title="Same", excerpt="e", body="b")
         b = Post.objects.create(title="Same", excerpt="e", body="b")
@@ -432,6 +455,85 @@ class SeoTests(TestCase):
         self.assertContains(response, 'rel="canonical"')
 
 
+class TikTokTests(TestCase):
+
+    VIDEO = "https://www.tiktok.com/@legend765463/video/7312345678901234567"
+
+    def setUp(self):
+        import tempfile
+        from django.contrib.auth import get_user_model
+        self.media = tempfile.mkdtemp()
+        self.override = override_settings(MEDIA_ROOT=self.media)
+        self.override.enable()
+        self.admin = get_user_model().objects.create_superuser("boss", "boss@example.com", "pass12345")
+        from .models import TikTokVideo
+        TikTokVideo.objects.all().delete()  # start without the videos added by the data migration
+
+    def tearDown(self):
+        import shutil
+        self.override.disable()
+        shutil.rmtree(self.media, ignore_errors=True)
+
+    def test_link_parsing_and_host_checks(self):
+        from . import tiktok
+        self.assertEqual(tiktok.video_id_from_url(self.VIDEO + "?is_from_webapp=1"), "7312345678901234567")
+        self.assertEqual(tiktok.video_id_from_url("https://www.tiktok.com/@legend765463"), "")
+        self.assertTrue(tiktok.is_tiktok_url("https://vt.tiktok.com/ZSabc123/"))
+        self.assertFalse(tiktok.is_tiktok_url("https://evil.example.com/tiktok.com/video/1"))
+        self.assertFalse(tiktok.is_tiktok_url("http://www.tiktok.com/@a/video/12345678"))  # https only
+        self.assertIsNone(tiktok.fetch_details("https://example.com/video/12345678"))
+        self.assertIsNone(tiktok.download_image("https://example.com/a.jpg"))
+
+    def add_video(self, **data):
+        from .models import TikTokVideo
+        self.client.force_login(self.admin)
+        payload = {"url": self.VIDEO, "title": "", "order": 0, "is_published": "on"}
+        payload.update(data)
+        response = self.client.post(reverse("admin:base_tiktokvideo_add"), payload, follow=True)
+        return response, TikTokVideo.objects.first()
+
+    def test_admin_fetches_title_and_thumbnail(self):
+        from unittest import mock
+        details = {"title": "Building my portfolio", "thumbnail_url": "https://p16.tiktokcdn.com/x.jpg", "video_id": "7312345678901234567"}
+        with mock.patch("base.tiktok.fetch_details", return_value=details), \
+             mock.patch("base.tiktok.download_image", return_value=b"\xff\xd8\xff fake-jpeg"):
+            response, video = self.add_video()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(video.title, "Building my portfolio")
+        self.assertEqual(video.video_id, "7312345678901234567")
+        self.assertTrue(video.thumbnail.name.startswith("tiktok/7312345678901234567"))
+        self.assertIn("/player/v1/7312345678901234567", video.player_url)
+
+    def test_admin_still_saves_when_tiktok_is_unreachable(self):
+        from unittest import mock
+        with mock.patch("base.tiktok.fetch_details", return_value=None):
+            response, video = self.add_video(title="My video")
+        self.assertEqual(video.video_id, "7312345678901234567")
+        self.assertEqual(video.title, "My video")
+        self.assertContains(response, "couldn")
+
+    def test_admin_rejects_bad_links(self):
+        from unittest import mock
+        from .models import TikTokVideo
+        self.add_video(url="https://www.youtube.com/watch?v=abc")
+        with mock.patch("base.tiktok.resolve", side_effect=lambda u: u):
+            self.add_video(url="https://www.tiktok.com/@legend765463")  # a profile, not a video
+        self.assertEqual(TikTokVideo.objects.count(), 0)
+
+    def test_home_section_only_with_videos_and_player_loads_on_click(self):
+        from .models import TikTokVideo
+        self.assertNotContains(self.client.get(reverse("home")), 'id="tiktok"')
+
+        TikTokVideo.objects.create(url=self.VIDEO, video_id="7312345678901234567", title="Hello")
+        TikTokVideo.objects.create(url=self.VIDEO, video_id="7312345678901234568", title="Hidden", is_published=False)
+        html = self.client.get(reverse("home")).content.decode()
+        self.assertIn('id="tiktok"', html)
+        self.assertIn('data-player="https://www.tiktok.com/player/v1/7312345678901234567', html)
+        self.assertNotIn("Hidden", html)
+        self.assertNotIn("tiktok.com/embed.js", html)       # no TikTok script before a click
+        self.assertNotIn('<iframe src="https://www.tiktok.com', html)
+
+
 class DeveloperHubTests(TestCase):
     """Terminal, GitHub centre, Skills Universe, CV centre and case studies."""
 
@@ -577,6 +679,22 @@ class DeveloperHubTests(TestCase):
         self.assertContains(response, 'data-src="https://example.com/"')  # live preview loads only on request
 
     # ---------- Services ----------
+
+    def test_tiktok_link_shows_everywhere_only_when_set(self):
+        from unittest import mock
+        from .models import TikTokVideo
+        TikTokVideo.objects.all().delete()  # the TikTok section has its own icons
+        with mock.patch("base.profile.TIKTOK_URL", ""):
+            for name in ["home", "about"]:
+                self.assertNotContains(self.client.get(reverse(name)), "fa-tiktok")
+
+        url = "https://www.tiktok.com/@example"
+        with mock.patch("base.profile.TIKTOK_URL", url):
+            home = self.client.get(reverse("home")).content.decode()
+            self.assertEqual(home.count('aria-label="TikTok"'), 3)  # mobile menu, footer, hero
+            self.assertIn(f'"{url}"', home)                          # Google structured data (sameAs)
+            self.assertContains(self.client.get(reverse("about")), f'href="{url}"')
+            self.assertEqual(self.client.get(reverse("terminal_data")).json()["contact"]["tiktok"], url)
 
     def test_css_and_js_links_are_versioned_for_cache_busting(self):
         import re

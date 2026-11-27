@@ -5393,6 +5393,40 @@ var(--input-bg);
     margin-bottom: 1.4em;
 }
 
+.post-body h2 {
+    margin: 2.2em 0 .7em;
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+}
+
+.post-body h3 {
+    margin: 1.8em 0 .6em;
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.post-body ul {
+    margin: 0 0 1.5em;
+    padding-left: 1.3em;
+}
+
+.post-body li {
+    margin-bottom: .55em;
+}
+
+.post-body li::marker {
+    color: var(--accent);
+}
+
+.post-body strong {
+    color: var(--text);
+}
+
 .post-cta {
     max-width: 760px;
     margin: 60px auto 0;

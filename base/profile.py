@@ -12,6 +12,9 @@ use three honest labels instead of numbers.
 GITHUB_USERNAME = "uiux6006-star"
 GITHUB_URL = f"https://github.com/{GITHUB_USERNAME}"
 LINKEDIN_URL = "https://www.linkedin.com/in/rana-umar-476b19409"
+# Paste your full TikTok profile link here, e.g. "https://www.tiktok.com/@yourname".
+# While it's empty, no TikTok icon is shown anywhere on the site.
+TIKTOK_URL = "https://www.tiktok.com/@legend765463"
 EMAIL = "uiux6006@gmail.com"
 WHATSAPP_NUMBER = "923238144826"
 LOCATION = "Faisalabad, Pakistan"

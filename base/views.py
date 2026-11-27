@@ -8,7 +8,7 @@ from django.views.decorators.http import require_GET
 from . import profile
 from .emails import notify_new_contact, notify_new_review
 from .forms import ContactForm, TestimonialForm
-from .models import ContactMessage, Post, Project, Testimonial
+from .models import ContactMessage, Post, Project, Testimonial, TikTokVideo
 
 
 
@@ -26,6 +26,7 @@ def home(request):
         "project_count": Project.objects.count(),
         "testimonials": Testimonial.objects.filter(is_published=True)[:6],
         "latest_posts": Post.objects.filter(is_published=True)[:3],
+        "tiktok_videos": TikTokVideo.objects.filter(is_published=True).exclude(video_id="")[:4],
         # "from Rs ..." on the service cards, kept in sync with the estimator
         "start_prices": {t["id"]: t["base"] for t in ESTIMATOR_PRICES["types"]},
     }

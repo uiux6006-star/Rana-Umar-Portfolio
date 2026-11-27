@@ -246,7 +246,7 @@ class Post(models.Model):
     cover_image = models.ImageField(upload_to="blog/", blank=True)
 
     body = models.TextField(
-        help_text="Leave an empty line between paragraphs."
+        help_text="Leave an empty line between paragraphs. Use ## for a heading, - for a bullet point and **text** for bold."
     )
 
     tags = models.CharField(
@@ -320,3 +320,52 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.rating}/5)"
+
+
+# ================= TIKTOK VIDEOS =================
+
+class TikTokVideo(models.Model):
+    """A TikTok video shown in the "From my TikTok" section of the home page.
+
+    Paste the link; the title and thumbnail are fetched from TikTok's official
+    oEmbed service when you save, and the thumbnail is stored on this site
+    (TikTok's own image links expire after a few hours).
+    """
+
+    url = models.URLField(
+        "TikTok link",
+        max_length=500,
+        help_text="Open the video on TikTok and copy its link, e.g. https://www.tiktok.com/@legend765463/video/7312345678901234567",
+    )
+
+    video_id = models.CharField(max_length=32, blank=True, editable=False)
+
+    title = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Filled in from TikTok automatically. You can change it.",
+    )
+
+    thumbnail = models.ImageField(
+        upload_to="tiktok/",
+        blank=True,
+        help_text="Downloaded from TikTok automatically. You can upload your own instead.",
+    )
+
+    order = models.PositiveSmallIntegerField(default=0, help_text="Lower numbers show first.")
+
+    is_published = models.BooleanField("show on website", default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["order", "-created_at"]
+        verbose_name = "TikTok video"
+        verbose_name_plural = "TikTok videos"
+
+    def __str__(self):
+        return self.title or self.url
+
+    @property
+    def player_url(self):
+        return f"https://www.tiktok.com/player/v1/{self.video_id}?autoplay=1&music_info=0&description=0&rel=0"

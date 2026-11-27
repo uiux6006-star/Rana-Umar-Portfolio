@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static article %}
 
 {% block title %}
 {{ post.title }} | Rana Umar Blog
@@ -71,7 +71,7 @@
 {% endif %}
 
 <div class="post-body">
-    {{ post.body|linebreaks }}
+    {{ post.body|article }}
 </div>
 
 

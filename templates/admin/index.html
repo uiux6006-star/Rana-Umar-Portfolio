@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n static dashboard %}
+{% load i18n static dashboard visitors %}
 
 {% block bodyclass %}{{ block.super }} dashboard rd-dashboard{% endblock %}
 
@@ -10,6 +10,7 @@
 
 {% block content %}
 {% dashboard_data as d %}
+{% visitor_stats 30 as v %}
 
 <div class="rd">
 
@@ -80,6 +81,176 @@
                 {{ d.reviews_published }} published{% if d.reviews_pending %} · <span class="rd-warn-text">{{ d.reviews_pending }} pending</span>{% endif %}
             </span>
         </a>
+
+    </section>
+
+
+    <!-- ================= VISITORS (analytics app) ================= -->
+
+    <header class="rd-section-head" id="visitors">
+        <h2><i class="fas fa-chart-line"></i> Website visitors</h2>
+        <p>
+            {% if v.tracking_since %}Counting since {{ v.tracking_since|date:"d M Y" }}.{% else %}Counting starts with the next visit.{% endif %}
+            Bots and your own admin visits are not counted. No cookies, no IP addresses stored.
+        </p>
+    </header>
+
+    <section class="rd-kpis" aria-label="Visitor numbers">
+
+        <div class="rd-kpi rd-kpi-accent">
+            <span class="rd-kpi-label"><i class="fas fa-eye"></i> Views today</span>
+            <strong class="rd-kpi-value">{{ v.views_today }}</strong>
+            <span class="rd-kpi-foot">{{ v.visitors_today }} visitor{{ v.visitors_today|pluralize }} today</span>
+        </div>
+
+        <div class="rd-kpi">
+            <span class="rd-kpi-label"><i class="fas fa-calendar-week"></i> Last 7 days</span>
+            <strong class="rd-kpi-value">{{ v.views_week }}</strong>
+            <span class="rd-kpi-foot">{{ v.visits_week }} visit{{ v.visits_week|pluralize }}</span>
+        </div>
+
+        <div class="rd-kpi">
+            <span class="rd-kpi-label"><i class="fas fa-calendar"></i> Last 30 days</span>
+            <strong class="rd-kpi-value">{{ v.views }}</strong>
+            <span class="rd-kpi-foot">
+                {% if v.change is None %}views
+                {% elif v.change >= 0 %}<span class="rd-up"><i class="fas fa-arrow-trend-up"></i> {{ v.change_abs }}%</span> vs previous 30 days
+                {% else %}<span class="rd-down"><i class="fas fa-arrow-trend-down"></i> {{ v.change_abs }}%</span> vs previous 30 days{% endif %}
+            </span>
+        </div>
+
+        <div class="rd-kpi">
+            <span class="rd-kpi-label"><i class="fas fa-users"></i> Visits (30 days)</span>
+            <strong class="rd-kpi-value">{{ v.visits }}</strong>
+            <span class="rd-kpi-foot">unique visitors per day, added up</span>
+        </div>
+
+    </section>
+
+    <section class="rd-grid">
+
+        <!-- Daily views -->
+        <article class="rd-card rd-span-2">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Views per day</h2>
+                    <p>Last {{ v.days }} days</p>
+                </div>
+                <button type="button" class="rd-link-btn" data-table-toggle="views-table">
+                    <i class="fas fa-table"></i> <span>Table</span>
+                </button>
+            </header>
+
+            {% if v.has_data %}
+            <div class="rd-bars rd-bars-dense" role="img" aria-label="Bar chart of page views per day for the last {{ v.days }} days">
+                <div class="rd-bars-grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+                {% for day in v.daily %}
+                <div class="rd-bar-col{% if day.today %} is-current{% endif %}" tabindex="0"
+                     data-tip="{{ day.date|date:'D d M' }}: {{ day.count }} view{{ day.count|pluralize }}, {{ day.visitors }} visitor{{ day.visitors|pluralize }}">
+                    <span class="rd-bar" style="height: {% if day.count %}max({{ day.pct }}%, 6px){% else %}2px{% endif %}"></span>
+                    <span class="rd-bar-label">{{ day.label }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <table class="rd-table rd-data-table" id="views-table" hidden>
+                <thead><tr><th>Day</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead>
+                <tbody>
+                {% for day in v.daily reversed %}<tr><td>{{ day.date|date:"D d M Y" }}</td><td class="num">{{ day.count }}</td><td class="num">{{ day.visitors }}</td></tr>{% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="rd-empty"><i class="fas fa-seedling"></i> No visits recorded yet. Share your site and the chart will fill up from today.</p>
+            {% endif %}
+        </article>
+
+        <!-- Sources -->
+        <article class="rd-card">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Where visitors come from</h2>
+                    <p>Last {{ v.days }} days</p>
+                </div>
+            </header>
+            {% if v.sources %}
+            <ul class="rd-hbars">
+                {% for s in v.sources %}
+                <li data-tip="{{ s.label }}: {{ s.count }} arrival{{ s.count|pluralize }}" tabindex="0">
+                    <div class="rd-hbar-top"><span>{{ s.label }}</span><strong>{{ s.count }}</strong></div>
+                    <div class="rd-hbar-track"><span style="width: max({{ s.pct }}%, 4px)"></span></div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="rd-empty">No data yet.</p>
+            {% endif %}
+        </article>
+
+        <!-- Top pages -->
+        <article class="rd-card">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Most viewed pages</h2>
+                    <p>Last {{ v.days }} days</p>
+                </div>
+            </header>
+            {% if v.pages %}
+            <ul class="rd-hbars">
+                {% for p in v.pages %}
+                <li data-tip="{{ p.path }}: {{ p.count }} view{{ p.count|pluralize }}" tabindex="0">
+                    <div class="rd-hbar-top"><span>{{ p.label }}</span><strong>{{ p.count }}</strong></div>
+                    <div class="rd-hbar-track"><span style="width: max({{ p.pct }}%, 4px)"></span></div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="rd-empty">No data yet.</p>
+            {% endif %}
+        </article>
+
+        <!-- Top projects -->
+        <article class="rd-card">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Most viewed projects</h2>
+                    <p>Case study pages</p>
+                </div>
+            </header>
+            {% if v.projects %}
+            <ul class="rd-hbars">
+                {% for p in v.projects %}
+                <li data-tip="{{ p.label }}: {{ p.count }} view{{ p.count|pluralize }}" tabindex="0">
+                    <div class="rd-hbar-top"><span>{{ p.label }}</span><strong>{{ p.count }}</strong></div>
+                    <div class="rd-hbar-track"><span style="width: max({{ p.pct }}%, 4px)"></span></div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="rd-empty">No project views yet.</p>
+            {% endif %}
+        </article>
+
+        <!-- Devices -->
+        <article class="rd-card">
+            <header class="rd-card-head">
+                <div>
+                    <h2>Devices</h2>
+                    <p>Visitors in the last {{ v.days }} days</p>
+                </div>
+            </header>
+            {% if v.devices %}
+            <ul class="rd-hbars">
+                {% for dev in v.devices %}
+                <li data-tip="{{ dev.label }}: {{ dev.count }} visitor{{ dev.count|pluralize }}" tabindex="0">
+                    <div class="rd-hbar-top"><span>{{ dev.label }}</span><strong>{{ dev.count }}</strong></div>
+                    <div class="rd-hbar-track"><span style="width: max({{ dev.pct }}%, 4px)"></span></div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="rd-empty">No data yet.</p>
+            {% endif %}
+        </article>
 
     </section>
 

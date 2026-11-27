@@ -60,6 +60,7 @@ INSTALLED_APPS = [
 
     'base',
     'appearance',
+    'analytics',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Counts public page views (privacy-friendly; see analytics/tracking.py)
+    'analytics.middleware.PageViewMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -85,6 +89,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'appearance.context_processors.site_theme',
+                'base.context_processors.social_links',
             ],
         },
     },

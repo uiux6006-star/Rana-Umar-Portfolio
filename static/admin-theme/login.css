@@ -160,10 +160,11 @@ body.lg {
 
 .lg-monogram {
     font-family: "Cinzel", Georgia, serif;
-    font-size: clamp(64px, 8vw, 104px);
+    font-size: clamp(52px, 7vw, 92px);
     font-weight: 700;
     line-height: 1;
-    letter-spacing: -.02em;
+    letter-spacing: -.01em;
+    white-space: nowrap;
     background: linear-gradient(180deg, #ffffff 0%, var(--lg-ice) 35%, var(--lg-blue-2) 70%, #1e4fd8 100%);
     -webkit-background-clip: text;
     background-clip: text;
